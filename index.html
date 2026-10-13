@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vigilancia Telemétrica D1 · Invest EP93 | JSG ZENIT A.C.</title>
+  <meta name="description" content="Tablero ciudadano de vigilancia telemétrica D1 para Invest EP93. Geomática, sistemas GIS y topografía terrestre. JSG ZENIT A.C.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#07141c",
+            panel: "#0c1c28",
+            line: "#234556",
+            mist: "#c5d5df",
+            brass: "#e0b15a",
+            live: "#3ee0a0",
+            surge: "#ff7a59",
+            tide: "#7fd4ee"
+          },
+          fontFamily: {
+            sans: ['"IBM Plex Sans"', "Segoe UI", "sans-serif"],
+            mono: ['"IBM Plex Mono"', "ui-monospace", "monospace"],
+            display: ['"Barlow Condensed"', "Arial Narrow", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    html { color-scheme: dark; }
+    body {
+      background-color: #07141c;
+      background-image:
+        radial-gradient(ellipse 80% 40% at 10% -10%, rgba(224, 177, 90, 0.08), transparent 50%),
+        linear-gradient(rgba(140, 186, 204, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(140, 186, 204, 0.045) 1px, transparent 1px);
+      background-size: auto, 56px 56px, 56px 56px;
+    }
+    :focus-visible {
+      outline: 2px solid #e0b15a;
+      outline-offset: 3px;
+    }
+    .plate {
+      background: linear-gradient(180deg, rgba(14, 36, 50, 0.96), rgba(8, 22, 32, 0.94));
+      border: 1px solid rgba(140, 186, 204, 0.16);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+    .live-dot {
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 999px;
+      background: #3ee0a0;
+      box-shadow: 0 0 0 0 rgba(62, 224, 160, 0.7);
+      animation: livepulse 1.8s ease-out infinite;
+      flex: none;
+    }
+    @keyframes livepulse {
+      0% { box-shadow: 0 0 0 0 rgba(62, 224, 160, 0.65); }
+      70% { box-shadow: 0 0 0 11px rgba(62, 224, 160, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(62, 224, 160, 0); }
+    }
+    .clock-well {
+      background: #061018;
+      border: 1px solid rgba(224, 177, 90, 0.35);
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.45);
+    }
+    .ruler {
+      position: relative;
+      height: 1.35rem;
+      margin-top: 0.85rem;
+      border-bottom: 1px solid rgba(140, 186, 204, 0.28);
+    }
+    .ruler span {
+      position: absolute;
+      top: 0;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.04em;
+      color: #8eacbb;
+    }
+    .ruler .fill {
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      height: 3px;
+      background: currentColor;
+    }
+    .ruler .mark {
+      position: absolute;
+      bottom: -4px;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: currentColor;
+      transform: translateX(-50%);
+    }
+    .card-hit {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      cursor: pointer;
+    }
+    .card-hit:hover { background: rgba(224, 177, 90, 0.04); }
+    #titulo-carta,
+    #titulo-instrumentos,
+    #titulo-cinematica,
+    #titulo-boletin { scroll-margin-top: 6.75rem; }
+    .map-frame { isolation: isolate; }
+    .rotulo-wrap { background: transparent !important; border: none !important; }
+    .rotulo {
+      width: max-content;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+      color: #f4efe4;
+      background: rgba(7, 20, 28, 0.9);
+      border: 1px solid rgba(140, 186, 204, 0.4);
+      padding: 2px 6px;
+      white-space: nowrap;
+    }
+    .rotulo-oeste { transform: translate(calc(-100% - 10px), -50%); color: #ffd0c2; border-color: rgba(255, 122, 89, 0.6); }
+    .rotulo-este { transform: translate(10px, -50%); color: #d7f6ff; border-color: rgba(127, 212, 238, 0.6); }
+    .rotulo-sur { transform: translate(-50%, 10px); color: #f3ddb0; border-color: rgba(224, 177, 90, 0.55); }
+    #mapa { height: 34rem; background: #061018; }
+    @media (max-width: 768px) {
+      #mapa { height: 26rem; }
+    }
+    .leaflet-container { font-family: "IBM Plex Sans", "Segoe UI", sans-serif; background: #061018; z-index: 0; }
+    .leaflet-container img,
+    .leaflet-tile,
+    .leaflet-marker-icon,
+    .leaflet-marker-shadow {
+      max-width: none !important;
+      max-height: none !important;
+    }
+    .leaflet-div-icon { background: transparent; border: none; }
+    .leaflet-tooltip.tag {
+      background: rgba(7, 20, 28, 0.92);
+      color: #e7eef3;
+      border: 1px solid rgba(140, 186, 204, 0.35);
+      border-radius: 2px;
+      box-shadow: none;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      padding: 3px 6px;
+    }
+    .leaflet-tooltip.tag::before { display: none; }
+    .leaflet-tooltip.tag-gate { color: #ffb199; border-color: rgba(255, 122, 89, 0.55); }
+    .leaflet-tooltip.tag-break { color: #c6f1fb; border-color: rgba(127, 212, 238, 0.55); }
+    .leaflet-tooltip.tag-brass { color: #f3ddb0; border-color: rgba(224, 177, 90, 0.55); }
+    .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+      background: #0c1c28;
+      color: #e7eef3;
+      border-radius: 8px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+    .leaflet-popup-content-wrapper { border: 1px solid rgba(140, 186, 204, 0.28); }
+    .leaflet-popup-content { margin: 10px 12px; line-height: 1.45; }
+    .leaflet-popup-content strong { color: #f3ddb0; font-weight: 600; }
+    .leaflet-popup-close-button { color: #c5d5df !important; }
+    .leaflet-control-zoom a, .leaflet-bar a {
+      background: #0c1c28;
+      color: #e7eef3;
+      border-bottom-color: rgba(140, 186, 204, 0.2);
+    }
+    .leaflet-control-attribution {
+      background: rgba(7, 20, 28, 0.82) !important;
+      color: #8eacbb !important;
+      font-size: 10px !important;
+      max-width: 55%;
+    }
+    .leaflet-control-attribution a { color: #e0b15a !important; }
+    .leaflet-control-scale-line {
+      background: rgba(7, 20, 28, 0.8);
+      color: #e7eef3;
+      border-color: #e0b15a;
+    }
+    .beacon { position: relative; width: 72px; height: 72px; }
+    .beacon i {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      margin: -8px 0 0 -8px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(62, 224, 160, 0.95);
+      box-shadow: 0 0 8px rgba(62, 224, 160, 0.35);
+      animation: ring 2.8s ease-out infinite;
+    }
+    .beacon i:nth-child(2) { animation-delay: 0.93s; }
+    .beacon i:nth-child(3) { animation-delay: 1.86s; }
+    .beacon b {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 12px;
+      height: 12px;
+      margin: -6px 0 0 -6px;
+      border-radius: 999px;
+      background: #3ee0a0;
+      border: 2px solid #f4fff9;
+      box-shadow: 0 0 14px rgba(62, 224, 160, 0.95);
+    }
+    @keyframes ring {
+      0% { transform: scale(0.7); opacity: 0.95; }
+      100% { transform: scale(4.2); opacity: 0; }
+    }
+    .bench {
+      width: 16px;
+      height: 16px;
+      background: #e0b15a;
+      border: 2px solid #07141c;
+      transform: rotate(45deg);
+      box-shadow: 0 0 0 1px #e0b15a;
+    }
+    .genesis {
+      width: 12px;
+      height: 12px;
+      border: 2px solid #e0b15a;
+      border-radius: 999px;
+      background: rgba(7, 20, 28, 0.4);
+    }
+    .map-tool.is-active {
+      border-color: #e0b15a;
+      color: #f3ddb0;
+      background: rgba(224, 177, 90, 0.1);
+    }
+    .readout {
+      font-variant-numeric: tabular-nums;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .live-dot, .beacon i { animation: none; }
+      .beacon i { opacity: 0.45; transform: scale(2.2); }
+      .beacon i:nth-child(2) { transform: scale(3.1); }
+      .beacon i:nth-child(3) { transform: scale(4); }
+    }
+  </style>
+</head>
+<body class="min-h-screen text-mist font-sans antialiased">
+  <header class="sticky top-0 z-[1100] border-b border-line/80 bg-ink/90 backdrop-blur-md">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3 md:px-6">
+      <div class="flex min-w-0 items-start gap-3">
+        <svg class="mt-0.5 h-11 w-11 shrink-0" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="22" fill="#0c1c28" stroke="#e0b15a" stroke-width="1.25"></circle>
+          <path d="M24 5.5 L27.2 24 L24 42.5 L20.8 24 Z" fill="#e0b15a"></path>
+          <path d="M5.5 24 L24 27.2 L42.5 24 L24 20.8 Z" fill="#7fd4ee"></path>
+          <circle cx="24" cy="24" r="2.4" fill="#07141c" stroke="#e0b15a" stroke-width="1"></circle>
+        </svg>
+        <div class="min-w-0">
+          <h1 class="font-display text-lg font-semibold uppercase leading-tight tracking-[0.06em] text-brass sm:text-[1.45rem]">
+            JSG ZENIT A.C. · Geomática, sistemas GIS y topografía terrestre
+          </h1>
+          <p class="mt-1 text-sm text-white/90 sm:text-base">
+            Cimientos del Futuro · Vigilancia Telemétrica D1 (Invest EP93)
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+        <p class="inline-flex items-center gap-2 rounded-full border border-live/30 bg-live/10 px-3 py-1.5 font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-live" role="status">
+          <span class="live-dot" aria-hidden="true"></span>
+          Vigilancia telemétrica en vivo
+        </p>
+        <div class="clock-well rounded px-3 py-1.5 text-right">
+          <p class="font-mono text-[10px] uppercase tracking-[0.18em] text-brass/90">Hora oficial CST · México</p>
+          <p class="font-mono text-2xl font-medium leading-none tracking-wider text-white readout">
+            <span id="reloj-hm">--:--</span><span class="text-live" id="reloj-s">:--</span>
+          </p>
+          <p id="reloj-fecha" class="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-mist/80">Sincronizando segundero</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl space-y-6 px-4 py-6 md:px-6 md:py-8">
+    <section aria-labelledby="titulo-instrumentos">
+      <div class="mb-3 flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-brass">02 · Instrumentación</p>
+          <h2 id="titulo-instrumentos" class="font-display text-3xl font-semibold uppercase tracking-wide text-white">
+            Física y meteorológica
+          </h2>
+        </div>
+        <p class="max-w-md text-xs leading-relaxed text-mist/80">
+          Cinco lecturas de referencia del parte D1. Unidades en el Sistema Internacional de uso meteorológico.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        <article class="plate rounded-md border-t-2 border-t-tide p-4">
+          <div class="flex items-start justify-between gap-2">
+            <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Viento sostenido y rachas</h3>
+            <span class="text-lg leading-none" aria-hidden="true">🌬️</span>
+          </div>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout">45<span class="ml-1 text-base text-tide">km/h</span></p>
+          <p class="mt-2 text-sm text-mist">Rachas de 65 km/h</p>
+        </article>
+        <article class="plate rounded-md border-t-2 border-t-brass p-4">
+          <div class="flex items-start justify-between gap-2">
+            <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Velocidad de traslación</h3>
+            <span class="text-lg leading-none" aria-hidden="true">🧭</span>
+          </div>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout">16<span class="ml-1 text-base text-brass">km/h</span></p>
+          <p class="mt-2 text-sm text-mist">Rumbo ONO</p>
+        </article>
+        <article class="plate rounded-md border-t-2 border-t-sky-400 p-4">
+          <div class="flex items-start justify-between gap-2">
+            <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Precipitación estimada</h3>
+            <span class="text-lg leading-none" aria-hidden="true">🌧️</span>
+          </div>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout">75–150<span class="ml-1 text-base text-sky-300">mm</span></p>
+          <p class="mt-2 text-sm text-mist">Convección activa</p>
+        </article>
+        <article class="plate rounded-md border-t-2 border-t-amber-200 p-4">
+          <div class="flex items-start justify-between gap-2">
+            <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Presión atmosférica central</h3>
+            <span class="text-lg leading-none" aria-hidden="true">⏱️</span>
+          </div>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout">1006<span class="ml-1 text-base text-amber-100">hPa</span></p>
+          <p class="mt-2 text-sm text-mist">En vigilancia continua</p>
+        </article>
+        <article class="plate rounded-md border-t-2 border-t-surge p-4 sm:col-span-2 xl:col-span-1">
+          <div class="flex items-start justify-between gap-2">
+            <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Temperatura superficial del mar (SST)</h3>
+            <span class="text-lg leading-none" aria-hidden="true">🌊</span>
+          </div>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout">30.5<span class="ml-1 text-base text-surge">°C</span></p>
+          <p class="mt-2 text-sm text-mist">Alto potencial energético</p>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="titulo-cinematica">
+      <div class="mb-3">
+        <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-brass">03 · Aproximación</p>
+        <h2 id="titulo-cinematica" class="font-display text-3xl font-semibold uppercase tracking-wide text-white">
+          Tarjetas cinemáticas
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 gap-3 lg:grid-cols-3">
+        <article class="plate relative overflow-hidden rounded-md p-5 text-brass">
+          <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-brass/90">Recorrido acumulado</h3>
+          <p class="mt-2 font-display text-7xl font-semibold leading-none tracking-tight text-white sm:text-8xl">
+            405<span class="ml-2 text-3xl text-brass">KM</span>
+          </p>
+          <p class="mt-3 text-sm text-mist">Génesis 88.0°W a 91.5°W</p>
+          <div class="ruler">
+            <span style="left:0">88.0°W</span>
+            <span style="right:0">91.5°W</span>
+            <i class="fill" style="width:100%"></i>
+            <i class="mark" style="left:100%"></i>
+          </div>
+          <button type="button" class="card-hit" data-target="recorrido">
+            <span class="sr-only">Situar el recorrido acumulado en la carta marina</span>
+          </button>
+          <p class="pointer-events-none relative mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Pulsar para situar en la carta</p>
+        </article>
+
+        <article class="plate relative overflow-hidden rounded-md p-5 text-surge">
+          <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-surge/90">Faltante a compuerta 96.0°W</h3>
+          <p class="mt-2 font-display text-7xl font-semibold leading-none tracking-tight text-white sm:text-8xl">
+            500<span class="ml-2 text-3xl text-surge">KM</span>
+          </p>
+          <p class="mt-3 text-sm text-mist">~31 hrs de margen crítico</p>
+          <div class="ruler">
+            <span style="left:0">91.5°W</span>
+            <span style="right:0">96.0°W</span>
+            <i class="fill" style="width:18%"></i>
+            <i class="mark" style="left:18%"></i>
+          </div>
+          <button type="button" class="card-hit" data-target="compuerta">
+            <span class="sr-only">Situar la compuerta marina 96.0 grados oeste en la carta</span>
+          </button>
+          <p class="pointer-events-none relative mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Pulsar para situar en la carta</p>
+        </article>
+
+        <article class="plate relative overflow-hidden rounded-md p-5 text-tide">
+          <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-tide/90">Distancia al punto de quiebre 97.0°W</h3>
+          <p class="mt-2 font-display text-7xl font-semibold leading-none tracking-tight text-white sm:text-8xl">
+            610<span class="ml-2 text-3xl text-tide">KM</span>
+          </p>
+          <p class="mt-3 text-sm text-mist">Umbral de recurvatura</p>
+          <div class="ruler">
+            <span style="left:0">91.5°W</span>
+            <span style="right:0">97.0°W</span>
+            <i class="fill" style="width:14%"></i>
+            <i class="mark" style="left:14%"></i>
+          </div>
+          <button type="button" class="card-hit" data-target="quiebre">
+            <span class="sr-only">Situar el punto de quiebre 97.0 grados oeste en la carta</span>
+          </button>
+          <p class="pointer-events-none relative mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Pulsar para situar en la carta</p>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="titulo-carta">
+      <div class="mb-3 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-brass">04 · Carta</p>
+          <h2 id="titulo-carta" class="font-display text-3xl font-semibold uppercase tracking-wide text-white">
+            Pacífico sur mexicano
+          </h2>
+        </div>
+        <p id="estado-carta" class="font-mono text-[11px] uppercase tracking-wider text-mist/75">Preparando imagen satelital</p>
+      </div>
+      <div class="map-frame plate overflow-hidden rounded-md">
+        <div class="flex flex-wrap gap-2 border-b border-line/70 px-3 py-2.5">
+          <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="encuadre">Encuadre</button>
+          <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="d1">Baliza D1</button>
+          <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="compuerta">Compuerta 96.0°W</button>
+          <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="quiebre">Quiebre 97.0°W</button>
+          <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="acapulco">Bahía de Santa Lucía</button>
+        </div>
+        <div id="mapa" role="application" aria-label="Carta satelital del Pacífico sur mexicano con la baliza D1, la compuerta marina y el punto de quiebre"></div>
+        <div class="flex flex-wrap items-center justify-between gap-2 border-t border-line/70 px-3 py-2">
+          <p id="coordenadas" class="font-mono text-[11px] uppercase tracking-wider text-brass readout">Cursor · desplace el puntero sobre la carta</p>
+          <p class="font-mono text-[10px] uppercase tracking-wider text-mist/60">Esri World Imagery · pulso radar continuo en D1</p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="titulo-boletin">
+      <article class="plate rounded-md p-5 md:p-6">
+        <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-tide">05 · Boletín</p>
+        <h2 id="titulo-boletin" class="mt-1 font-display text-3xl font-semibold uppercase tracking-wide text-white">
+          Boletín oficial NOAA / NHC
+        </h2>
+        <p class="mt-3 max-w-4xl text-sm leading-relaxed text-mist md:text-base">
+          Módulo técnico de referencia para la perturbación designada <strong class="font-medium text-white">Invest EP93</strong>,
+          en el Pacífico oriental, bajo vigilancia telemétrica D1. La probabilidad de desarrollo ciclónico
+          se consigna en aproximadamente <strong class="font-medium text-surge">100&nbsp;% en 48 horas / 7 días</strong>.
+        </p>
+        <dl class="mt-5 grid grid-cols-1 gap-px overflow-hidden rounded border border-line/80 bg-line/80 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="bg-ink/80 px-4 py-3">
+            <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Designación</dt>
+            <dd class="mt-1 font-mono text-lg text-white">Invest EP93</dd>
+          </div>
+          <div class="bg-ink/80 px-4 py-3">
+            <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">48 horas</dt>
+            <dd class="mt-1 font-mono text-lg text-surge">~100 %</dd>
+          </div>
+          <div class="bg-ink/80 px-4 py-3">
+            <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">7 días</dt>
+            <dd class="mt-1 font-mono text-lg text-surge">~100 %</dd>
+          </div>
+          <div class="bg-ink/80 px-4 py-3">
+            <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Fijación D1</dt>
+            <dd class="mt-1 font-mono text-lg text-white">8.5°N · 91.5°W</dd>
+          </div>
+        </dl>
+        <p class="mt-4 text-xs leading-relaxed text-mist/75">
+          Lectura reproducida a partir de datos abiertos de la NOAA y del Centro Nacional de Huracanes (NHC)
+          para seguimiento ciudadano. El parte completo de autoridades meteorológicas prevalece sobre esta pantalla.
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="border-t border-line/80">
+    <div class="mx-auto max-w-7xl px-4 py-6 md:px-6">
+      <aside class="plate rounded-md border-l-4 border-l-brass p-5 md:p-6">
+        <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-brass">06 · Aviso legal</p>
+        <h2 class="mt-1 font-display text-2xl font-semibold uppercase tracking-wide text-white">
+          Iniciativa ciudadana independiente
+        </h2>
+        <p class="mt-3 max-w-5xl text-sm leading-relaxed text-mist">
+          JSG ZENIT A.C. · Geomática, sistemas GIS y topografía terrestre. Este tablero es una iniciativa
+          ciudadana independiente. Se respalda en datos abiertos de la Administración Nacional Oceánica y
+          Atmosférica (NOAA) y del Centro Nacional de Huracanes (NHC). No sustituye los avisos, alertamientos
+          ni determinaciones de Protección Civil ni del Servicio Meteorológico Nacional (SMN). Para la
+          protección de la vida y los bienes, atienda la información oficial de las autoridades competentes.
+        </p>
+      </aside>
+      <p class="mt-4 font-mono text-[10px] uppercase tracking-[0.16em] text-mist/50">
+        Cimientos del Futuro · Vigilancia Telemétrica D1 (Invest EP93)
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    (function () {
+      "use strict";
+
+      var relojHm = document.getElementById("reloj-hm");
+      var relojS = document.getElementById("reloj-s");
+      var relojFecha = document.getElementById("reloj-fecha");
+
+      function leerCST(fecha) {
+        var formato = new Intl.DateTimeFormat("es-MX", {
+          timeZone: "America/Mexico_City",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hourCycle: "h23",
+          weekday: "long",
+          day: "2-digit",
+          month: "long",
+          year: "numeric"
+        });
+        var bolsa = {};
+        formato.formatToParts(fecha).forEach(function (parte) {
+          if (parte.type !== "literal") bolsa[parte.type] = parte.value;
+        });
+        return bolsa;
+      }
+
+      function pintarReloj() {
+        var p = leerCST(new Date());
+        relojHm.textContent = p.hour + ":" + p.minute;
+        relojS.textContent = ":" + p.second;
+        relojFecha.textContent = p.weekday + " " + p.day + " de " + p.month + " de " + p.year + " · CST";
+      }
+
+      pintarReloj();
+      setInterval(pintarReloj, 1000);
+
+      var estadoCarta = document.getElementById("estado-carta");
+      var coordenadas = document.getElementById("coordenadas");
+      var mapaEl = document.getElementById("mapa");
+
+      if (typeof L === "undefined") {
+        estadoCarta.textContent = "Leaflet no disponible";
+        mapaEl.innerHTML = '<p class="p-6 text-sm text-mist">No se cargó la biblioteca de la carta. Compruebe la conexión e intente de nuevo.</p>';
+        return;
+      }
+
+      var D1 = [8.5, -91.5];
+      var GENESIS = [8.5, -88.0];
+      var ACAPULCO = [16.848, -99.905];
+
+      var mapa = L.map("mapa", {
+        zoomControl: true,
+        scrollWheelZoom: true,
+        worldCopyJump: false
+      }).setView([12.2, -95.2], 5);
+
+      var imagen = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        {
+          attribution: "Teselas &copy; Esri, Maxar, Earthstar Geographics y la comunidad GIS",
+          maxZoom: 18
+        }
+      ).addTo(mapa);
+
+      L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+        { maxZoom: 18, opacity: 0.82, pane: "overlayPane" }
+      ).addTo(mapa);
+
+      imagen.on("load", function () {
+        estadoCarta.textContent = "Imagen satelital en línea";
+      });
+      imagen.on("tileerror", function () {
+        estadoCarta.textContent = "Alguna tesela no respondió · reintente el encuadre";
+      });
+
+      L.control.scale({ imperial: false, metric: true, position: "bottomleft" }).addTo(mapa);
+
+      var recorrido = L.polyline([GENESIS, D1], {
+        color: "#e0b15a",
+        weight: 3,
+        opacity: 0.95
+      }).addTo(mapa);
+      recorrido.bindPopup(
+        "<strong>Recorrido acumulado</strong><br>405 km<br>Génesis 88.0°W a la baliza D1 en 91.5°W<br>Latitud de referencia de la fijación: 8.5°N"
+      );
+      rotulo(7.95, -89.75, "405 km · 88.0°W → 91.5°W", "rotulo-sur");
+
+      L.marker(GENESIS, {
+        icon: L.divIcon({
+          className: "",
+          html: '<div class="genesis"></div>',
+          iconSize: [12, 12],
+          iconAnchor: [6, 6]
+        }),
+        keyboard: false
+      }).addTo(mapa).bindPopup("<strong>Génesis</strong><br>88.0°W · origen del tramo citado");
+
+      var compuerta = L.polyline([[6.4, -96], [17.8, -96]], {
+        color: "#ff7a59",
+        weight: 2.5,
+        dashArray: "10 8",
+        opacity: 0.95
+      }).addTo(mapa);
+      L.polyline([[6.4, -96], [17.8, -96]], {
+        color: "#ff7a59",
+        weight: 7,
+        opacity: 0.15,
+        interactive: false
+      }).addTo(mapa);
+      compuerta.bindPopup(
+        "<strong>Compuerta marina 96.0°W</strong><br>Faltante: 500 km<br>Margen crítico: ~31 horas"
+      );
+      rotulo(15.15, -96, "COMPUERTA 96.0°W · 500 km", "rotulo-oeste");
+
+      var quiebre = L.polyline([[6.4, -97], [17.8, -97]], {
+        color: "#7fd4ee",
+        weight: 2.5,
+        dashArray: "2 7",
+        opacity: 0.95
+      }).addTo(mapa);
+      L.polyline([[6.4, -97], [17.8, -97]], {
+        color: "#7fd4ee",
+        weight: 7,
+        opacity: 0.14,
+        interactive: false
+      }).addTo(mapa);
+      quiebre.bindPopup(
+        "<strong>Punto de quiebre 97.0°W</strong><br>Distancia: 610 km<br>Umbral de recurvatura"
+      );
+      rotulo(10.05, -97, "QUIEBRE 97.0°W · 610 km", "rotulo-este");
+
+      var baliza = L.marker(D1, {
+        icon: L.divIcon({
+          className: "",
+          html: '<div class="beacon" aria-hidden="true"><i></i><i></i><i></i><b></b></div>',
+          iconSize: [72, 72],
+          iconAnchor: [36, 36]
+        }),
+        zIndexOffset: 800
+      }).addTo(mapa);
+      baliza.bindPopup(
+        "<strong>Baliza D1 · Invest EP93</strong><br>8.500° N, 91.500° W<br>Pulso radar continuo<br>Presión central de referencia: 1006 hPa"
+      );
+
+      var reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var anillos = [0, 1, 2].map(function () {
+        return L.circle(D1, {
+          radius: 12000,
+          color: "#3ee0a0",
+          weight: 1.4,
+          fillColor: "#3ee0a0",
+          fillOpacity: 0.04,
+          opacity: 0.75,
+          interactive: false
+        }).addTo(mapa);
+      });
+
+      if (reducido) {
+        anillos.forEach(function (anillo, indice) {
+          anillo.setRadius(40000 + indice * 45000);
+          anillo.setStyle({ opacity: 0.45 - indice * 0.1, fillOpacity: 0.03 });
+        });
+      } else {
+        var periodo = 3400;
+        var alcance = 175000;
+        var inicio = performance.now();
+        function pulso(ahora) {
+          var t = ahora - inicio;
+          anillos.forEach(function (anillo, indice) {
+            var fase = ((t / periodo) + indice / anillos.length) % 1;
+            anillo.setRadius(Math.max(1500, fase * alcance));
+            anillo.setStyle({
+              opacity: 0.8 * (1 - fase),
+              fillOpacity: 0.05 * (1 - fase)
+            });
+          });
+          requestAnimationFrame(pulso);
+        }
+        requestAnimationFrame(pulso);
+      }
+
+      var acapulco = L.marker(ACAPULCO, {
+        icon: L.divIcon({
+          className: "",
+          html: '<div class="bench"></div>',
+          iconSize: [16, 16],
+          iconAnchor: [8, 8]
+        }),
+        zIndexOffset: 600
+      }).addTo(mapa);
+      acapulco.bindPopup(
+        "<strong>Bahía de Santa Lucía</strong><br>Acapulco, Guerrero<br>Marcador geográfico de referencia costera<br>16.85° N, 99.91° W"
+      );
+      acapulco.bindTooltip("Bahía de Santa Lucía (Acapulco)", {
+        permanent: true,
+        direction: "top",
+        className: "tag tag-brass",
+        offset: [0, -10]
+      });
+
+      var marco = L.latLngBounds([
+        GENESIS,
+        D1,
+        ACAPULCO,
+        [6.4, -96],
+        [17.8, -97]
+      ]);
+
+      function rotulo(lat, lng, texto, clase) {
+        return L.marker([lat, lng], {
+          icon: L.divIcon({
+            className: "rotulo-wrap",
+            html: '<div class="rotulo ' + clase + '">' + texto + "</div>",
+            iconSize: [1, 1],
+            iconAnchor: [0, 0]
+          }),
+          interactive: false,
+          keyboard: false
+        }).addTo(mapa);
+      }
+
+      function encuadre() {
+        mapa.closePopup();
+        mapa.fitBounds(marco, { padding: [36, 36], maxZoom: 6, animate: true });
+      }
+      encuadre();
+
+      function formatoCoord(lat, lng) {
+        var ns = lat >= 0 ? "N" : "S";
+        var ew = lng >= 0 ? "E" : "W";
+        return Math.abs(lat).toFixed(3) + "° " + ns + "   " + Math.abs(lng).toFixed(3) + "° " + ew;
+      }
+
+      mapa.on("mousemove", function (evento) {
+        coordenadas.textContent = "Cursor · " + formatoCoord(evento.latlng.lat, evento.latlng.lng) + "   ·   Z" + mapa.getZoom();
+      });
+      mapa.on("mouseout", function () {
+        coordenadas.textContent = "Cursor · fuera de la carta   ·   Z" + mapa.getZoom();
+      });
+      mapa.on("zoomend", function () {
+        if (coordenadas.textContent.indexOf("Cursor ·") === 0 && coordenadas.textContent.indexOf("desplace") !== -1) {
+          coordenadas.textContent = "Cursor · desplace el puntero sobre la carta   ·   Z" + mapa.getZoom();
+        }
+      });
+
+      var vistas = {
+        encuadre: function () { encuadre(); },
+        d1: function () {
+          mapa.flyTo(D1, 7, { duration: 1.05 });
+          baliza.openPopup();
+        },
+        recorrido: function () {
+          mapa.fitBounds(recorrido.getBounds().pad(0.8), { maxZoom: 6, animate: true });
+          recorrido.openPopup();
+        },
+        compuerta: function () {
+          mapa.flyTo([12.2, -96], 6, { duration: 1.05 });
+          compuerta.openPopup();
+        },
+        quiebre: function () {
+          mapa.flyTo([12.2, -97], 6, { duration: 1.05 });
+          quiebre.openPopup();
+        },
+        acapulco: function () {
+          mapa.flyTo(ACAPULCO, 8, { duration: 1.05 });
+          acapulco.openPopup();
+        }
+      };
+
+      document.querySelectorAll("[data-target]").forEach(function (boton) {
+        boton.addEventListener("click", function () {
+          var destino = boton.getAttribute("data-target");
+          if (!vistas[destino]) return;
+          document.querySelectorAll(".map-tool").forEach(function (otro) {
+            otro.classList.toggle("is-active", otro.getAttribute("data-target") === destino);
+          });
+          document.getElementById("titulo-carta").scrollIntoView({ behavior: reducido ? "auto" : "smooth", block: "start" });
+          vistas[destino]();
+        });
+      });
+
+      window.addEventListener("resize", function () {
+        mapa.invalidateSize();
+      });
+      setTimeout(function () { mapa.invalidateSize(); }, 250);
+    })();
+  </script>
+</body>
+</html>
