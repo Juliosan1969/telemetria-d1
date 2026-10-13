@@ -1,6 +1,8 @@
 {
-  "sistema": "D1 (Invest EP93)",
-  "ultima_actualizacion_cst": "2026-10-13 15:00:00",
+  "nombre_sistema": "TRUDY",
+  "categoria": "Tormenta Tropical",
+  "designacion_previa": "Ex-Invest EP93 / D1",
+  "ultima_actualizacion_cst": "13/10/2026 15:00 CST",
   "posicion": {
     "lat": 11.8,
     "lon": -95.4
@@ -10,15 +12,14 @@
     "lon": -88.0
   },
   "cinematica": {
-    "velocidad_nudos": 8.6,
     "velocidad_kmh": 16.0,
     "rumbo": "ONO"
   },
   "meteorologia": {
-    "viento_sostenido_kmh": 45,
-    "rachas_kmh": 65,
-    "presion_hpa": 1006,
+    "viento_sostenido_kmh": 65,
+    "rachas_kmh": 85,
+    "presion_hpa": 1004,
     "sst_celsius": 30.5,
-    "precipitacion_estimada_mm": "75 - 150"
+    "precipitacion_estimada_mm": "100 - 250"
   }
 }

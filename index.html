@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vigilancia Telemétrica D1 · Invest EP93 | JSG ZENIT A.C.</title>
-  <meta name="description" content="Tablero ciudadano de vigilancia telemétrica D1 para Invest EP93. Geomática, sistemas GIS y topografía terrestre. JSG ZENIT A.C.">
+  <title>Comando operativo · Tormenta Tropical TRUDY | JSG ZENIT A.C.</title>
+  <meta name="description" content="Comando operativo de la Tormenta Tropical TRUDY, antes Invest EP93. Vigilancia telemétrica de JSG ZENIT A.C.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -62,10 +62,19 @@
       flex: none;
     }
     @keyframes livepulse {
-      0% { box-shadow: 0 0 0 0 rgba(62, 224, 160, 0.65); }
-      70% { box-shadow: 0 0 0 11px rgba(62, 224, 160, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(62, 224, 160, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(255, 45, 45, 0.7); }
+      70% { box-shadow: 0 0 0 11px rgba(255, 45, 45, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 45, 45, 0); }
     }
+    .live-dot.ciclon {
+      background: #ff2d2d;
+      box-shadow: 0 0 0 0 rgba(255, 45, 45, 0.7);
+    }
+    @keyframes alerta-pulso {
+      0%, 100% { box-shadow: inset 0 0 0 1px rgba(255, 45, 45, 0.55); }
+      50% { box-shadow: inset 0 0 0 2px rgba(255, 70, 70, 1), 0 0 22px rgba(255, 45, 45, 0.45); }
+    }
+    .alerta-pulso { animation: alerta-pulso 1.15s ease-in-out infinite; }
     .clock-well {
       background: #061018;
       border: 1px solid rgba(224, 177, 90, 0.35);
@@ -297,7 +306,7 @@
       font-variant-numeric: tabular-nums;
     }
     @media (prefers-reduced-motion: reduce) {
-      .live-dot, .beacon i { animation: none; }
+      .live-dot, .beacon i, .alerta-pulso { animation: none; }
       .beacon i { opacity: 0.45; transform: scale(2.2); }
       .beacon i:nth-child(2) { transform: scale(3.1); }
       .beacon i:nth-child(3) { transform: scale(4); }
@@ -310,19 +319,19 @@
       <div class="flex min-w-0 items-center gap-3">
         <img src="logo-jsg-zenit.png" alt="Logotipo oficial JSG ZENIT A.C." class="h-12 w-auto shrink-0 rounded-md bg-white object-contain sm:h-14" width="1024" height="391">
         <div class="min-w-0">
-          <h1 class="font-display text-lg font-semibold uppercase leading-tight tracking-[0.06em] text-brass sm:text-[1.45rem]">
-            JSG ZENIT A.C. · Geomática, sistemas GIS y topografía terrestre
+          <h1 id="titulo-comando" class="font-display text-lg font-semibold uppercase leading-tight tracking-[0.06em] text-brass sm:text-[1.35rem]">
+            Comando operativo · Tormenta Tropical TRUDY
           </h1>
-          <p class="mt-1 text-sm text-white/90 sm:text-base">
-            Cimientos del Futuro · Vigilancia Telemétrica D1 (Invest EP93)
+          <p id="subtitulo-comando" class="mt-1 text-sm text-white/90 sm:text-base">
+            Vigilancia Telemétrica Oficial · Ex-Invest EP93
           </p>
         </div>
       </div>
 
       <div class="flex flex-wrap items-center gap-3 sm:gap-4">
-        <p class="inline-flex items-center gap-2 rounded-full border border-live/30 bg-live/10 px-3 py-1.5 font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-live" role="status">
-          <span class="live-dot" aria-hidden="true"></span>
-          Vigilancia telemétrica en vivo
+        <p class="inline-flex items-center gap-2 rounded-full border border-[#ff2d2d]/40 bg-[#ff2d2d]/10 px-3 py-1.5 font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-[#ffb4b4]" role="status">
+          <span class="live-dot ciclon" aria-hidden="true"></span>
+          Ciclón tropical activo
         </p>
         <div class="clock-well rounded px-3 py-1.5 text-right">
           <p class="font-mono text-[10px] uppercase tracking-[0.18em] text-brass/90">Hora oficial CST · México</p>
@@ -330,7 +339,7 @@
             <span id="reloj-hm">--:--</span><span class="text-live" id="reloj-s">:--</span>
           </p>
           <p id="reloj-fecha" class="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-mist/80">Sincronizando segundero</p>
-          <p id="boletin-cst" class="mt-1 font-mono text-[10px] uppercase tracking-wider text-live">Último boletín · esperando feed</p>
+          <p id="boletin-cst" class="mt-1 font-mono text-[10px] uppercase tracking-wider text-live">Último reporte · esperando feed</p>
         </div>
       </div>
     </div>
@@ -346,7 +355,7 @@
           </h2>
         </div>
         <p class="max-w-md text-xs leading-relaxed text-mist/80">
-          Cinco lecturas de referencia del parte D1. Unidades en el Sistema Internacional de uso meteorológico.
+          Cinco lecturas del parte de TRUDY. Unidades en el Sistema Internacional de uso meteorológico.
         </p>
       </div>
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
@@ -420,7 +429,7 @@
           <p class="pointer-events-none relative mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Pulsar para situar en la carta</p>
         </article>
 
-        <article class="plate relative overflow-hidden rounded-md p-5 text-[#ff2d2d] shadow-[inset_0_0_0_1px_rgba(255,45,45,0.65)]">
+        <article class="plate alerta-pulso relative overflow-hidden rounded-md p-5 text-[#ff2d2d]">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-[#ff2d2d]">Faltante a compuerta 96.0°W</h3>
           <p class="mt-2 font-display text-6xl font-semibold leading-none tracking-tight text-white sm:text-7xl">
             <span id="cin-compuerta">—</span><span class="ml-2 text-3xl text-[#ff2d2d]">KM</span>
@@ -463,7 +472,7 @@
           </p>
           <p id="cin-acapulco-nota" class="mt-3 text-sm text-mist">Calculando ortodrómica a la bahía</p>
           <div class="ruler">
-            <span style="left:0">D1</span>
+            <span style="left:0">TRUDY</span>
             <span style="right:0">Acapulco</span>
             <i class="fill" style="width:100%"></i>
             <i class="mark" style="left:0"></i>
@@ -558,13 +567,13 @@
       <div class="map-frame plate overflow-hidden rounded-md">
         <div class="flex flex-wrap gap-2 border-b border-line/70 px-3 py-2.5">
           <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="encuadre">Encuadre</button>
-          <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="d1">Baliza D1</button>
+          <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="d1">Baliza TRUDY</button>
           <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="compuerta">Compuerta 96.0°W</button>
           <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="quiebre">Quiebre 97.0°W</button>
           <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="acapulco">Bahía de Santa Lucía</button>
         </div>
         <div class="map-stage">
-          <div id="mapa" role="application" aria-label="Carta del Pacífico sur mexicano con infrarrojo NOAA, la baliza D1, las rutas ECMWF y GFS, y los vectores históricos"></div>
+          <div id="mapa" role="application" aria-label="Carta del Pacífico sur mexicano con infrarrojo NOAA, la baliza TRUDY, las rutas ECMWF y GFS, y los vectores históricos"></div>
           <div class="sat-float">
             <p class="font-mono text-[10px] uppercase leading-snug tracking-wider text-[#f3e8ff]">🛰️ Satélite Infrarrojo NOAA (Color BD Curve)</p>
             <label class="mt-2 block font-mono text-[10px] uppercase tracking-wider text-mist/80" for="opacidad-ir">
@@ -572,7 +581,7 @@
             </label>
             <input id="opacidad-ir" class="sat-slider" type="range" min="0" max="100" step="5" value="70" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70">
             <button type="button" id="btn-ir" class="sat-switch mt-2 rounded border border-line px-2.5 py-2 font-mono text-[10px] uppercase tracking-wider text-mist hover:text-white" aria-pressed="true">ON / OFF Satélite</button>
-            <p class="mt-1 text-[10px] leading-snug text-mist/70">Curva de color sobre el mosaico de onda larga NOAA nowCOAST. Alineado con D1 y el litoral.</p>
+            <p class="mt-1 text-[10px] leading-snug text-mist/70">Curva de color sobre el mosaico de onda larga NOAA nowCOAST. Alineado con TRUDY y el litoral.</p>
           </div>
         </div>
         <div id="escala-termica" class="border-t border-line/70 px-3 py-2.5">
@@ -584,11 +593,11 @@
             <span>Púrpura/blanco &lt; −80 °C</span>
           </div>
           <div class="thermal-ramp" role="img" aria-label="Escala de topes nubosos: gris a más treinta, verde a menos treinta, amarillo a menos cincuenta, rojo a menos sesenta y cinco, púrpura y blanco por debajo de menos ochenta."></div>
-          <p class="mt-1 text-[10px] leading-snug text-mist/70">Convección extrema de Invest EP93: núcleo en púrpura o blanco. Las costas y los vectores siguen visibles bajo la opacidad.</p>
+          <p class="mt-1 text-[10px] leading-snug text-mist/70">Convección extrema de TRUDY: núcleo en púrpura o blanco. Las costas y los vectores siguen visibles bajo la opacidad.</p>
         </div>
         <div class="flex flex-wrap items-center justify-between gap-2 border-t border-line/70 px-3 py-2">
           <p id="coordenadas" class="font-mono text-[11px] uppercase tracking-wider text-brass readout">Cursor · desplace el puntero sobre la carta</p>
-          <p id="fuente-carta" class="font-mono text-[10px] uppercase tracking-wider text-mist/60">Esri World Imagery · IR NOAA nowCOAST · pulso radar en D1</p>
+          <p id="fuente-carta" class="font-mono text-[10px] uppercase tracking-wider text-mist/60">Esri World Imagery · IR NOAA nowCOAST · pulso radar en TRUDY</p>
         </div>
       </div>
     </section>
@@ -599,10 +608,9 @@
         <h2 id="titulo-boletin" class="mt-1 font-display text-3xl font-semibold uppercase tracking-wide text-white">
           Boletín oficial NOAA / NHC
         </h2>
-        <p class="mt-3 max-w-4xl text-sm leading-relaxed text-mist md:text-base">
-          Módulo técnico de referencia para la perturbación designada <strong class="font-medium text-white">Invest EP93</strong>,
-          en el Pacífico oriental, bajo vigilancia telemétrica D1. La probabilidad de desarrollo ciclónico
-          se consigna en aproximadamente <strong class="font-medium text-surge">100&nbsp;% en 48 horas / 7 días</strong>.
+        <p id="boletin-texto" class="mt-3 max-w-4xl text-sm leading-relaxed text-mist md:text-base">
+          Módulo técnico de la <strong class="font-medium text-white">Tormenta Tropical TRUDY</strong>,
+          ciclón tropical activo en el Pacífico oriental. Designación previa: Ex-Invest EP93.
         </p>
         <dl class="mt-5 grid grid-cols-1 gap-px overflow-hidden rounded border border-line/80 bg-line/80 sm:grid-cols-2 lg:grid-cols-4">
           <div class="bg-ink/80 px-4 py-3">
@@ -610,15 +618,15 @@
             <dd id="boletin-sistema" class="mt-1 font-mono text-lg text-white">—</dd>
           </div>
           <div class="bg-ink/80 px-4 py-3">
-            <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">48 horas</dt>
-            <dd class="mt-1 font-mono text-lg text-surge">~100 %</dd>
+            <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Categoría</dt>
+            <dd id="boletin-categoria" class="mt-1 font-mono text-lg text-surge">—</dd>
           </div>
           <div class="bg-ink/80 px-4 py-3">
-            <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">7 días</dt>
-            <dd class="mt-1 font-mono text-lg text-surge">~100 %</dd>
+            <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Designación previa</dt>
+            <dd id="boletin-previa" class="mt-1 font-mono text-lg text-white">—</dd>
           </div>
           <div class="bg-ink/80 px-4 py-3">
-            <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Fijación D1</dt>
+            <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Fijación</dt>
             <dd id="fijacion-d1" class="mt-1 font-mono text-lg text-white">—</dd>
           </div>
         </dl>
@@ -646,7 +654,7 @@
         </p>
       </aside>
       <p class="mt-4 font-mono text-[10px] uppercase tracking-[0.16em] text-mist/50">
-        Cimientos del Futuro · Vigilancia Telemétrica D1 (Invest EP93)
+        Cimientos del Futuro · Tormenta Tropical TRUDY (Ex-Invest EP93)
       </p>
     </div>
   </footer>
@@ -826,7 +834,7 @@
           fuenteCarta.textContent = "IR color NOAA nowCOAST · opacidad " + valor + "% · Esri bajo la nube";
         } else {
           estadoCarta.textContent = "Mapa base Esri satelital";
-          fuenteCarta.textContent = "Esri World Imagery · pulso radar en D1";
+          fuenteCarta.textContent = "Esri World Imagery · pulso radar en TRUDY";
         }
       }
 
@@ -917,7 +925,13 @@
         }),
         zIndexOffset: 800
       });
-      baliza.bindPopup("<strong>Baliza D1</strong><br>Esperando el feed telemétrico");
+      baliza.bindPopup("<strong>TRUDY</strong><br>Esperando el feed telemétrico");
+      baliza.bindTooltip("TRUDY", {
+        permanent: true,
+        direction: "right",
+        className: "tag tag-brass",
+        offset: [18, 0]
+      });
 
       var reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       var anillos = [];
@@ -1324,7 +1338,7 @@
         var olat = Number(data && data.origen && data.origen.lat);
         var olon = Number(data && data.origen && data.origen.lon);
         if (![lat, lon, olat, olon].every(function (n) { return isFinite(n); })) {
-          ponerTexto("boletin-cst", "Último boletín · feed incompleto");
+          ponerTexto("boletin-cst", "Último reporte · feed incompleto");
           return;
         }
         var pos = [lat, lon];
@@ -1337,8 +1351,11 @@
         if (!isFinite(vel) || vel < 0) vel = 0;
         var nudos = Number(cine.velocidad_nudos);
         var rumbo = cine.rumbo ? String(cine.rumbo) : "—";
-        var sistema = data.sistema ? String(data.sistema) : "D1";
+        var sistema = data.nombre_sistema ? String(data.nombre_sistema) : (data.sistema ? String(data.sistema) : "TRUDY");
+        var categoria = data.categoria ? String(data.categoria) : "Tormenta Tropical";
+        var previa = data.designacion_previa ? String(data.designacion_previa) : "Ex-Invest EP93";
         var sello = data.ultima_actualizacion_cst ? String(data.ultima_actualizacion_cst).trim() : "";
+        var selloVisible = !sello ? "" : (/cst\s*$/i.test(sello) ? sello : sello + " CST");
         var kmRec = haversineKm(origen, pos);
         var kmComp = distanciaMeridiano(lat, lon, MERIDIANO_COMPUERTA);
         var kmQuie = distanciaMeridiano(lat, lon, MERIDIANO_QUIEBRE);
@@ -1349,10 +1366,17 @@
         var presion = cifra(Number(met.presion_hpa));
         var haciaBahia = octante(pos, ACAPULCO);
 
-        ponerTexto("boletin-cst", sello ? "Último boletín · " + sello + " CST" : "Último boletín · sin sello");
+        ponerTexto("boletin-cst", selloVisible ? "Último reporte · " + selloVisible : "Último reporte · sin sello");
         var selloNodo = document.getElementById("boletin-cst");
         if (selloNodo) selloNodo.setAttribute("data-ok", "1");
+        ponerTexto("titulo-comando", "Comando operativo · " + categoria + " " + sistema);
         ponerTexto("boletin-sistema", sistema);
+        ponerTexto("boletin-categoria", categoria);
+        ponerTexto("boletin-previa", previa);
+        var textoBoletin = document.getElementById("boletin-texto");
+        if (textoBoletin) {
+          textoBoletin.innerHTML = "Módulo técnico de la <strong class=\"font-medium text-white\">" + esc(categoria) + " " + esc(sistema) + "</strong>, ciclón tropical activo en el Pacífico oriental. Designación previa: " + esc(previa) + ".";
+        }
         ponerTexto("fijacion-d1", par(lat, lon));
         ponerTexto("met-viento", cifra(Number(met.viento_sostenido_kmh)));
         ponerTexto("met-rachas", cifra(Number(met.rachas_kmh)));
@@ -1393,6 +1417,7 @@
         if (markQuie) markQuie.style.left = pQuie + "%";
 
         if (!mapa.hasLayer(baliza)) baliza.addTo(mapa);
+        baliza.setTooltipContent(sistema);
         if (!mapa.hasLayer(marcaOrigen)) marcaOrigen.addTo(mapa);
         baliza.setLatLng(pos);
         marcaOrigen.setLatLng(origen);
@@ -1408,7 +1433,7 @@
         rotuloQuiebre.setIcon(iconoRotulo("QUIEBRE 97.0°W · " + kmTexto(kmQuie) + " km", "rotulo-este"));
 
         baliza.setPopupContent(
-          "<strong>Baliza " + esc(sistema) + "</strong><br>" +
+          "<strong>" + esc(sistema) + "</strong><br>" +
           hem(lat, "N", "S", 3) + ", " + hem(lon, "E", "W", 3) +
           "<br>Feed telemétrico" + (sello ? " · " + esc(sello) + " CST" : "") +
           "<br>Pulso radar continuo<br>Presión central: " + esc(presion) + " hPa"
@@ -1448,7 +1473,7 @@
           .catch(function () {
             var nodo = document.getElementById("boletin-cst");
             if (!nodo || nodo.getAttribute("data-ok") === "1") return;
-            nodo.textContent = "Último boletín · sin respuesta del feed";
+            nodo.textContent = "Último reporte · sin respuesta del feed";
           });
       }
 
