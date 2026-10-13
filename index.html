@@ -399,16 +399,16 @@
           Tarjetas cinemáticas
         </h2>
       </div>
-      <div class="grid grid-cols-1 gap-3 lg:grid-cols-3">
+      <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
         <article class="plate relative overflow-hidden rounded-md p-5 text-brass">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-brass/90">Recorrido acumulado</h3>
-          <p class="mt-2 font-display text-7xl font-semibold leading-none tracking-tight text-white sm:text-8xl">
-            405<span class="ml-2 text-3xl text-brass">KM</span>
+          <p class="mt-2 font-display text-6xl font-semibold leading-none tracking-tight text-white sm:text-7xl">
+            860<span class="ml-2 text-3xl text-brass">KM</span>
           </p>
-          <p class="mt-3 text-sm text-mist">Génesis 88.0°W a 91.5°W</p>
+          <p class="mt-3 text-sm text-mist">Génesis 88.0°W a 95.4°W</p>
           <div class="ruler">
             <span style="left:0">88.0°W</span>
-            <span style="right:0">91.5°W</span>
+            <span style="right:0">95.4°W</span>
             <i class="fill" style="width:100%"></i>
             <i class="mark" style="left:100%"></i>
           </div>
@@ -418,38 +418,56 @@
           <p class="pointer-events-none relative mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Pulsar para situar en la carta</p>
         </article>
 
-        <article class="plate relative overflow-hidden rounded-md p-5 text-surge">
-          <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-surge/90">Faltante a compuerta 96.0°W</h3>
-          <p class="mt-2 font-display text-7xl font-semibold leading-none tracking-tight text-white sm:text-8xl">
-            500<span class="ml-2 text-3xl text-surge">KM</span>
+        <article class="plate relative overflow-hidden rounded-md p-5 text-[#ff2d2d] shadow-[inset_0_0_0_1px_rgba(255,45,45,0.65)]">
+          <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-[#ff2d2d]">Faltante a compuerta 96.0°W</h3>
+          <p class="mt-2 font-display text-6xl font-semibold leading-none tracking-tight text-white sm:text-7xl">
+            65<span class="ml-2 text-3xl text-[#ff2d2d]">KM</span>
           </p>
-          <p class="mt-3 text-sm text-mist">~31 hrs de margen crítico</p>
+          <p class="mt-3 text-sm text-[#ffb4b4]">Cruce inminente · ~4–5 h a 16 km/h</p>
           <div class="ruler">
-            <span style="left:0">91.5°W</span>
+            <span style="left:0">88.0°W</span>
             <span style="right:0">96.0°W</span>
-            <i class="fill" style="width:18%"></i>
-            <i class="mark" style="left:18%"></i>
+            <i class="fill" style="width:93%;background:#ff2d2d"></i>
+            <i class="mark" style="left:93%;background:#ff2d2d"></i>
           </div>
           <button type="button" class="card-hit" data-target="compuerta">
             <span class="sr-only">Situar la compuerta marina 96.0 grados oeste en la carta</span>
           </button>
-          <p class="pointer-events-none relative mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Pulsar para situar en la carta</p>
+          <p class="pointer-events-none relative mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[#ff8a8a]">Alerta máxima · pulsar para situar en la carta</p>
         </article>
 
         <article class="plate relative overflow-hidden rounded-md p-5 text-tide">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-tide/90">Distancia al punto de quiebre 97.0°W</h3>
-          <p class="mt-2 font-display text-7xl font-semibold leading-none tracking-tight text-white sm:text-8xl">
-            610<span class="ml-2 text-3xl text-tide">KM</span>
+          <p class="mt-2 font-display text-6xl font-semibold leading-none tracking-tight text-white sm:text-7xl">
+            175<span class="ml-2 text-3xl text-tide">KM</span>
           </p>
-          <p class="mt-3 text-sm text-mist">Umbral de recurvatura</p>
+          <p class="mt-3 text-sm text-mist">~11 h · umbral de recurvatura</p>
           <div class="ruler">
-            <span style="left:0">91.5°W</span>
+            <span style="left:0">88.0°W</span>
             <span style="right:0">97.0°W</span>
-            <i class="fill" style="width:14%"></i>
-            <i class="mark" style="left:14%"></i>
+            <i class="fill" style="width:82%"></i>
+            <i class="mark" style="left:82%"></i>
           </div>
           <button type="button" class="card-hit" data-target="quiebre">
             <span class="sr-only">Situar el punto de quiebre 97.0 grados oeste en la carta</span>
+          </button>
+          <p class="pointer-events-none relative mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Pulsar para situar en la carta</p>
+        </article>
+
+        <article class="plate relative overflow-hidden rounded-md p-5 text-brass">
+          <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-brass/90">Distancia a Bahía de Santa Lucía</h3>
+          <p class="mt-2 font-display text-6xl font-semibold leading-none tracking-tight text-white sm:text-7xl">
+            730<span class="ml-2 text-3xl text-brass">KM</span>
+          </p>
+          <p class="mt-3 text-sm text-mist">El centro está al sureste de Acapulco</p>
+          <div class="ruler">
+            <span style="left:0">D1</span>
+            <span style="right:0">Acapulco</span>
+            <i class="fill" style="width:100%"></i>
+            <i class="mark" style="left:0"></i>
+          </div>
+          <button type="button" class="card-hit" data-target="acapulco">
+            <span class="sr-only">Situar Bahía de Santa Lucía en la carta marina</span>
           </button>
           <p class="pointer-events-none relative mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Pulsar para situar en la carta</p>
         </article>
@@ -599,7 +617,7 @@
           </div>
           <div class="bg-ink/80 px-4 py-3">
             <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Fijación D1</dt>
-            <dd class="mt-1 font-mono text-lg text-white">8.5°N · 91.5°W</dd>
+            <dd class="mt-1 font-mono text-lg text-white">11.8°N · 95.4°W</dd>
           </div>
         </dl>
         <p class="mt-4 text-xs leading-relaxed text-mist/75">
@@ -679,7 +697,8 @@
         return;
       }
 
-      var D1 = [8.5, -91.5];
+      var D1 = [11.8, -95.4];
+      var PREVIA = [8.5, -91.5];
       var GENESIS = [8.5, -88.0];
       var ACAPULCO = [16.848, -99.905];
 
@@ -687,7 +706,7 @@
         zoomControl: true,
         scrollWheelZoom: true,
         worldCopyJump: false
-      }).setView([12.2, -95.2], 5);
+      }).setView([13.2, -96.4], 5);
 
       mapa.createPane("irPane");
       mapa.getPane("irPane").style.zIndex = 250;
@@ -838,15 +857,15 @@
 
       L.control.scale({ imperial: false, metric: true, position: "bottomleft" }).addTo(mapa);
 
-      var recorrido = L.polyline([GENESIS, D1], {
+      var recorrido = L.polyline([GENESIS, PREVIA, D1], {
         color: "#e0b15a",
         weight: 3,
         opacity: 0.95
       }).addTo(mapa);
       recorrido.bindPopup(
-        "<strong>Recorrido acumulado</strong><br>405 km<br>Génesis 88.0°W a la baliza D1 en 91.5°W<br>Latitud de referencia de la fijación: 8.5°N"
+        "<strong>Recorrido acumulado</strong><br>~860 km<br>8.5°N, 88.0°W → 8.5°N, 91.5°W → 11.8°N, 95.4°W<br>Fijación activa frente al Golfo de Tehuantepec"
       );
-      rotulo(7.95, -89.75, "405 km · 88.0°W → 91.5°W", "rotulo-sur");
+      rotulo(9.55, -93.15, "860 km · 88.0°W → 95.4°W", "rotulo-sur");
 
       L.marker(GENESIS, {
         icon: L.divIcon({
@@ -856,24 +875,34 @@
           iconAnchor: [6, 6]
         }),
         keyboard: false
-      }).addTo(mapa).bindPopup("<strong>Génesis</strong><br>88.0°W · origen del tramo citado");
+      }).addTo(mapa).bindPopup("<strong>Génesis</strong><br>8.5°N, 88.0°W · origen del tramo citado");
+
+      L.marker(PREVIA, {
+        icon: L.divIcon({
+          className: "",
+          html: '<div class="genesis"></div>',
+          iconSize: [12, 12],
+          iconAnchor: [6, 6]
+        }),
+        keyboard: false
+      }).addTo(mapa).bindPopup("<strong>Fijación previa</strong><br>8.5°N, 91.5°W<br>Tramo intermedio del vector histórico");
 
       var compuerta = L.polyline([[6.4, -96], [17.8, -96]], {
-        color: "#ff7a59",
+        color: "#ff2d2d",
         weight: 2.5,
         dashArray: "10 8",
         opacity: 0.95
       }).addTo(mapa);
       L.polyline([[6.4, -96], [17.8, -96]], {
-        color: "#ff7a59",
+        color: "#ff2d2d",
         weight: 7,
-        opacity: 0.15,
+        opacity: 0.18,
         interactive: false
       }).addTo(mapa);
       compuerta.bindPopup(
-        "<strong>Compuerta marina 96.0°W</strong><br>Faltante: 500 km<br>Margen crítico: ~31 horas"
+        "<strong>Compuerta marina 96.0°W</strong><br>Faltante: ~65 km<br>Cruce inminente en ~4–5 horas a 16 km/h<br>Alerta máxima"
       );
-      rotulo(15.15, -96, "COMPUERTA 96.0°W · 500 km", "rotulo-oeste");
+      rotulo(15.15, -96, "COMPUERTA 96.0°W · 65 km", "rotulo-oeste");
 
       var quiebre = L.polyline([[6.4, -97], [17.8, -97]], {
         color: "#7fd4ee",
@@ -888,9 +917,9 @@
         interactive: false
       }).addTo(mapa);
       quiebre.bindPopup(
-        "<strong>Punto de quiebre 97.0°W</strong><br>Distancia: 610 km<br>Umbral de recurvatura"
+        "<strong>Punto de quiebre 97.0°W</strong><br>Distancia: ~175 km<br>~11 horas a 16 km/h<br>Umbral de recurvatura"
       );
-      rotulo(10.05, -97, "QUIEBRE 97.0°W · 610 km", "rotulo-este");
+      rotulo(10.05, -97, "QUIEBRE 97.0°W · 175 km", "rotulo-este");
 
       var baliza = L.marker(D1, {
         icon: L.divIcon({
@@ -902,7 +931,7 @@
         zIndexOffset: 800
       }).addTo(mapa);
       baliza.bindPopup(
-        "<strong>Baliza D1 · Invest EP93</strong><br>8.500° N, 91.500° W<br>Pulso radar continuo<br>Presión central de referencia: 1006 hPa"
+        "<strong>Baliza D1 · Invest EP93</strong><br>11.800° N, 95.400° W<br>Frente al Golfo de Tehuantepec<br>Pulso radar continuo<br>Presión central de referencia: 1006 hPa"
       );
 
       var reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -952,7 +981,7 @@
         zIndexOffset: 600
       }).addTo(mapa);
       acapulco.bindPopup(
-        "<strong>Bahía de Santa Lucía</strong><br>Acapulco, Guerrero<br>Marcador geográfico de referencia costera<br>16.85° N, 99.91° W"
+        "<strong>Bahía de Santa Lucía</strong><br>Acapulco, Guerrero<br>Distancia directa desde D1: ~730 km<br>El centro está al sureste de la bahía<br>16.85° N, 99.91° W"
       );
       acapulco.bindTooltip("Bahía de Santa Lucía (Acapulco)", {
         permanent: true,
@@ -969,7 +998,6 @@
 
       var rutaEcmwf = [
         D1,
-        [11.0, -94.0],
         [12.52, -96.49],
         [13.70, -99.90],
         [14.50, -101.55]
@@ -989,8 +1017,6 @@
 
       var rutaGfs = [
         D1,
-        [10.8, -93.8],
-        [12.4, -95.5],
         [13.6, -97.0],
         [15.1, -98.3],
         [16.5, -99.5]
@@ -1156,7 +1182,7 @@
           recorrido.openPopup();
         },
         compuerta: function () {
-          mapa.flyTo([12.2, -96], 6, { duration: 1.05 });
+          mapa.flyTo([12.4, -95.75], 7, { duration: 1.05 });
           compuerta.openPopup();
         },
         quiebre: function () {
