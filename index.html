@@ -330,6 +330,7 @@
             <span id="reloj-hm">--:--</span><span class="text-live" id="reloj-s">:--</span>
           </p>
           <p id="reloj-fecha" class="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-mist/80">Sincronizando segundero</p>
+          <p id="boletin-cst" class="mt-1 font-mono text-[10px] uppercase tracking-wider text-live">Último boletín · esperando feed</p>
         </div>
       </div>
     </div>
@@ -354,23 +355,23 @@
             <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Viento sostenido y rachas</h3>
             <span class="text-lg leading-none" aria-hidden="true">🌬️</span>
           </div>
-          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout">45<span class="ml-1 text-base text-tide">km/h</span></p>
-          <p class="mt-2 text-sm text-mist">Rachas de 65 km/h</p>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="met-viento">—</span><span class="ml-1 text-base text-tide">km/h</span></p>
+          <p class="mt-2 text-sm text-mist">Rachas de <span id="met-rachas">—</span> km/h</p>
         </article>
         <article class="plate rounded-md border-t-2 border-t-brass p-4">
           <div class="flex items-start justify-between gap-2">
             <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Velocidad de traslación</h3>
             <span class="text-lg leading-none" aria-hidden="true">🧭</span>
           </div>
-          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout">16<span class="ml-1 text-base text-brass">km/h</span></p>
-          <p class="mt-2 text-sm text-mist">Rumbo ONO</p>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="met-traslacion">—</span><span class="ml-1 text-base text-brass">km/h</span></p>
+          <p class="mt-2 text-sm text-mist" id="met-rumbo">Rumbo —</p>
         </article>
         <article class="plate rounded-md border-t-2 border-t-sky-400 p-4">
           <div class="flex items-start justify-between gap-2">
             <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Precipitación estimada</h3>
             <span class="text-lg leading-none" aria-hidden="true">🌧️</span>
           </div>
-          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout">75–150<span class="ml-1 text-base text-sky-300">mm</span></p>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="met-precip">—</span><span class="ml-1 text-base text-sky-300">mm</span></p>
           <p class="mt-2 text-sm text-mist">Convección activa</p>
         </article>
         <article class="plate rounded-md border-t-2 border-t-amber-200 p-4">
@@ -378,7 +379,7 @@
             <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Presión atmosférica central</h3>
             <span class="text-lg leading-none" aria-hidden="true">⏱️</span>
           </div>
-          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout">1006<span class="ml-1 text-base text-amber-100">hPa</span></p>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="met-presion">—</span><span class="ml-1 text-base text-amber-100">hPa</span></p>
           <p class="mt-2 text-sm text-mist">En vigilancia continua</p>
         </article>
         <article class="plate rounded-md border-t-2 border-t-surge p-4 sm:col-span-2 xl:col-span-1">
@@ -386,7 +387,7 @@
             <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Temperatura superficial del mar (SST)</h3>
             <span class="text-lg leading-none" aria-hidden="true">🌊</span>
           </div>
-          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout">30.5<span class="ml-1 text-base text-surge">°C</span></p>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="met-sst">—</span><span class="ml-1 text-base text-surge">°C</span></p>
           <p class="mt-2 text-sm text-mist">Alto potencial energético</p>
         </article>
       </div>
@@ -398,17 +399,18 @@
         <h2 id="titulo-cinematica" class="font-display text-3xl font-semibold uppercase tracking-wide text-white">
           Tarjetas cinemáticas
         </h2>
+        <p class="mt-1 max-w-3xl text-xs leading-relaxed text-mist/75">Distancias y horas se recalculan con la fórmula de Haversine sobre el feed telemétrico.</p>
       </div>
       <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
         <article class="plate relative overflow-hidden rounded-md p-5 text-brass">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-brass/90">Recorrido acumulado</h3>
           <p class="mt-2 font-display text-6xl font-semibold leading-none tracking-tight text-white sm:text-7xl">
-            860<span class="ml-2 text-3xl text-brass">KM</span>
+            <span id="cin-recorrido">—</span><span class="ml-2 text-3xl text-brass">KM</span>
           </p>
-          <p class="mt-3 text-sm text-mist">Génesis 88.0°W a 95.4°W</p>
+          <p id="cin-recorrido-nota" class="mt-3 text-sm text-mist">Calculando ortodrómica desde el origen</p>
           <div class="ruler">
-            <span style="left:0">88.0°W</span>
-            <span style="right:0">95.4°W</span>
+            <span id="cin-recorrido-a" style="left:0">Origen</span>
+            <span id="cin-recorrido-b" style="right:0">D1</span>
             <i class="fill" style="width:100%"></i>
             <i class="mark" style="left:100%"></i>
           </div>
@@ -421,14 +423,14 @@
         <article class="plate relative overflow-hidden rounded-md p-5 text-[#ff2d2d] shadow-[inset_0_0_0_1px_rgba(255,45,45,0.65)]">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-[#ff2d2d]">Faltante a compuerta 96.0°W</h3>
           <p class="mt-2 font-display text-6xl font-semibold leading-none tracking-tight text-white sm:text-7xl">
-            65<span class="ml-2 text-3xl text-[#ff2d2d]">KM</span>
+            <span id="cin-compuerta">—</span><span class="ml-2 text-3xl text-[#ff2d2d]">KM</span>
           </p>
-          <p class="mt-3 text-sm text-[#ffb4b4]">Cruce inminente · ~4–5 h a 16 km/h</p>
+          <p id="cin-compuerta-nota" class="mt-3 text-sm text-[#ffb4b4]">Calculando cruce del meridiano</p>
           <div class="ruler">
-            <span style="left:0">88.0°W</span>
-            <span style="right:0">96.0°W</span>
-            <i class="fill" style="width:93%;background:#ff2d2d"></i>
-            <i class="mark" style="left:93%;background:#ff2d2d"></i>
+            <span id="cin-compuerta-a" style="left:0">Origen</span>
+            <span id="cin-compuerta-b" style="right:0">96.0°W</span>
+            <i id="cin-compuerta-fill" class="fill" style="width:0;background:#ff2d2d"></i>
+            <i id="cin-compuerta-mark" class="mark" style="left:0;background:#ff2d2d"></i>
           </div>
           <button type="button" class="card-hit" data-target="compuerta">
             <span class="sr-only">Situar la compuerta marina 96.0 grados oeste en la carta</span>
@@ -439,14 +441,14 @@
         <article class="plate relative overflow-hidden rounded-md p-5 text-tide">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-tide/90">Distancia al punto de quiebre 97.0°W</h3>
           <p class="mt-2 font-display text-6xl font-semibold leading-none tracking-tight text-white sm:text-7xl">
-            175<span class="ml-2 text-3xl text-tide">KM</span>
+            <span id="cin-quiebre">—</span><span class="ml-2 text-3xl text-tide">KM</span>
           </p>
-          <p class="mt-3 text-sm text-mist">~11 h · umbral de recurvatura</p>
+          <p id="cin-quiebre-nota" class="mt-3 text-sm text-mist">Calculando umbral de recurvatura</p>
           <div class="ruler">
-            <span style="left:0">88.0°W</span>
-            <span style="right:0">97.0°W</span>
-            <i class="fill" style="width:82%"></i>
-            <i class="mark" style="left:82%"></i>
+            <span id="cin-quiebre-a" style="left:0">Origen</span>
+            <span id="cin-quiebre-b" style="right:0">97.0°W</span>
+            <i id="cin-quiebre-fill" class="fill" style="width:0"></i>
+            <i id="cin-quiebre-mark" class="mark" style="left:0"></i>
           </div>
           <button type="button" class="card-hit" data-target="quiebre">
             <span class="sr-only">Situar el punto de quiebre 97.0 grados oeste en la carta</span>
@@ -457,9 +459,9 @@
         <article class="plate relative overflow-hidden rounded-md p-5 text-brass">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-brass/90">Distancia a Bahía de Santa Lucía</h3>
           <p class="mt-2 font-display text-6xl font-semibold leading-none tracking-tight text-white sm:text-7xl">
-            730<span class="ml-2 text-3xl text-brass">KM</span>
+            <span id="cin-acapulco">—</span><span class="ml-2 text-3xl text-brass">KM</span>
           </p>
-          <p class="mt-3 text-sm text-mist">El centro está al sureste de Acapulco</p>
+          <p id="cin-acapulco-nota" class="mt-3 text-sm text-mist">Calculando ortodrómica a la bahía</p>
           <div class="ruler">
             <span style="left:0">D1</span>
             <span style="right:0">Acapulco</span>
@@ -605,7 +607,7 @@
         <dl class="mt-5 grid grid-cols-1 gap-px overflow-hidden rounded border border-line/80 bg-line/80 sm:grid-cols-2 lg:grid-cols-4">
           <div class="bg-ink/80 px-4 py-3">
             <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Designación</dt>
-            <dd class="mt-1 font-mono text-lg text-white">Invest EP93</dd>
+            <dd id="boletin-sistema" class="mt-1 font-mono text-lg text-white">—</dd>
           </div>
           <div class="bg-ink/80 px-4 py-3">
             <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">48 horas</dt>
@@ -617,7 +619,7 @@
           </div>
           <div class="bg-ink/80 px-4 py-3">
             <dt class="font-mono text-[10px] uppercase tracking-[0.16em] text-mist/70">Fijación D1</dt>
-            <dd class="mt-1 font-mono text-lg text-white">11.8°N · 95.4°W</dd>
+            <dd id="fijacion-d1" class="mt-1 font-mono text-lg text-white">—</dd>
           </div>
         </dl>
         <p class="mt-4 text-xs leading-relaxed text-mist/75">
@@ -697,10 +699,13 @@
         return;
       }
 
-      var D1 = [11.8, -95.4];
-      var PREVIA = [8.5, -91.5];
-      var GENESIS = [8.5, -88.0];
-      var ACAPULCO = [16.848, -99.905];
+      var ACAPULCO = [16.8531, -99.8237];
+      var MERIDIANO_COMPUERTA = 96;
+      var MERIDIANO_QUIEBRE = 97;
+      var NODOS_ECMWF = [[12.52, -96.49], [13.70, -99.90], [14.50, -101.55]];
+      var NODOS_GFS = [[13.6, -97.0], [15.1, -98.3], [16.5, -99.5]];
+      var fijacion = null;
+      var origenActivo = null;
 
       var mapa = L.map("mapa", {
         zoomControl: true,
@@ -857,17 +862,14 @@
 
       L.control.scale({ imperial: false, metric: true, position: "bottomleft" }).addTo(mapa);
 
-      var recorrido = L.polyline([GENESIS, PREVIA, D1], {
+      var recorrido = L.polyline([], {
         color: "#e0b15a",
         weight: 3,
         opacity: 0.95
       }).addTo(mapa);
-      recorrido.bindPopup(
-        "<strong>Recorrido acumulado</strong><br>~860 km<br>8.5°N, 88.0°W → 8.5°N, 91.5°W → 11.8°N, 95.4°W<br>Fijación activa frente al Golfo de Tehuantepec"
-      );
-      rotulo(9.55, -93.15, "860 km · 88.0°W → 95.4°W", "rotulo-sur");
+      recorrido.bindPopup("<strong>Recorrido acumulado</strong><br>Esperando el feed telemétrico");
 
-      L.marker(GENESIS, {
+      var marcaOrigen = L.marker([8, -88], {
         icon: L.divIcon({
           className: "",
           html: '<div class="genesis"></div>',
@@ -875,53 +877,38 @@
           iconAnchor: [6, 6]
         }),
         keyboard: false
-      }).addTo(mapa).bindPopup("<strong>Génesis</strong><br>8.5°N, 88.0°W · origen del tramo citado");
+      });
+      marcaOrigen.bindPopup("<strong>Origen</strong><br>Esperando el feed telemétrico");
 
-      L.marker(PREVIA, {
-        icon: L.divIcon({
-          className: "",
-          html: '<div class="genesis"></div>',
-          iconSize: [12, 12],
-          iconAnchor: [6, 6]
-        }),
-        keyboard: false
-      }).addTo(mapa).bindPopup("<strong>Fijación previa</strong><br>8.5°N, 91.5°W<br>Tramo intermedio del vector histórico");
-
-      var compuerta = L.polyline([[6.4, -96], [17.8, -96]], {
+      var compuerta = L.polyline([[6.4, -MERIDIANO_COMPUERTA], [17.8, -MERIDIANO_COMPUERTA]], {
         color: "#ff2d2d",
         weight: 2.5,
         dashArray: "10 8",
         opacity: 0.95
       }).addTo(mapa);
-      L.polyline([[6.4, -96], [17.8, -96]], {
+      L.polyline([[6.4, -MERIDIANO_COMPUERTA], [17.8, -MERIDIANO_COMPUERTA]], {
         color: "#ff2d2d",
         weight: 7,
         opacity: 0.18,
         interactive: false
       }).addTo(mapa);
-      compuerta.bindPopup(
-        "<strong>Compuerta marina 96.0°W</strong><br>Faltante: ~65 km<br>Cruce inminente en ~4–5 horas a 16 km/h<br>Alerta máxima"
-      );
-      rotulo(15.15, -96, "COMPUERTA 96.0°W · 65 km", "rotulo-oeste");
+      compuerta.bindPopup("<strong>Compuerta marina 96.0°W</strong><br>Calculando faltante");
 
-      var quiebre = L.polyline([[6.4, -97], [17.8, -97]], {
+      var quiebre = L.polyline([[6.4, -MERIDIANO_QUIEBRE], [17.8, -MERIDIANO_QUIEBRE]], {
         color: "#7fd4ee",
         weight: 2.5,
         dashArray: "2 7",
         opacity: 0.95
       }).addTo(mapa);
-      L.polyline([[6.4, -97], [17.8, -97]], {
+      L.polyline([[6.4, -MERIDIANO_QUIEBRE], [17.8, -MERIDIANO_QUIEBRE]], {
         color: "#7fd4ee",
         weight: 7,
         opacity: 0.14,
         interactive: false
       }).addTo(mapa);
-      quiebre.bindPopup(
-        "<strong>Punto de quiebre 97.0°W</strong><br>Distancia: ~175 km<br>~11 horas a 16 km/h<br>Umbral de recurvatura"
-      );
-      rotulo(10.05, -97, "QUIEBRE 97.0°W · 175 km", "rotulo-este");
+      quiebre.bindPopup("<strong>Punto de quiebre 97.0°W</strong><br>Calculando distancia");
 
-      var baliza = L.marker(D1, {
+      var baliza = L.marker([13.2, -96.4], {
         icon: L.divIcon({
           className: "",
           html: '<div class="beacon" aria-hidden="true"><i></i><i></i><i></i><b></b></div>',
@@ -929,46 +916,50 @@
           iconAnchor: [36, 36]
         }),
         zIndexOffset: 800
-      }).addTo(mapa);
-      baliza.bindPopup(
-        "<strong>Baliza D1 · Invest EP93</strong><br>11.800° N, 95.400° W<br>Frente al Golfo de Tehuantepec<br>Pulso radar continuo<br>Presión central de referencia: 1006 hPa"
-      );
+      });
+      baliza.bindPopup("<strong>Baliza D1</strong><br>Esperando el feed telemétrico");
 
       var reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      var anillos = [0, 1, 2].map(function () {
-        return L.circle(D1, {
-          radius: 12000,
-          color: "#3ee0a0",
-          weight: 1.4,
-          fillColor: "#3ee0a0",
-          fillOpacity: 0.04,
-          opacity: 0.75,
-          interactive: false
-        }).addTo(mapa);
-      });
-
-      if (reducido) {
-        anillos.forEach(function (anillo, indice) {
-          anillo.setRadius(40000 + indice * 45000);
-          anillo.setStyle({ opacity: 0.45 - indice * 0.1, fillOpacity: 0.03 });
-        });
-      } else {
-        var periodo = 3400;
-        var alcance = 175000;
-        var inicio = performance.now();
-        function pulso(ahora) {
-          var t = ahora - inicio;
-          anillos.forEach(function (anillo, indice) {
-            var fase = ((t / periodo) + indice / anillos.length) % 1;
-            anillo.setRadius(Math.max(1500, fase * alcance));
-            anillo.setStyle({
-              opacity: 0.8 * (1 - fase),
-              fillOpacity: 0.05 * (1 - fase)
-            });
+      var anillos = [];
+      function moverPulso(pos) {
+        if (!anillos.length) {
+          anillos = [0, 1, 2].map(function () {
+            return L.circle(pos, {
+              radius: 12000,
+              color: "#3ee0a0",
+              weight: 1.4,
+              fillColor: "#3ee0a0",
+              fillOpacity: 0.04,
+              opacity: 0.75,
+              interactive: false
+            }).addTo(mapa);
           });
+          if (reducido) {
+            anillos.forEach(function (anillo, indice) {
+              anillo.setRadius(40000 + indice * 45000);
+              anillo.setStyle({ opacity: 0.45 - indice * 0.1, fillOpacity: 0.03 });
+            });
+            return;
+          }
+          var periodo = 3400;
+          var alcance = 175000;
+          var inicioPulso = performance.now();
+          function pulso(ahora) {
+            var faseBase = (ahora - inicioPulso) / periodo;
+            anillos.forEach(function (anillo, indice) {
+              var fase = (faseBase + indice / anillos.length) % 1;
+              anillo.setRadius(Math.max(1500, fase * alcance));
+              anillo.setStyle({
+                opacity: 0.8 * (1 - fase),
+                fillOpacity: 0.05 * (1 - fase)
+              });
+            });
+            requestAnimationFrame(pulso);
+          }
           requestAnimationFrame(pulso);
+          return;
         }
-        requestAnimationFrame(pulso);
+        anillos.forEach(function (anillo) { anillo.setLatLng(pos); });
       }
 
       var acapulco = L.marker(ACAPULCO, {
@@ -981,7 +972,7 @@
         zIndexOffset: 600
       }).addTo(mapa);
       acapulco.bindPopup(
-        "<strong>Bahía de Santa Lucía</strong><br>Acapulco, Guerrero<br>Distancia directa desde D1: ~730 km<br>El centro está al sureste de la bahía<br>16.85° N, 99.91° W"
+        "<strong>Bahía de Santa Lucía</strong><br>Acapulco, Guerrero<br>16.853° N, 99.824° W<br>La distancia se calcula al llegar el feed"
       );
       acapulco.bindTooltip("Bahía de Santa Lucía (Acapulco)", {
         permanent: true,
@@ -996,40 +987,30 @@
         return anillo;
       }
 
-      var rutaEcmwf = [
-        D1,
-        [12.52, -96.49],
-        [13.70, -99.90],
-        [14.50, -101.55]
-      ];
       var capaEcmwf = L.featureGroup();
-      capaEcmwf.addLayer(L.polyline(rutaEcmwf, {
+      var lineaEcmwf = L.polyline([], {
         color: "#f5d90a",
         weight: 3.5,
         opacity: 0.95,
         dashArray: "12 8"
       }).bindPopup(
-        "<strong>Ruta amarilla · ECMWF / IFS</strong><br>Probabilidad de lectura: 65&nbsp;%<br>Flujo zonal paralelo a la costa.<br>Paso abierto mar adentro, a unos 350 km al sur de Guerrero.<br>4D-Var · 9 km · domo de 588 dam en 500 hPa.<br><em>Vector proyectado esquemático.</em>"
-      ));
+        "<strong>Ruta amarilla · ECMWF / IFS</strong><br>Probabilidad de lectura: 65&nbsp;%<br>Flujo zonal paralelo a la costa.<br>Paso abierto mar adentro, a unos 350 km al sur de Guerrero.<br>4D-Var · 9 km · domo de 588 dam en 500 hPa.<br><em>Vector proyectado esquemático. El primer vértice es la fijación del feed.</em>"
+      );
+      capaEcmwf.addLayer(lineaEcmwf);
       circulo([13.70, -99.90], 18000, {
         color: "#f5d90a", weight: 1.5, fillColor: "#f5d90a", fillOpacity: 0.12, opacity: 0.9
       }, "<strong>ECMWF · referencia de paso abierto</strong><br>13.70°N, 99.90°W<br>Unos 350 km al sur de Acapulco.").addTo(capaEcmwf);
 
-      var rutaGfs = [
-        D1,
-        [13.6, -97.0],
-        [15.1, -98.3],
-        [16.5, -99.5]
-      ];
       var capaGfs = L.featureGroup();
-      capaGfs.addLayer(L.polyline(rutaGfs, {
+      var lineaGfs = L.polyline([], {
         color: "#ff4d4d",
         weight: 3.5,
         opacity: 0.95,
         dashArray: "5 7"
       }).bindPopup(
-        "<strong>Ruta roja · GFS / NOAA</strong><br>Probabilidad de lectura: 30&nbsp;%<br>Recurvamiento al norte/noroeste.<br>Fractura de la dorsal costera y captura por vaguada de latitudes medias.<br>4D-EnVar · 13 km · cruce del punto de quiebre 13.6°N, 97.0°W.<br><em>Vector proyectado esquemático, orientado a la costa sur.</em>"
-      ));
+        "<strong>Ruta roja · GFS / NOAA</strong><br>Probabilidad de lectura: 30&nbsp;%<br>Recurvamiento al norte/noroeste.<br>Fractura de la dorsal costera y captura por vaguada de latitudes medias.<br>4D-EnVar · 13 km · cruce del punto de quiebre 13.6°N, 97.0°W.<br><em>Vector proyectado esquemático. El primer vértice es la fijación del feed.</em>"
+      );
+      capaGfs.addLayer(lineaGfs);
       L.circleMarker([13.6, -97.0], {
         radius: 6,
         color: "#ff4d4d",
@@ -1113,10 +1094,15 @@
         });
         if (!encuadrar || modo === "ninguna") return;
         var bounds = null;
-        if (modo === "ecmwf" || modo === "ambas") bounds = capaEcmwf.getBounds();
-        if (modo === "gfs" || modo === "ambas") {
-          bounds = bounds ? bounds.extend(capaGfs.getBounds()) : capaGfs.getBounds();
+        function unir(capa) {
+          if (!capa.getLayers().length) return;
+          var caja;
+          try { caja = capa.getBounds(); } catch (error) { return; }
+          if (!caja || !caja.isValid()) return;
+          bounds = bounds ? bounds.extend(caja) : caja;
         }
+        if (modo === "ecmwf" || modo === "ambas") unir(capaEcmwf);
+        if (modo === "gfs" || modo === "ambas") unir(capaGfs);
         if (bounds && bounds.isValid()) {
           mapa.fitBounds(bounds, { padding: [32, 32], maxZoom: 6, animate: true });
         }
@@ -1124,34 +1110,44 @@
 
       aplicarModelo("ambas", false);
 
-      var marco = L.latLngBounds([
-        GENESIS,
-        D1,
-        ACAPULCO,
-        [6.4, -96],
-        [17.8, -97],
-        [14.5, -101.55],
-        [16.5, -99.5]
-      ]);
+      function iconoRotulo(texto, clase) {
+        return L.divIcon({
+          className: "rotulo-wrap",
+          html: '<div class="rotulo ' + clase + '">' + texto + "</div>",
+          iconSize: [1, 1],
+          iconAnchor: [0, 0]
+        });
+      }
 
       function rotulo(lat, lng, texto, clase) {
         return L.marker([lat, lng], {
-          icon: L.divIcon({
-            className: "rotulo-wrap",
-            html: '<div class="rotulo ' + clase + '">' + texto + "</div>",
-            iconSize: [1, 1],
-            iconAnchor: [0, 0]
-          }),
+          icon: iconoRotulo(texto, clase),
           interactive: false,
           keyboard: false
         }).addTo(mapa);
       }
 
+      var rotuloRecorrido = null;
+      var rotuloCompuerta = rotulo(15.15, -MERIDIANO_COMPUERTA, "COMPUERTA 96.0°W", "rotulo-oeste");
+      var rotuloQuiebre = rotulo(10.05, -MERIDIANO_QUIEBRE, "QUIEBRE 97.0°W", "rotulo-este");
+
+      function marcoActual() {
+        var puntos = [
+          ACAPULCO,
+          [6.4, -MERIDIANO_COMPUERTA],
+          [17.8, -MERIDIANO_QUIEBRE],
+          NODOS_ECMWF[NODOS_ECMWF.length - 1],
+          NODOS_GFS[NODOS_GFS.length - 1]
+        ];
+        if (origenActivo) puntos.push(origenActivo);
+        if (fijacion) puntos.push(fijacion);
+        return L.latLngBounds(puntos);
+      }
+
       function encuadre() {
         mapa.closePopup();
-        mapa.fitBounds(marco, { padding: [36, 36], maxZoom: 6, animate: true });
+        mapa.fitBounds(marcoActual(), { padding: [36, 36], maxZoom: 6, animate: true });
       }
-      encuadre();
 
       function formatoCoord(lat, lng) {
         var ns = lat >= 0 ? "N" : "S";
@@ -1174,19 +1170,21 @@
       var vistas = {
         encuadre: function () { encuadre(); },
         d1: function () {
-          mapa.flyTo(D1, 7, { duration: 1.05 });
+          if (!fijacion) return;
+          mapa.flyTo(fijacion, 7, { duration: 1.05 });
           baliza.openPopup();
         },
         recorrido: function () {
+          if (!recorrido.getLatLngs().length) return;
           mapa.fitBounds(recorrido.getBounds().pad(0.8), { maxZoom: 6, animate: true });
           recorrido.openPopup();
         },
         compuerta: function () {
-          mapa.flyTo([12.4, -95.75], 7, { duration: 1.05 });
+          mapa.flyTo([fijacion ? fijacion[0] : 12.4, -95.75], 7, { duration: 1.05 });
           compuerta.openPopup();
         },
         quiebre: function () {
-          mapa.flyTo([12.2, -97], 6, { duration: 1.05 });
+          mapa.flyTo([fijacion ? fijacion[0] : 12.2, -MERIDIANO_QUIEBRE], 6, { duration: 1.05 });
           quiebre.openPopup();
         },
         acapulco: function () {
@@ -1232,6 +1230,230 @@
           vistas[destino]();
         });
       });
+
+      var R_TIERRA_KM = 6371;
+      var vistaInicial = true;
+
+      function aRad(grados) {
+        return grados * Math.PI / 180;
+      }
+
+      function haversineKm(a, b) {
+        var dLat = aRad(b[0] - a[0]);
+        var dLon = aRad(b[1] - a[1]);
+        var lat1 = aRad(a[0]);
+        var lat2 = aRad(b[0]);
+        var h = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        return 2 * R_TIERRA_KM * Math.atan2(Math.sqrt(h), Math.sqrt(Math.max(0, 1 - h)));
+      }
+
+      function distanciaMeridiano(lat, lon, oeste) {
+        var meta = -Math.abs(oeste);
+        if (lon <= meta) return 0;
+        return haversineKm([lat, lon], [lat, meta]);
+      }
+
+      function proyectar(pos, nodos) {
+        var salida = [pos];
+        nodos.forEach(function (nodo) {
+          if (nodo[1] < pos[1] - 0.02) salida.push(nodo);
+        });
+        return salida;
+      }
+
+      function cifra(n) {
+        if (!isFinite(n)) return "—";
+        var redondo = Math.round(n * 10) / 10;
+        return Math.abs(redondo - Math.round(redondo)) < 0.05 ? String(Math.round(redondo)) : redondo.toFixed(1);
+      }
+
+      function kmTexto(km) {
+        return String(Math.max(0, Math.round(km)));
+      }
+
+      function textoHoras(km, vel) {
+        if (km <= 0) return "meridiano alcanzado";
+        if (!(vel > 0)) return "sin velocidad de traslación";
+        var horas = km / vel;
+        if (horas < 1) return Math.max(1, Math.round(horas * 60)) + " min";
+        return (Math.round(horas * 10) / 10).toFixed(1) + " h";
+      }
+
+      function hem(valor, pos, neg, decimales) {
+        return Math.abs(valor).toFixed(decimales) + "°" + (valor >= 0 ? pos : neg);
+      }
+
+      function par(lat, lon) {
+        return hem(lat, "N", "S", 1) + " · " + hem(lon, "E", "W", 1);
+      }
+
+      function octante(desde, hacia) {
+        var lat1 = aRad(desde[0]);
+        var lat2 = aRad(hacia[0]);
+        var dLon = aRad(hacia[1] - desde[1]);
+        var y = Math.sin(dLon) * Math.cos(lat2);
+        var x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+        var grados = (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+        var nombres = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSO", "SO", "OSO", "O", "ONO", "NO", "NNO"];
+        return nombres[Math.round(grados / 22.5) % 16];
+      }
+
+      function avanceMeridiano(origenLon, actualLon, metaOeste) {
+        var origen = Math.abs(origenLon);
+        var actual = Math.abs(actualLon);
+        var meta = Math.abs(metaOeste);
+        if (meta <= origen) return actual >= meta ? 1 : 0;
+        return Math.max(0, Math.min(1, (actual - origen) / (meta - origen)));
+      }
+
+      function ponerTexto(id, texto) {
+        var nodo = document.getElementById(id);
+        if (nodo) nodo.textContent = texto;
+      }
+
+      function esc(texto) {
+        return String(texto).replace(/[&<>"']/g, function (caracter) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[caracter];
+        });
+      }
+
+      function publicarTelemetria(data) {
+        var lat = Number(data && data.posicion && data.posicion.lat);
+        var lon = Number(data && data.posicion && data.posicion.lon);
+        var olat = Number(data && data.origen && data.origen.lat);
+        var olon = Number(data && data.origen && data.origen.lon);
+        if (![lat, lon, olat, olon].every(function (n) { return isFinite(n); })) {
+          ponerTexto("boletin-cst", "Último boletín · feed incompleto");
+          return;
+        }
+        var pos = [lat, lon];
+        var origen = [olat, olon];
+        fijacion = pos;
+        origenActivo = origen;
+        var cine = data.cinematica || {};
+        var met = data.meteorologia || {};
+        var vel = Number(cine.velocidad_kmh);
+        if (!isFinite(vel) || vel < 0) vel = 0;
+        var nudos = Number(cine.velocidad_nudos);
+        var rumbo = cine.rumbo ? String(cine.rumbo) : "—";
+        var sistema = data.sistema ? String(data.sistema) : "D1";
+        var sello = data.ultima_actualizacion_cst ? String(data.ultima_actualizacion_cst).trim() : "";
+        var kmRec = haversineKm(origen, pos);
+        var kmComp = distanciaMeridiano(lat, lon, MERIDIANO_COMPUERTA);
+        var kmQuie = distanciaMeridiano(lat, lon, MERIDIANO_QUIEBRE);
+        var kmAca = haversineKm(pos, ACAPULCO);
+        var hComp = textoHoras(kmComp, vel);
+        var hQuie = textoHoras(kmQuie, vel);
+        var hAca = textoHoras(kmAca, vel);
+        var presion = cifra(Number(met.presion_hpa));
+        var haciaBahia = octante(pos, ACAPULCO);
+
+        ponerTexto("boletin-cst", sello ? "Último boletín · " + sello + " CST" : "Último boletín · sin sello");
+        var selloNodo = document.getElementById("boletin-cst");
+        if (selloNodo) selloNodo.setAttribute("data-ok", "1");
+        ponerTexto("boletin-sistema", sistema);
+        ponerTexto("fijacion-d1", par(lat, lon));
+        ponerTexto("met-viento", cifra(Number(met.viento_sostenido_kmh)));
+        ponerTexto("met-rachas", cifra(Number(met.rachas_kmh)));
+        ponerTexto("met-traslacion", cifra(vel));
+        ponerTexto("met-rumbo", (isFinite(nudos) ? cifra(nudos) + " nudos · rumbo " : "Rumbo ") + rumbo);
+        ponerTexto("met-precip", String(met.precipitacion_estimada_mm == null ? "—" : met.precipitacion_estimada_mm).replace(/\s*-\s*/g, "–"));
+        ponerTexto("met-presion", presion);
+        ponerTexto("met-sst", cifra(Number(met.sst_celsius)));
+        ponerTexto("cin-recorrido", kmTexto(kmRec));
+        ponerTexto("cin-recorrido-nota", "Haversine · " + par(olat, olon) + " a " + par(lat, lon));
+        ponerTexto("cin-recorrido-a", hem(olon, "E", "W", 1));
+        ponerTexto("cin-recorrido-b", hem(lon, "E", "W", 1));
+        ponerTexto("cin-compuerta", kmTexto(kmComp));
+        ponerTexto(
+          "cin-compuerta-nota",
+          kmComp <= 0
+            ? "Meridiano 96.0°W cruzado"
+            : (vel > 0 && kmComp / vel <= 6
+              ? "Cruce inminente · " + hComp + " a " + cifra(vel) + " km/h"
+              : hComp + " a " + cifra(vel) + " km/h")
+        );
+        ponerTexto("cin-compuerta-a", hem(olon, "E", "W", 1));
+        ponerTexto("cin-quiebre", kmTexto(kmQuie));
+        ponerTexto("cin-quiebre-nota", kmQuie <= 0 ? "Meridiano 97.0°W cruzado" : hQuie + " · umbral de recurvatura");
+        ponerTexto("cin-quiebre-a", hem(olon, "E", "W", 1));
+        ponerTexto("cin-acapulco", kmTexto(kmAca));
+        ponerTexto("cin-acapulco-nota", "Bahía al " + haciaBahia + " · " + hAca + " a " + cifra(vel) + " km/h");
+
+        var pComp = avanceMeridiano(olon, lon, MERIDIANO_COMPUERTA) * 100;
+        var pQuie = avanceMeridiano(olon, lon, MERIDIANO_QUIEBRE) * 100;
+        var fillComp = document.getElementById("cin-compuerta-fill");
+        var markComp = document.getElementById("cin-compuerta-mark");
+        var fillQuie = document.getElementById("cin-quiebre-fill");
+        var markQuie = document.getElementById("cin-quiebre-mark");
+        if (fillComp) fillComp.style.width = pComp + "%";
+        if (markComp) markComp.style.left = pComp + "%";
+        if (fillQuie) fillQuie.style.width = pQuie + "%";
+        if (markQuie) markQuie.style.left = pQuie + "%";
+
+        if (!mapa.hasLayer(baliza)) baliza.addTo(mapa);
+        if (!mapa.hasLayer(marcaOrigen)) marcaOrigen.addTo(mapa);
+        baliza.setLatLng(pos);
+        marcaOrigen.setLatLng(origen);
+        moverPulso(pos);
+        recorrido.setLatLngs([origen, pos]);
+        var medioLat = (olat + lat) / 2 - 0.55;
+        var medioLon = (olon + lon) / 2;
+        var textoRec = kmTexto(kmRec) + " km · " + hem(olon, "E", "W", 1) + " → " + hem(lon, "E", "W", 1);
+        if (!rotuloRecorrido) rotuloRecorrido = rotulo(medioLat, medioLon, textoRec, "rotulo-sur");
+        else rotuloRecorrido.setLatLng([medioLat, medioLon]);
+        rotuloRecorrido.setIcon(iconoRotulo(textoRec, "rotulo-sur"));
+        rotuloCompuerta.setIcon(iconoRotulo("COMPUERTA 96.0°W · " + kmTexto(kmComp) + " km", "rotulo-oeste"));
+        rotuloQuiebre.setIcon(iconoRotulo("QUIEBRE 97.0°W · " + kmTexto(kmQuie) + " km", "rotulo-este"));
+
+        baliza.setPopupContent(
+          "<strong>Baliza " + esc(sistema) + "</strong><br>" +
+          hem(lat, "N", "S", 3) + ", " + hem(lon, "E", "W", 3) +
+          "<br>Feed telemétrico" + (sello ? " · " + esc(sello) + " CST" : "") +
+          "<br>Pulso radar continuo<br>Presión central: " + esc(presion) + " hPa"
+        );
+        marcaOrigen.setPopupContent("<strong>Origen</strong><br>" + hem(olat, "N", "S", 3) + ", " + hem(olon, "E", "W", 3));
+        recorrido.setPopupContent(
+          "<strong>Recorrido acumulado</strong><br>" + kmTexto(kmRec) + " km · Haversine<br>" +
+          esc(par(olat, olon)) + " → " + esc(par(lat, lon))
+        );
+        compuerta.setPopupContent(
+          "<strong>Compuerta marina 96.0°W</strong><br>Faltante: " + kmTexto(kmComp) + " km<br>" +
+          esc(hComp) + " a " + esc(cifra(vel)) + " km/h<br>Intersección en la latitud de la fijación"
+        );
+        quiebre.setPopupContent(
+          "<strong>Punto de quiebre 97.0°W</strong><br>Distancia: " + kmTexto(kmQuie) + " km<br>" +
+          esc(hQuie) + "<br>Intersección en la latitud de la fijación"
+        );
+        acapulco.setPopupContent(
+          "<strong>Bahía de Santa Lucía</strong><br>Acapulco, Guerrero<br>16.853° N, 99.824° W<br>Distancia directa: " +
+          kmTexto(kmAca) + " km<br>La bahía queda al " + esc(haciaBahia)
+        );
+        lineaEcmwf.setLatLngs(proyectar(pos, NODOS_ECMWF));
+        lineaGfs.setLatLngs(proyectar(pos, NODOS_GFS));
+        if (vistaInicial) {
+          vistaInicial = false;
+          encuadre();
+        }
+      }
+
+      function cargarTelemetria() {
+        fetch("/telemetria.json?t=" + Date.now(), { cache: "no-store" })
+          .then(function (respuesta) {
+            if (!respuesta.ok) throw new Error(String(respuesta.status));
+            return respuesta.json();
+          })
+          .then(publicarTelemetria)
+          .catch(function () {
+            var nodo = document.getElementById("boletin-cst");
+            if (!nodo || nodo.getAttribute("data-ok") === "1") return;
+            nodo.textContent = "Último boletín · sin respuesta del feed";
+          });
+      }
+
+      cargarTelemetria();
+      setInterval(cargarTelemetria, 60000);
 
       window.addEventListener("resize", function () {
         mapa.invalidateSize();

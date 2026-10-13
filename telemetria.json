@@ -1,0 +1,24 @@
+{
+  "sistema": "D1 (Invest EP93)",
+  "ultima_actualizacion_cst": "2026-10-13 15:00:00",
+  "posicion": {
+    "lat": 11.8,
+    "lon": -95.4
+  },
+  "origen": {
+    "lat": 8.5,
+    "lon": -88.0
+  },
+  "cinematica": {
+    "velocidad_nudos": 8.6,
+    "velocidad_kmh": 16.0,
+    "rumbo": "ONO"
+  },
+  "meteorologia": {
+    "viento_sostenido_kmh": 45,
+    "rachas_kmh": 65,
+    "presion_hpa": 1006,
+    "sst_celsius": 30.5,
+    "precipitacion_estimada_mm": "75 - 150"
+  }
+}
