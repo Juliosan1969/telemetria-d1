@@ -75,6 +75,44 @@
       50% { box-shadow: inset 0 0 0 2px rgba(255, 70, 70, 1), 0 0 22px rgba(255, 45, 45, 0.45); }
     }
     .alerta-pulso { animation: alerta-pulso 1.15s ease-in-out infinite; }
+    .btn-locucion {
+      border: 1px solid rgba(224, 177, 90, 0.8);
+      background: #061018;
+      color: #f3ddb0;
+      box-shadow: 0 0 0 1px rgba(127, 212, 238, 0.28);
+      animation: locucion-pulso 2.4s ease-in-out infinite;
+    }
+    .btn-locucion:hover { border-color: #7fd4ee; color: #ffffff; }
+    .btn-locucion:focus-visible { outline: 2px solid #7fd4ee; outline-offset: 2px; }
+    .btn-locucion.hablando {
+      animation: none;
+      border-color: #7fd4ee;
+      color: #d7f6ff;
+      box-shadow: 0 0 18px rgba(127, 212, 238, 0.28);
+    }
+    @keyframes locucion-pulso {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(224, 177, 90, 0.45), 0 0 0 1px rgba(127, 212, 238, 0.28); }
+      50% { box-shadow: 0 0 0 7px rgba(127, 212, 238, 0), 0 0 0 1px rgba(224, 177, 90, 0.7); }
+    }
+    .ondas { display: none; align-items: flex-end; gap: 2px; height: 0.8rem; }
+    .btn-locucion.hablando .ondas { display: inline-flex; }
+    .ondas i {
+      display: block;
+      width: 2px;
+      height: 30%;
+      background: #7fd4ee;
+      animation: onda 0.75s ease-in-out infinite;
+    }
+    .ondas i:nth-child(2) { animation-delay: 0.12s; }
+    .ondas i:nth-child(3) { animation-delay: 0.24s; }
+    .ondas i:nth-child(4) { animation-delay: 0.36s; }
+    @keyframes onda {
+      0%, 100% { height: 25%; }
+      50% { height: 100%; }
+    }
+    .bench-foco .bench {
+      box-shadow: 0 0 0 6px rgba(255, 77, 77, 0.55), 0 0 16px #ff4d4d;
+    }
     .clock-well {
       background: #061018;
       border: 1px solid rgba(224, 177, 90, 0.35);
@@ -306,7 +344,7 @@
       font-variant-numeric: tabular-nums;
     }
     @media (prefers-reduced-motion: reduce) {
-      .live-dot, .beacon i, .alerta-pulso { animation: none; }
+      .live-dot, .beacon i, .alerta-pulso, .btn-locucion, .ondas i { animation: none; }
       .beacon i { opacity: 0.45; transform: scale(2.2); }
       .beacon i:nth-child(2) { transform: scale(3.1); }
       .beacon i:nth-child(3) { transform: scale(4); }
@@ -333,6 +371,10 @@
           <span class="live-dot ciclon" aria-hidden="true"></span>
           Ciclón tropical activo
         </p>
+        <button type="button" id="btn-locucion" class="btn-locucion inline-flex items-center gap-2 rounded px-3 py-2 text-left font-mono text-[10px] font-medium uppercase tracking-[0.12em]" aria-pressed="false">
+          <span class="ondas" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span id="btn-locucion-texto">🔊 Escuchar reporte telemétrico oficial</span>
+        </button>
         <div class="clock-well rounded px-3 py-1.5 text-right">
           <p class="font-mono text-[10px] uppercase tracking-[0.18em] text-brass/90">Hora oficial CST · México</p>
           <p class="font-mono text-2xl font-medium leading-none tracking-wider text-white readout">
@@ -1479,6 +1521,150 @@
 
       cargarTelemetria();
       setInterval(cargarTelemetria, 60000);
+
+      var estiloCompuerta = { color: "#ff2d2d", weight: 2.5, opacity: 0.95 };
+      var estiloQuiebre = { color: "#7fd4ee", weight: 2.5, opacity: 0.95 };
+      var estiloEcmwf = { color: "#f5d90a", weight: 3.5, opacity: 0.95 };
+      var estiloGfs = { color: "#ff4d4d", weight: 3.5, opacity: 0.95 };
+      var btnLocucion = document.getElementById("btn-locucion");
+      var textoLocucion = document.getElementById("btn-locucion-texto");
+      var tandaLocucion = 0;
+      var vozLista = null;
+
+      function elegirVoz() {
+        if (!window.speechSynthesis) return null;
+        var voces = speechSynthesis.getVoices();
+        var exacta = voces.filter(function (voz) { return voz.lang === "es-MX"; })[0];
+        if (exacta) return exacta;
+        var mexicana = voces.filter(function (voz) { return /^es-MX/i.test(voz.lang); })[0];
+        if (mexicana) return mexicana;
+        return voces.filter(function (voz) { return /^es([-_]|$)/i.test(voz.lang); })[0] || null;
+      }
+
+      function restaurarLocucion() {
+        compuerta.setStyle(estiloCompuerta);
+        quiebre.setStyle(estiloQuiebre);
+        lineaEcmwf.setStyle(estiloEcmwf);
+        lineaGfs.setStyle(estiloGfs);
+        var iconoBahia = acapulco.getElement();
+        if (iconoBahia) iconoBahia.classList.remove("bench-foco");
+        mapaEl.dataset.locucion = "";
+      }
+
+      function enfocar(destino) {
+        if (destino === "trudy" && fijacion) {
+          mapa.flyTo(fijacion, 7, { duration: reducido ? 0 : 1.05 });
+        } else if (destino === "compuerta") {
+          mapa.flyTo([fijacion ? fijacion[0] : 12.4, -95.7], 7, { duration: reducido ? 0 : 1.05 });
+        } else if (destino === "quiebre") {
+          mapa.flyTo([fijacion ? fijacion[0] : 11.8, -MERIDIANO_QUIEBRE], 6, { duration: reducido ? 0 : 1.05 });
+        } else if (destino === "ecmwf" && lineaEcmwf.getLatLngs().length) {
+          mapa.fitBounds(lineaEcmwf.getBounds(), { padding: [36, 36], maxZoom: 6, animate: !reducido });
+        } else if (destino === "gfs" && lineaGfs.getLatLngs().length) {
+          var caja = lineaGfs.getBounds();
+          caja.extend(ACAPULCO);
+          mapa.fitBounds(caja, { padding: [36, 36], maxZoom: 6, animate: !reducido });
+        } else if (destino === "cierre") {
+          encuadre();
+        }
+      }
+
+      function aplicarEscena(escena) {
+        restaurarLocucion();
+        mapaEl.dataset.locucion = escena;
+        if (escena === "compuerta") {
+          compuerta.setStyle({ color: "#ffe14a", weight: 6, opacity: 1 });
+          compuerta.bringToFront();
+        } else if (escena === "quiebre") {
+          quiebre.setStyle({ color: "#f4feff", weight: 6, opacity: 1 });
+          quiebre.bringToFront();
+        } else if (escena === "ecmwf") {
+          if (!mapa.hasLayer(capaEcmwf)) mapa.addLayer(capaEcmwf);
+          lineaEcmwf.setStyle({ color: "#ffe14a", weight: 7, opacity: 1 });
+          lineaEcmwf.bringToFront();
+        } else if (escena === "gfs") {
+          if (!mapa.hasLayer(capaGfs)) mapa.addLayer(capaGfs);
+          lineaGfs.setStyle({ color: "#ff2a2a", weight: 7, opacity: 1 });
+          lineaGfs.bringToFront();
+          var iconoBahia = acapulco.getElement();
+          if (iconoBahia) iconoBahia.classList.add("bench-foco");
+        }
+        enfocar(escena);
+      }
+
+      function estadoLocucion(hablando) {
+        btnLocucion.classList.toggle("hablando", hablando);
+        btnLocucion.setAttribute("aria-pressed", hablando ? "true" : "false");
+        textoLocucion.textContent = hablando ? "⏹️ Detener" : "🔊 Escuchar reporte telemétrico oficial";
+      }
+
+      function detenerLocucion() {
+        tandaLocucion += 1;
+        if (window.speechSynthesis) speechSynthesis.cancel();
+        restaurarLocucion();
+        estadoLocucion(false);
+      }
+
+      function iniciarLocucion() {
+        if (!window.speechSynthesis || typeof SpeechSynthesisUtterance !== "function") {
+          textoLocucion.textContent = "Locución no disponible en este navegador";
+          return;
+        }
+        detenerLocucion();
+        var guion = [
+          { escena: "apertura", texto: "Vigilancia telemétrica en tiempo real. Reporte técnico de JSG ZENIT A.C. Nos encontramos monitoreando la evolución del Ciclón Tropical Trudy sobre aguas del Pacífico Sur Mexicano." },
+          { escena: "trudy", texto: "El sistema se localiza en los 11.8 grados Norte y 95.4 grados Oeste, acumulando un recorrido geodésico de 889 kilómetros desde su zona de génesis. Trudy sostiene una velocidad de traslación de dieciséis kilómetros por hora con rumbo Oeste-Noroeste." },
+          { escena: "compuerta", texto: "En este momento, el vórtice se sitúa a tan solo 65 kilómetros de cruzar la Compuerta Marina de los 96 grados Oeste, un evento cinemático previsto para las próximas cuatro horas." },
+          { escena: "quiebre", texto: "Posteriormente, restan 174 kilómetros para alcanzar el meridiano crítico de los 97 grados Oeste, el umbral de quiebre geofísico donde se definirá su interacción con la costa." },
+          { escena: "infrarrojo", texto: "La signatura infrarroja del satélite GOES en tiempo real confirma topes nubosos con temperaturas inferiores a los menos setenta y cinco grados Celsius, reflejo de una intensa convección profunda." },
+          { escena: "ecmwf", texto: "En la proyección matemática, el modelo europeo ECMWF sostiene un sesgo del 65% por la Ruta Amarilla, manteniendo al sistema paralelo a la costa mar adentro." },
+          { escena: "gfs", texto: "Por su parte, el modelo estadounidense GFS proyecta la Ruta Roja, anticipando una posible deflexión hacia el cuadrante costero de Guerrero y la Bahía de Santa Lucía por debilitamiento del domo anticiclónico." },
+          { escena: "cierre", texto: "La compuerta marina de JSG ZENIT actúa como árbitro geofísico en el terreno, midiendo datos duros para anticipar escenarios de riesgo hidrológico y resiliencia civil. Recordamos a la ciudadanía que este ejercicio técnico independiente procesa datos abiertos de la NOAA y no sustituye los alertamientos oficiales de Protección Civil y el Servicio Meteorológico Nacional. JSG ZENIT: Proyectos ejecutivos, cimientos del futuro." }
+        ];
+        var paso = 0;
+        var estaTanda = tandaLocucion;
+        vozLista = elegirVoz();
+        estadoLocucion(true);
+        document.getElementById("titulo-carta").scrollIntoView({ behavior: reducido ? "auto" : "smooth", block: "start" });
+
+        function decir() {
+          if (estaTanda !== tandaLocucion) return;
+          if (paso >= guion.length) {
+            restaurarLocucion();
+            estadoLocucion(false);
+            return;
+          }
+          var cue = guion[paso];
+          aplicarEscena(cue.escena);
+          var frase = new SpeechSynthesisUtterance(cue.texto);
+          frase.lang = vozLista ? vozLista.lang : "es-MX";
+          frase.rate = 0.95;
+          frase.pitch = 1.0;
+          if (vozLista) frase.voice = vozLista;
+          frase.onend = function () {
+            if (estaTanda !== tandaLocucion) return;
+            paso += 1;
+            decir();
+          };
+          frase.onerror = function (evento) {
+            if (estaTanda !== tandaLocucion) return;
+            if (evento.error === "canceled" || evento.error === "interrupted") return;
+            paso += 1;
+            decir();
+          };
+          speechSynthesis.speak(frase);
+        }
+        setTimeout(decir, 80);
+      }
+
+      if (window.speechSynthesis) {
+        speechSynthesis.onvoiceschanged = function () { vozLista = elegirVoz(); };
+        vozLista = elegirVoz();
+      }
+      btnLocucion.addEventListener("click", function () {
+        if (btnLocucion.classList.contains("hablando")) detenerLocucion();
+        else iniciarLocucion();
+      });
 
       window.addEventListener("resize", function () {
         mapa.invalidateSize();
