@@ -333,6 +333,8 @@
     .hist-toggle[data-historico="paulina"][aria-pressed="true"] { border-color: #c084fc; color: #f3e8ff; }
     .hist-toggle[data-historico="manuel"][aria-pressed="true"] { border-color: #38bdf8; color: #e0f2fe; }
     .hist-toggle[data-historico="john"][aria-pressed="true"] { border-color: #fb923c; color: #ffedd5; }
+    .hist-toggle[data-sinoptico][aria-pressed="true"] { border-color: #38bdf8; color: #e0f2fe; }
+    .frente-icono { background: transparent; border: 0; }
     .swatch {
       width: 1.15rem;
       height: 0.35rem;
@@ -613,6 +615,7 @@
           <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="compuerta">Compuerta 96.0°W</button>
           <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="quiebre">Quiebre 97.0°W</button>
           <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="acapulco">Bahía de Santa Lucía</button>
+          <button type="button" id="btn-sinoptico" class="hist-toggle rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-[#38bdf8] hover:text-white" data-sinoptico="1" aria-pressed="true">❄️ / ⚡ Ver Frente Frío y Vaguada</button>
         </div>
         <div class="map-stage">
           <div id="mapa" role="application" aria-label="Carta del Pacífico sur mexicano con infrarrojo NOAA, la baliza TRUDY, las rutas ECMWF y GFS, y los vectores históricos"></div>
@@ -636,6 +639,10 @@
           </div>
           <div class="thermal-ramp" role="img" aria-label="Escala de topes nubosos: gris a más treinta, verde a menos treinta, amarillo a menos cincuenta, rojo a menos sesenta y cinco, púrpura y blanco por debajo de menos ochenta."></div>
           <p class="mt-1 text-[10px] leading-snug text-mist/70">Convección extrema de TRUDY: núcleo en púrpura o blanco. Las costas y los vectores siguen visibles bajo la opacidad.</p>
+        </div>
+        <div class="flex flex-wrap gap-x-5 gap-y-1 border-t border-line/70 px-3 py-2 text-[11px] text-mist/85" aria-label="Leyenda sinóptica">
+          <p class="inline-flex items-center gap-2"><span class="swatch" style="background:#0284c7" aria-hidden="true"></span>🟦 Línea con triángulos: Frente Frío activo.</p>
+          <p class="inline-flex items-center gap-2"><span class="swatch" style="background:#f59e0b" aria-hidden="true"></span>🟧 Línea discontinua: Eje de Vaguada (inductor de recurvamiento).</p>
         </div>
         <div class="flex flex-wrap items-center justify-between gap-2 border-t border-line/70 px-3 py-2">
           <p id="coordenadas" class="font-mono text-[11px] uppercase tracking-wider text-brass readout">Cursor · desplace el puntero sobre la carta</p>
@@ -958,6 +965,56 @@
       }).addTo(mapa);
       quiebre.bindPopup("<strong>Punto de quiebre 97.0°W</strong><br>Calculando distancia");
 
+      var FRENTE = [[26.5, -96.5], [23.0, -94.8], [20.5, -93.5], [19.2, -91.0]];
+      var VAGUADA = [[25.0, -103.0], [21.5, -100.5], [18.0, -98.8], [15.5, -97.5]];
+      var capaSinoptica = L.featureGroup();
+      var lineaFrente = L.polyline(FRENTE, {
+        color: "#0284c7",
+        weight: 3,
+        opacity: 0.95
+      }).bindPopup("❄️ FRENTE FRÍO (Masa de Aire Polar) · Generador de evento 'Norte' en el Golfo e interacción en el Istmo");
+      lineaFrente.bindTooltip("❄️ FRENTE FRÍO (Masa de Aire Polar) · Generador de evento 'Norte' en el Golfo e interacción en el Istmo", {
+        sticky: true,
+        className: "tag tag-brass"
+      });
+      capaSinoptica.addLayer(lineaFrente);
+      function azimutSinoptico(a, b) {
+        var lat1 = a[0] * Math.PI / 180;
+        var lat2 = b[0] * Math.PI / 180;
+        var dLon = (b[1] - a[1]) * Math.PI / 180;
+        var y = Math.sin(dLon) * Math.cos(lat2);
+        var x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+        return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+      }
+      for (var tramo = 0; tramo < FRENTE.length - 1; tramo += 1) {
+        var origenFrente = FRENTE[tramo];
+        var destinoFrente = FRENTE[tramo + 1];
+        var medioFrente = [(origenFrente[0] + destinoFrente[0]) / 2, (origenFrente[1] + destinoFrente[1]) / 2];
+        var giro = azimutSinoptico(origenFrente, destinoFrente).toFixed(1);
+        capaSinoptica.addLayer(L.marker(medioFrente, {
+          interactive: false,
+          keyboard: false,
+          icon: L.divIcon({
+            className: "frente-icono",
+            html: '<svg width="14" height="14" viewBox="0 0 14 14" style="display:block;transform:rotate(' + giro + 'deg)" aria-hidden="true"><polygon points="7,1 13,13 1,13" fill="#0284c7"/></svg>',
+            iconSize: [14, 14],
+            iconAnchor: [7, 7]
+          })
+        }));
+      }
+      var lineaVaguada = L.polyline(VAGUADA, {
+        color: "#f59e0b",
+        weight: 3,
+        opacity: 0.95,
+        dashArray: "8, 8"
+      }).bindPopup("⚡ EJE DE VAGUADA EN ALTURA (Nivel 500 hPa) · Zona de debilidad barométrica. Vector potencial de captura hacia la Ruta Roja (GFS)");
+      lineaVaguada.bindTooltip("⚡ EJE DE VAGUADA EN ALTURA (Nivel 500 hPa) · Zona de debilidad barométrica. Vector potencial de captura hacia la Ruta Roja (GFS)", {
+        sticky: true,
+        className: "tag tag-brass"
+      });
+      capaSinoptica.addLayer(lineaVaguada);
+      capaSinoptica.addTo(mapa);
+
       var baliza = L.marker([13.2, -96.4], {
         icon: L.divIcon({
           className: "",
@@ -1195,6 +1252,9 @@
           NODOS_ECMWF[NODOS_ECMWF.length - 1],
           NODOS_GFS[NODOS_GFS.length - 1]
         ];
+        if (mapa.hasLayer(capaSinoptica)) {
+          puntos.push(FRENTE[0], FRENTE[FRENTE.length - 1], VAGUADA[0], VAGUADA[VAGUADA.length - 1]);
+        }
         if (origenActivo) puntos.push(origenActivo);
         if (fijacion) puntos.push(fijacion);
         return L.latLngBounds(puntos);
@@ -1254,6 +1314,21 @@
           document.getElementById("mapa").scrollIntoView({ behavior: reducido ? "auto" : "smooth", block: "center" });
           aplicarModelo(boton.getAttribute("data-modelo"), true);
         });
+      });
+
+      var btnSinoptico = document.getElementById("btn-sinoptico");
+      btnSinoptico.addEventListener("click", function () {
+        var activo = btnSinoptico.getAttribute("aria-pressed") === "true";
+        if (activo) {
+          mapa.removeLayer(capaSinoptica);
+          btnSinoptico.setAttribute("aria-pressed", "false");
+          return;
+        }
+        mapa.addLayer(capaSinoptica);
+        btnSinoptico.setAttribute("aria-pressed", "true");
+        var caja = capaSinoptica.getBounds();
+        if (fijacion) caja.extend(fijacion);
+        mapa.fitBounds(caja, { padding: [28, 28], maxZoom: 5, animate: !reducido });
       });
 
       document.querySelectorAll("[data-historico]").forEach(function (boton) {
