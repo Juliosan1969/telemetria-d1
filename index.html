@@ -113,6 +113,40 @@
     #titulo-cinematica,
     #titulo-boletin { scroll-margin-top: 6.75rem; }
     .map-frame { isolation: isolate; }
+    .map-stage { position: relative; }
+    .sat-float {
+      position: absolute;
+      z-index: 30;
+      top: 0.65rem;
+      right: 0.65rem;
+      width: min(18rem, calc(100% - 4.4rem));
+      padding: 0.55rem;
+      background: rgba(7, 20, 28, 0.9);
+      border: 1px solid rgba(140, 186, 204, 0.28);
+      border-radius: 0.4rem;
+      backdrop-filter: blur(6px);
+    }
+    .sat-switch {
+      width: 100%;
+      min-height: 2.75rem;
+      text-align: left;
+    }
+    .sat-switch[aria-pressed="true"] {
+      border-color: #7fd4ee;
+      color: #e7f8ff;
+      background: rgba(127, 212, 238, 0.12);
+    }
+    .sat-slider {
+      width: 100%;
+      accent-color: #7fd4ee;
+      min-height: 1.75rem;
+    }
+    .thermal-ramp {
+      height: 0.7rem;
+      border-radius: 99px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: linear-gradient(90deg, #141414 0%, #5c5c5c 28%, #cfcfcf 68%, #ffffff 100%);
+    }
     .rotulo-wrap { background: transparent !important; border: none !important; }
     .rotulo {
       width: max-content;
@@ -509,10 +543,32 @@
           <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="quiebre">Quiebre 97.0°W</button>
           <button type="button" class="map-tool rounded border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" data-target="acapulco">Bahía de Santa Lucía</button>
         </div>
-        <div id="mapa" role="application" aria-label="Carta satelital del Pacífico sur mexicano con la baliza D1, las rutas ECMWF y GFS, y los vectores históricos"></div>
+        <div class="map-stage">
+          <div id="mapa" role="application" aria-label="Carta del Pacífico sur mexicano con infrarrojo NOAA, la baliza D1, las rutas ECMWF y GFS, y los vectores históricos"></div>
+          <div class="sat-float">
+            <div class="flex flex-col gap-1.5">
+              <button type="button" id="btn-ir" class="sat-switch rounded border border-line px-2.5 py-2 font-mono text-[10px] uppercase tracking-wider text-mist hover:text-white" aria-pressed="true">🛰️ Satélite Infrarrojo NOAA (En Vivo)</button>
+              <button type="button" id="btn-base" class="sat-switch rounded border border-line px-2.5 py-2 font-mono text-[10px] uppercase tracking-wider text-mist hover:text-white" aria-pressed="false">🗺️ Mapa Base Esri Satelital</button>
+            </div>
+            <label class="mt-2 block font-mono text-[10px] uppercase tracking-wider text-mist/80" for="opacidad-ir">
+              Opacidad del infrarrojo · <span id="lectura-opacidad">65%</span>
+            </label>
+            <input id="opacidad-ir" class="sat-slider" type="range" min="0" max="100" value="65" aria-valuemin="0" aria-valuemax="100" aria-valuenow="65">
+            <p class="mt-1 text-[10px] leading-snug text-mist/70">Mosaico global de onda larga, NOAA nowCOAST. Georreferenciado sobre D1 y Guerrero.</p>
+          </div>
+        </div>
+        <div id="escala-termica" class="border-t border-line/70 px-3 py-2.5">
+          <div class="mb-1 flex items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-wider text-mist/80">
+            <span>+30 °C · cálido</span>
+            <span>Banda IR de onda larga</span>
+            <span>−80 °C · gélido</span>
+          </div>
+          <div class="thermal-ramp" role="img" aria-label="Escala de temperatura de brillo de más treinta grados, en tono oscuro, a menos ochenta grados, en blanco."></div>
+          <p class="mt-1 text-[10px] leading-snug text-mist/70">En este mosaico las cimas más brillantes son las más frías: convección profunda de Invest EP93.</p>
+        </div>
         <div class="flex flex-wrap items-center justify-between gap-2 border-t border-line/70 px-3 py-2">
           <p id="coordenadas" class="font-mono text-[11px] uppercase tracking-wider text-brass readout">Cursor · desplace el puntero sobre la carta</p>
-          <p class="font-mono text-[10px] uppercase tracking-wider text-mist/60">Esri World Imagery · pulso radar continuo en D1</p>
+          <p id="fuente-carta" class="font-mono text-[10px] uppercase tracking-wider text-mist/60">Esri World Imagery · IR NOAA nowCOAST · pulso radar en D1</p>
         </div>
       </div>
     </section>
@@ -633,6 +689,10 @@
         worldCopyJump: false
       }).setView([12.2, -95.2], 5);
 
+      mapa.createPane("irPane");
+      mapa.getPane("irPane").style.zIndex = 250;
+      mapa.getPane("irPane").style.pointerEvents = "none";
+
       var imagen = L.tileLayer(
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
         {
@@ -646,8 +706,73 @@
         { maxZoom: 18, opacity: 0.82, pane: "overlayPane" }
       ).addTo(mapa);
 
+      var capaIr = L.tileLayer.wms("https://nowcoast.noaa.gov/geoserver/satellite/wms", {
+        layers: "global_longwave_imagery_mosaic",
+        format: "image/png",
+        transparent: true,
+        version: "1.1.1",
+        opacity: 0.65,
+        pane: "irPane",
+        attribution: "IR onda larga &copy; NOAA nowCOAST · GOES ABI"
+      });
+
+      var btnIr = document.getElementById("btn-ir");
+      var btnBase = document.getElementById("btn-base");
+      var sliderIr = document.getElementById("opacidad-ir");
+      var lecturaIr = document.getElementById("lectura-opacidad");
+      var escalaIr = document.getElementById("escala-termica");
+      var fuenteCarta = document.getElementById("fuente-carta");
+
+      function pintarOpacidad(valor) {
+        lecturaIr.textContent = valor + "%";
+        sliderIr.setAttribute("aria-valuenow", String(valor));
+      }
+
+      function aplicarInfrarrojo(visible) {
+        btnIr.setAttribute("aria-pressed", visible ? "true" : "false");
+        btnBase.setAttribute("aria-pressed", visible ? "false" : "true");
+        escalaIr.hidden = !visible;
+        if (visible) {
+          var opacidad = Number(sliderIr.value) / 100;
+          if (!mapa.hasLayer(capaIr)) capaIr.addTo(mapa);
+          capaIr.setOpacity(opacidad);
+          estadoCarta.textContent = "Infrarrojo NOAA en vivo · onda larga";
+          fuenteCarta.textContent = "IR NOAA nowCOAST · opacidad " + sliderIr.value + "% · Esri bajo la nube";
+        } else {
+          if (mapa.hasLayer(capaIr)) mapa.removeLayer(capaIr);
+          estadoCarta.textContent = "Mapa base Esri satelital";
+          fuenteCarta.textContent = "Esri World Imagery · pulso radar en D1";
+        }
+      }
+
+      btnIr.addEventListener("click", function () {
+        if (Number(sliderIr.value) === 0) {
+          sliderIr.value = "65";
+          pintarOpacidad(65);
+        }
+        aplicarInfrarrojo(true);
+      });
+      btnBase.addEventListener("click", function () {
+        aplicarInfrarrojo(false);
+      });
+      sliderIr.addEventListener("input", function () {
+        var valor = Number(sliderIr.value);
+        pintarOpacidad(valor);
+        if (valor === 0) {
+          aplicarInfrarrojo(false);
+          return;
+        }
+        aplicarInfrarrojo(true);
+      });
+
+      aplicarInfrarrojo(true);
+      setInterval(function () {
+        if (!mapa.hasLayer(capaIr)) return;
+        capaIr.setParams({ nc: Date.now() });
+      }, 600000);
+
       imagen.on("load", function () {
-        estadoCarta.textContent = "Imagen satelital en línea";
+        if (!mapa.hasLayer(capaIr)) estadoCarta.textContent = "Imagen satelital en línea";
       });
       imagen.on("tileerror", function () {
         estadoCarta.textContent = "Alguna tesela no respondió · reintente el encuadre";
