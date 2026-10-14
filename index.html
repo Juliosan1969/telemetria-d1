@@ -2067,9 +2067,15 @@
           return;
         }
         detenerLocucion();
+        var ahora = new Date();
+        var horas = ahora.getHours();
+        var minutos = ahora.getMinutes();
+        var horas12 = horas % 12 || 12;
+        var ampm = horas >= 12 ? "de la noche" : "de la mañana";
+        var textoHora = horas12 + " " + ampm + " con " + minutos + " minutos";
         var guion = [
           { escena: "seccion-01", texto: "Hola, soy Daniela. Transmisión telemétrica oficial de JSG ZENIT. Vigilancia geofísica en tiempo real para la Tormenta Tropical Trudy. Puede usted interactuar y desplazarse libremente por las secciones de esta pantalla mientras escucha este informe." },
-          { escena: "seccion-01", texto: "Sección cero uno. Cabecera y control. Hora oficial diez de la noche con cuarenta y seis minutos. El sistema sincroniza datos en vivo y mantiene la vigilancia continua de los parámetros geodésicos." },
+          { escena: "seccion-01", texto: "Sección cero uno. Cabecera y control. Hora oficial: " + textoHora + ". El sistema sincroniza datos en vivo y mantiene la vigilancia continua de los parámetros geodésicos." },
           { escena: "seccion-02", texto: "Sección cero dos. Instrumentación física y meteorológica. Trudy registra vientos sostenidos de setenta kilómetros por hora, con rachas de noventa. Mantiene una velocidad de traslación constante de dieciséis kilómetros por hora, con rumbo al Oeste-Noroeste. La presión barométrica central marca mil dos hectopascales, y la temperatura superficial del mar se mantiene en unos cálidos treinta punto cinco grados Celsius." },
           { escena: "seccion-03", texto: "Sección cero tres. Tarjetas cinemáticas y geodésicas. El recorrido acumulado supera ya los mil diez kilómetros desde su origen. La Compuerta Marina de los noventa y seis grados Oeste ha sido formalmente cruzada, marcando cero punto cero kilómetros restantes. En este instante, restan únicamente cuarenta y ocho kilómetros para alcanzar el meridiano de Quiebre de los noventa y siete grados Oeste, un hito previsto para las próximas tres horas. La distancia directa hacia la Bahía de Santa Lucía, en Acapulco, se sitúa en seiscientos quince kilómetros." },
           { escena: "seccion-04", texto: "Sección cero cuatro. Carta náutica y caja de decisión. Mire la carta interactiva. El ojo de Trudy navega actualmente en los doce punto quince grados Norte. Al mantenerse netamente por debajo de la línea verde de los trece grados Norte dentro del rectángulo de decisión, la telemetría continúa confirmando la Ruta Amarilla del modelo europeo. Esto aleja el vórtice de la línea roja de captura sinóptica y descarta el impacto directo del ojo en Acapulco durante las próximas horas. No obstante, el radio de bandas convectivas continuará descargando precipitaciones torrenciales en el estado de Guerrero." },
