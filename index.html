@@ -215,6 +215,16 @@
     .rotulo-oeste { transform: translate(calc(-100% - 10px), -50%); color: #ffd0c2; border-color: rgba(255, 122, 89, 0.6); }
     .rotulo-este { transform: translate(10px, -50%); color: #d7f6ff; border-color: rgba(127, 212, 238, 0.6); }
     .rotulo-sur { transform: translate(-50%, 10px); color: #f3ddb0; border-color: rgba(224, 177, 90, 0.55); }
+    .rotulo-caja {
+      transform: translate(-50%, -50%);
+      max-width: 15rem;
+      white-space: normal;
+      text-align: center;
+      color: #f4efe4;
+      border-color: rgba(224, 177, 90, 0.7);
+    }
+    .leaflet-tooltip.tag-critico { color: #fecaca; border-color: rgba(239, 68, 68, 0.7); }
+    .leaflet-tooltip.tag-seguro { color: #a7f3d0; border-color: rgba(16, 185, 129, 0.7); }
     #mapa { height: 34rem; background: #061018; }
     @media (max-width: 768px) {
       #mapa { height: 26rem; }
@@ -1025,6 +1035,55 @@
         interactive: false
       }).addTo(mapa);
       quiebre.bindPopup("<strong>Punto de quiebre 97.0°W</strong><br>Calculando distancia");
+
+      var LAT_CRITICA = 13.5;
+      var LAT_SEGURA = 13.0;
+      var LAT_BASE_CAJA = 11.0;
+      var cajaDecision = L.rectangle([[LAT_BASE_CAJA, -MERIDIANO_QUIEBRE], [LAT_CRITICA, -MERIDIANO_COMPUERTA]], {
+        color: "#e0b15a",
+        weight: 1,
+        opacity: 0.45,
+        fillColor: "#7fd4ee",
+        fillOpacity: 0.08
+      }).addTo(mapa);
+      cajaDecision.bindTooltip("CAJA DE DECISIÓN · CORREDOR COMPUERTA MARINA (96°W - 97°W)", {
+        sticky: true,
+        className: "tag tag-brass"
+      });
+      cajaDecision.bindPopup("<strong>Caja de decisión</strong><br>Corredor Compuerta Marina (96°W–97°W)<br>Norte 13.5°N · base 11.0°N");
+      L.polyline([[LAT_SEGURA, -MERIDIANO_COMPUERTA], [LAT_SEGURA, -MERIDIANO_QUIEBRE]], {
+        color: "#10b981",
+        weight: 8,
+        opacity: 0.18,
+        interactive: false
+      }).addTo(mapa);
+      var lineaSegura = L.polyline([[LAT_SEGURA, -MERIDIANO_COMPUERTA], [LAT_SEGURA, -MERIDIANO_QUIEBRE]], {
+        color: "#10b981",
+        weight: 3,
+        opacity: 1
+      }).addTo(mapa);
+      lineaSegura.bindTooltip("🟢 LÍMITE SEGURO 13.0°N · RUTA MARÍTIMA PARALELA (ECMWF)", {
+        sticky: true,
+        className: "tag tag-seguro"
+      });
+      lineaSegura.bindPopup("🟢 LÍMITE SEGURO 13.0°N · RUTA MARÍTIMA PARALELA (ECMWF)");
+      L.polyline([[LAT_CRITICA, -MERIDIANO_COMPUERTA], [LAT_CRITICA, -MERIDIANO_QUIEBRE]], {
+        color: "#ef4444",
+        weight: 8,
+        opacity: 0.22,
+        interactive: false
+      }).addTo(mapa);
+      var lineaCritica = L.polyline([[LAT_CRITICA, -MERIDIANO_COMPUERTA], [LAT_CRITICA, -MERIDIANO_QUIEBRE]], {
+        color: "#ef4444",
+        weight: 3,
+        opacity: 1
+      }).addTo(mapa);
+      lineaCritica.bindTooltip("🔴 LÍMITE CRÍTICO 13.5°N · UMBRAL DE RECURVAMIENTO (GFS)", {
+        sticky: true,
+        className: "tag tag-critico"
+      });
+      lineaCritica.bindPopup("🔴 LÍMITE CRÍTICO 13.5°N · UMBRAL DE RECURVAMIENTO (GFS)");
+      rotulo(12.25, -96.5, "CAJA DE DECISIÓN · CORREDOR COMPUERTA MARINA (96°W - 97°W)", "rotulo-caja");
 
       var FRENTE = [[26.5, -96.5], [23.0, -94.8], [20.5, -93.5], [19.2, -91.0]];
       var VAGUADA = [[25.0, -103.0], [21.5, -100.5], [18.0, -98.8], [15.5, -97.5]];
