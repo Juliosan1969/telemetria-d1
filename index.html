@@ -773,7 +773,7 @@
     </section>
 
     <section id="seccion-recomendaciones" aria-labelledby="titulo-recomendaciones">
-      <div class="mb-6 flex items-center gap-4">
+      <div class="seccion-kicker mb-6 flex items-center gap-4">
         <span class="seccion-num text-4xl font-black text-amber-400 sm:text-5xl">05</span>
         <div>
           <span class="font-mono text-xs uppercase tracking-widest text-cyan-400">Gestión de riesgo y protección civil</span>
@@ -1949,11 +1949,29 @@
       function elegirVoz() {
         if (!window.speechSynthesis) return null;
         var voces = speechSynthesis.getVoices();
-        var exacta = voces.filter(function (voz) { return voz.lang === "es-MX"; })[0];
-        if (exacta) return exacta;
+        var preferidas = ["paulina", "sabina", "dalia", "mia", "español de méxico", "espanol de mexico", "español de estados unidos", "espanol de estados unidos"];
+        var i;
+        var j;
+        var nombre;
+        for (i = 0; i < preferidas.length; i += 1) {
+          for (j = 0; j < voces.length; j += 1) {
+            nombre = (voces[j].name || "").toLowerCase();
+            if (nombre.indexOf(preferidas[i]) === -1) continue;
+            if (/^es/i.test(voces[j].lang) || /español|espanol|mexico|méxico|estados unidos/i.test(nombre)) return voces[j];
+          }
+        }
         var mexicana = voces.filter(function (voz) { return /^es-MX/i.test(voz.lang); })[0];
         if (mexicana) return mexicana;
         return voces.filter(function (voz) { return /^es([-_]|$)/i.test(voz.lang); })[0] || null;
+      }
+
+      function pausarLocucion(texto) {
+        return String(texto)
+          .replace(/\s*\.\.\.\s*/g, " § ")
+          .replace(/\s*[.,]\s*/g, " § ")
+          .replace(/(?:\s*§\s*)+/g, " ... ")
+          .replace(/\s+/g, " ")
+          .trim();
       }
 
       function restaurarLocucion() {
@@ -2050,12 +2068,13 @@
         }
         detenerLocucion();
         var guion = [
-          { escena: "seccion-01", texto: "Atención. Transmisión telemétrica oficial de JSG ZENIT A.C. Vigilancia geofísica en tiempo real para el Ciclón Tropical Trudy. Puede usted interactuar y desplazarse libremente por las secciones de esta pantalla mientras escucha este informe." },
-          { escena: "seccion-01", texto: "SECCIÓN CERO UNO. COMANDO OPERATIVO Y SINCRONIZACIÓN. Hora de consulta oficial: diez de la noche con treinta y dos minutos. El sistema procesa datos en vivo y sincroniza el tiempo real de México con el corte telemétrico continuo." },
-          { escena: "seccion-02", texto: "SECCIÓN CERO DOS. INSTRUMENTACIÓN FÍSICA Y METEOROLÓGICA. Trudy sostiene vientos de setenta kilómetros por hora con rachas de noventa. Mantiene una velocidad de traslación constante de dieciséis kilómetros por hora rumbo al Oeste-Noroeste. La presión barométrica central marca mil dos hectopascales y la temperatura superficial del mar se mantiene en unos cálidos treinta punto cinco grados Celsius, motor de convección profunda." },
-          { escena: "seccion-03", texto: "SECCIÓN CERO TRES. TARJETAS CINEMÁTICAS Y GEODÉSICAS. Observe los cálculos actualizados en pantalla. El recorrido acumulado supera ya los mil diez kilómetros desde su origen. La Compuerta Marina de los noventa y seis grados Oeste ha sido formalmente cruzada, marcando cero punto cero kilómetros faltantes. En este instante, restan únicamente cuarenta y ocho kilómetros para alcanzar el meridiano de Quiebre de los noventa y siete grados Oeste, un hito previsto para las próximas tres horas. La distancia directa hacia la Bahía de Santa Lucía, en Acapulco, se sitúa en seiscientos quince kilómetros." },
-          { escena: "seccion-04", texto: "SECCIÓN CERO CUATRO. CARTA NÁUTICA Y CAJA DE DECISIÓN. Mire la carta interactiva. El ojo de Trudy navega actualmente en los doce punto quince grados Norte. Al encontrarse netamente por debajo de la línea verde de los trece grados Norte dentro del rectángulo de decisión, la telemetría confirma y consolida minuto a minuto la Ruta Amarilla del modelo europeo. Esto aleja el vórtice de la línea roja de captura sinóptica y descarta el impacto directo del ojo en Acapulco durante las próximas horas. Sin embargo, recuerde que el radio de bandas convectivas continuará descargando precipitaciones torrenciales de ciento cincuenta a doscientos cincuenta milímetros en Guerrero." },
-          { escena: "cierre", texto: "JSG ZENIT: Proyectos ejecutivos, cimientos del futuro. Monitoreo en desarrollo." }
+          { escena: "seccion-01", texto: "Hola, soy Daniela. Transmisión telemétrica oficial de JSG ZENIT. Vigilancia geofísica en tiempo real para la Tormenta Tropical Trudy. Puede usted interactuar y desplazarse libremente por las secciones de esta pantalla mientras escucha este informe." },
+          { escena: "seccion-01", texto: "Sección cero uno. Cabecera y control. Hora oficial diez de la noche con cuarenta y seis minutos. El sistema sincroniza datos en vivo y mantiene la vigilancia continua de los parámetros geodésicos." },
+          { escena: "seccion-02", texto: "Sección cero dos. Instrumentación física y meteorológica. Trudy registra vientos sostenidos de setenta kilómetros por hora, con rachas de noventa. Mantiene una velocidad de traslación constante de dieciséis kilómetros por hora, con rumbo al Oeste-Noroeste. La presión barométrica central marca mil dos hectopascales, y la temperatura superficial del mar se mantiene en unos cálidos treinta punto cinco grados Celsius." },
+          { escena: "seccion-03", texto: "Sección cero tres. Tarjetas cinemáticas y geodésicas. El recorrido acumulado supera ya los mil diez kilómetros desde su origen. La Compuerta Marina de los noventa y seis grados Oeste ha sido formalmente cruzada, marcando cero punto cero kilómetros restantes. En este instante, restan únicamente cuarenta y ocho kilómetros para alcanzar el meridiano de Quiebre de los noventa y siete grados Oeste, un hito previsto para las próximas tres horas. La distancia directa hacia la Bahía de Santa Lucía, en Acapulco, se sitúa en seiscientos quince kilómetros." },
+          { escena: "seccion-04", texto: "Sección cero cuatro. Carta náutica y caja de decisión. Mire la carta interactiva. El ojo de Trudy navega actualmente en los doce punto quince grados Norte. Al mantenerse netamente por debajo de la línea verde de los trece grados Norte dentro del rectángulo de decisión, la telemetría continúa confirmando la Ruta Amarilla del modelo europeo. Esto aleja el vórtice de la línea roja de captura sinóptica y descarta el impacto directo del ojo en Acapulco durante las próximas horas. No obstante, el radio de bandas convectivas continuará descargando precipitaciones torrenciales en el estado de Guerrero." },
+          { escena: "seccion-recomendaciones", texto: "Sección cero cinco. Recomendaciones y gestión de riesgo. Se recomienda a la población y autoridades mantener el desazolve preventivo de rejillas y cauces pluviales urbanos, vigilar zonas de ladera ante riesgo de deslizamiento por suelos saturados, y atender las restricciones marítimas de Capitanía de Puerto." },
+          { escena: "cierre", texto: "JSG ZENIT. Proyectos ejecutivos, cimientos del futuro. Monitoreo en desarrollo." }
         ];
         var paso = 0;
         var estaTanda = tandaLocucion;
@@ -2071,9 +2090,9 @@
           }
           var cue = guion[paso];
           aplicarEscena(cue.escena);
-          var frase = new SpeechSynthesisUtterance(cue.texto);
-          frase.lang = vozLista ? vozLista.lang : "es-MX";
-          frase.rate = 0.95;
+          var frase = new SpeechSynthesisUtterance(pausarLocucion(cue.texto));
+          frase.lang = "es-MX";
+          frase.rate = 0.88;
           frase.pitch = 1.0;
           if (vozLista) frase.voice = vozLista;
           frase.onend = function () {
