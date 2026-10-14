@@ -2,16 +2,17 @@
   "nombre_sistema": "TRUDY",
   "categoria": "Tormenta Tropical",
   "designacion_previa": "Ex-Invest EP93 / D1",
-  "ultima_actualizacion_cst": "13/10/2026 22:30 CST",
+  "hora_corte": "14/10/2026 00:20 CST",
+  "ultima_actualizacion_cst": "14/10/2026 00:20 CST",
   "posicion": {
-    "lat": 12.15,
-    "lon": -96.52
+    "lat": 12.25,
+    "lon": -96.77
   },
   "origen": {
     "lat": 8.5,
     "lon": -88.0
   },
-  "recorrido_km": 1010,
+  "recorrido_km": 1039,
   "cinematica": {
     "velocidad_kmh": 16.0,
     "rumbo": "ONO"
@@ -21,11 +22,14 @@
     "estado": "SUPERADA_CRUZADA"
   },
   "quiebre_97W": {
-    "distancia_km": 48,
-    "eta_horas": 3.0
+    "distancia_km": 19,
+    "eta_horas": 1.2
   },
-  "bahia_km": 615,
-  "estado_ruta": "CONFIRMANDO RUTA AMARILLA (ECMWF) - BAJA LATITUD EN CAJA DE DECISIÓN",
+  "bahia_km": 608,
+  "porcentaje_amarillo": 95,
+  "porcentaje_rojo": 5,
+  "ruta_roja_activa": false,
+  "estado_ruta": "CONFIRMADA RUTA AMARILLA (ECMWF) · RIESGO DE IMPACTO DIRECTO DESCARTADO",
   "meteorologia": {
     "viento_sostenido_kmh": 70,
     "rachas_kmh": 90,

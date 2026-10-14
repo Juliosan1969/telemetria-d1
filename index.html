@@ -650,7 +650,7 @@
         <div>
           <p class="seccion-kicker cian">
             <span class="seccion-num">04</span>
-            <span class="seccion-nombre">· Carta náutica y caja de decisión</span>
+            <span class="seccion-nombre">· Carta náutica y confirmación de trayectoria</span>
           </p>
           <h2 id="titulo-carta" class="font-display text-3xl font-semibold uppercase tracking-wide text-white">
             Pacífico sur mexicano
@@ -662,16 +662,16 @@
       <div class="mb-3 grid grid-cols-1 gap-3 lg:grid-cols-2">
         <article class="plate rounded-md border-t-2 border-t-[#f5d90a] p-4">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.16em] text-[#f5d90a]">Ruta amarilla · modelo europeo (ECMWF / IFS)</h3>
-          <p class="mt-2 font-display text-4xl font-semibold leading-none text-white">65<span class="ml-1 text-xl text-[#f5d90a]">%</span></p>
-          <p id="estado-ruta" class="mt-2 font-mono text-[11px] uppercase leading-relaxed tracking-wider text-[#f5d90a]">Confirmando lectura de la ruta amarilla</p>
-          <p class="mt-2 text-sm leading-relaxed text-mist">Flujo zonal paralelo a la costa, con paso abierto mar adentro a unos 350 km al sur de Guerrero.</p>
-          <p class="mt-2 text-xs leading-relaxed text-mist/80">Sustento físico: asimilación 4D-Var, resolución de 9 km y rigidez del domo anticiclónico de 588 dam en 500 hPa.</p>
+          <p class="mt-2 font-display text-4xl font-semibold leading-none text-white"><span id="pct-amarillo">95</span><span class="ml-1 text-xl text-[#f5d90a]">%</span></p>
+          <p id="etiqueta-amarilla" class="mt-2 font-mono text-[11px] uppercase leading-relaxed tracking-wider text-[#f5d90a]">🟢 TRAYECTORIA CONFIRMADA · FLUJO ZONAL MAR ADENTRO</p>
+          <p id="estado-ruta" class="mt-2 font-mono text-[11px] uppercase leading-relaxed tracking-wider text-[#f5d90a]">CONFIRMADA RUTA AMARILLA (ECMWF) · RIESGO DE IMPACTO DIRECTO DESCARTADO</p>
+          <p id="texto-amarilla" class="mt-2 text-sm leading-relaxed text-mist">Se confirma el modelo ECMWF. El centro del meteoro se mantiene en bajas latitudes al cruzar el quiebre de 97°W. Se descarta impacto directo del ojo en Acapulco.</p>
         </article>
-        <article class="plate rounded-md border-t-2 border-t-[#ff4d4d] p-4">
+        <article id="tarjeta-roja" class="plate rounded-md border-t-2 border-t-[#ff4d4d] p-4 opacity-70">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.16em] text-[#ffb4b4]">Ruta roja · modelo estadounidense (GFS / NOAA)</h3>
-          <p class="mt-2 font-display text-4xl font-semibold leading-none text-white">30<span class="ml-1 text-xl text-[#ff4d4d]">%</span></p>
-          <p class="mt-2 text-sm leading-relaxed text-mist">Recurvamiento hacia el norte/noroeste por fractura de la dorsal costera y captura por vaguada en latitudes medias.</p>
-          <p class="mt-2 text-xs leading-relaxed text-mist/80">Sustento físico: asimilación 4D-EnVar, resolución de 13 km y sensibilidad a ondas cortas, con cruce hacia el punto de quiebre (13.6°N, 97.0°W).</p>
+          <p class="mt-2 font-display text-4xl font-semibold leading-none text-white"><span id="pct-rojo">5</span><span class="ml-1 text-xl text-[#ff4d4d]">%</span></p>
+          <p id="etiqueta-roja" class="mt-2 font-mono text-[11px] uppercase leading-relaxed tracking-wider text-[#ffb4b4]">🔴 RUTA DESCARTADA · FRACTURA NO MATERIALIZADA</p>
+          <p id="texto-roja" class="mt-2 text-sm leading-relaxed text-mist">ESCENARIO DESCARTADO</p>
         </article>
       </div>
 
@@ -679,19 +679,19 @@
         <div class="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h3 class="font-mono text-[11px] uppercase tracking-[0.16em] text-brass">Conmutadores de trayectoria</h3>
-            <p class="mt-1 max-w-3xl text-xs leading-relaxed text-mist/80">Alterne una sola ruta o superponga las dos. Los vectores son proyecciones esquemáticas de lectura comparada.</p>
+            <p class="mt-1 max-w-3xl text-xs leading-relaxed text-mist/80">La trayectoria oficial es la línea amarilla continua. La ruta roja permanece apagada como escenario descartado.</p>
           </div>
         </div>
         <div class="mt-3 flex flex-wrap gap-2" role="radiogroup" aria-label="Trayectorias proyectadas ECMWF y GFS">
-          <button type="button" class="modelo-opcion inline-flex items-center gap-2 rounded border border-line px-3 py-2 text-left font-mono text-[10px] uppercase tracking-wider text-mist hover:border-[#f5d90a] hover:text-white" role="radio" data-modelo="ecmwf" aria-checked="false">
+          <button type="button" class="modelo-opcion inline-flex items-center gap-2 rounded border border-line px-3 py-2 text-left font-mono text-[10px] uppercase tracking-wider text-mist hover:border-[#f5d90a] hover:text-white" role="radio" data-modelo="ecmwf" aria-checked="true">
             <span class="swatch" style="background:#f5d90a" aria-hidden="true"></span>
             Ruta amarilla · ECMWF
           </button>
           <button type="button" class="modelo-opcion inline-flex items-center gap-2 rounded border border-line px-3 py-2 text-left font-mono text-[10px] uppercase tracking-wider text-mist hover:border-[#ff4d4d] hover:text-white" role="radio" data-modelo="gfs" aria-checked="false">
             <span class="swatch" style="background:#ff4d4d" aria-hidden="true"></span>
-            Ruta roja · GFS
+            Ruta roja · descartada
           </button>
-          <button type="button" class="modelo-opcion inline-flex items-center gap-2 rounded border border-line px-3 py-2 text-left font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" role="radio" data-modelo="ambas" aria-checked="true">
+          <button type="button" class="modelo-opcion inline-flex items-center gap-2 rounded border border-line px-3 py-2 text-left font-mono text-[10px] uppercase tracking-wider text-mist hover:border-brass hover:text-white" role="radio" data-modelo="ambas" aria-checked="false">
             <span class="swatch" style="background:linear-gradient(90deg,#f5d90a 50%,#ff4d4d 50%)" aria-hidden="true"></span>
             Superponer
           </button>
@@ -1311,11 +1311,10 @@
       var capaEcmwf = L.featureGroup();
       var lineaEcmwf = L.polyline([], {
         color: "#f5d90a",
-        weight: 3.5,
-        opacity: 0.95,
-        dashArray: "12 8"
+        weight: 4.5,
+        opacity: 1
       }).bindPopup(
-        "<strong>Ruta amarilla · ECMWF / IFS</strong><br>Probabilidad de lectura: 65&nbsp;%<br>Flujo zonal paralelo a la costa.<br>Paso abierto mar adentro, a unos 350 km al sur de Guerrero.<br>4D-Var · 9 km · domo de 588 dam en 500 hPa.<br><em>Vector proyectado esquemático. El primer vértice es la fijación del feed.</em>"
+        "<strong>Ruta amarilla · ECMWF / IFS</strong><br>Probabilidad de lectura: 95&nbsp;%<br>Trayectoria confirmada. Flujo zonal mar adentro.<br>El centro se mantiene en bajas latitudes al cruzar 97°W.<br><em>Línea continua: trayectoria oficial consolidada.</em>"
       );
       capaEcmwf.addLayer(lineaEcmwf);
       circulo([13.70, -99.90], 18000, {
@@ -1325,12 +1324,16 @@
       var capaGfs = L.featureGroup();
       var lineaGfs = L.polyline([], {
         color: "#ff4d4d",
-        weight: 3.5,
-        opacity: 0.95,
-        dashArray: "5 7"
+        weight: 1.5,
+        opacity: 0.22,
+        dashArray: "2 14"
       }).bindPopup(
-        "<strong>Ruta roja · GFS / NOAA</strong><br>Probabilidad de lectura: 30&nbsp;%<br>Recurvamiento al norte/noroeste.<br>Fractura de la dorsal costera y captura por vaguada de latitudes medias.<br>4D-EnVar · 13 km · cruce del punto de quiebre 13.6°N, 97.0°W.<br><em>Vector proyectado esquemático. El primer vértice es la fijación del feed.</em>"
+        "<strong>ESCENARIO DESCARTADO</strong><br>Ruta roja · GFS / NOAA<br>Probabilidad residual: 5&nbsp;%<br>La fractura de la dorsal no se materializó."
       );
+      lineaGfs.bindTooltip("ESCENARIO DESCARTADO", {
+        sticky: true,
+        className: "tag tag-critico"
+      });
       capaGfs.addLayer(lineaGfs);
       L.circleMarker([13.6, -97.0], {
         radius: 6,
@@ -1404,6 +1407,34 @@
         john: { grupo: capaJohn, foco: focoJohn }
       };
 
+      var rutaRojaActiva = false;
+      var modeloManual = false;
+      var rutaFijada = false;
+
+      function estiloRutaRoja() {
+        if (rutaRojaActiva) return { color: "#ff4d4d", weight: 3.5, opacity: 0.95, dashArray: "5 7" };
+        return { color: "#ff4d4d", weight: 1.5, opacity: 0.22, dashArray: "2 14" };
+      }
+
+      function fijarRutaRoja(activa) {
+        if (rutaFijada && rutaRojaActiva === activa) return;
+        var cambio = rutaFijada && rutaRojaActiva !== activa;
+        rutaFijada = true;
+        rutaRojaActiva = activa;
+        lineaEcmwf.setStyle({ color: "#f5d90a", weight: 4.5, opacity: 1, dashArray: null });
+        lineaGfs.setStyle(estiloRutaRoja());
+        var tarjeta = document.getElementById("tarjeta-roja");
+        if (tarjeta) tarjeta.classList.toggle("opacity-70", !activa);
+        if (!activa) {
+          if (!lineaGfs.getTooltip()) {
+            lineaGfs.bindTooltip("ESCENARIO DESCARTADO", { sticky: true, className: "tag tag-critico" });
+          }
+          if (!modeloManual) aplicarModelo("ecmwf", false);
+        } else if (!modeloManual && cambio) {
+          aplicarModelo("ambas", false);
+        }
+      }
+
       function aplicarModelo(modo, encuadrar) {
         if (mapa.hasLayer(capaEcmwf)) mapa.removeLayer(capaEcmwf);
         if (mapa.hasLayer(capaGfs)) mapa.removeLayer(capaGfs);
@@ -1429,7 +1460,7 @@
         }
       }
 
-      aplicarModelo("ambas", false);
+      aplicarModelo("ecmwf", false);
 
       function iconoRotulo(texto, clase) {
         return L.divIcon({
@@ -1519,6 +1550,7 @@
 
       document.querySelectorAll("[data-modelo]").forEach(function (boton) {
         boton.addEventListener("click", function () {
+          modeloManual = true;
           document.getElementById("mapa").scrollIntoView({ behavior: reducido ? "auto" : "smooth", block: "center" });
           aplicarModelo(boton.getAttribute("data-modelo"), true);
         });
@@ -1847,7 +1879,14 @@
                     : hComp + " a " + cifra(vel) + " km/h"))))
         );
         pintarCompuerta(kmComp <= 0 ? "SUPERADA_CRUZADA" : bComp.estado);
-        ponerTexto("estado-ruta", data.estado_ruta ? String(data.estado_ruta) : "Confirmando lectura de la ruta amarilla");
+        ponerTexto("estado-ruta", data.estado_ruta ? String(data.estado_ruta) : "CONFIRMADA RUTA AMARILLA (ECMWF) · RIESGO DE IMPACTO DIRECTO DESCARTADO");
+        var pctAmarillo = Number(data.porcentaje_amarillo);
+        var pctRojo = Number(data.porcentaje_rojo);
+        if (!isFinite(pctAmarillo)) pctAmarillo = 95;
+        if (!isFinite(pctRojo)) pctRojo = 5;
+        ponerTexto("pct-amarillo", String(Math.round(pctAmarillo)));
+        ponerTexto("pct-rojo", String(Math.round(pctRojo)));
+        fijarRutaRoja(data.ruta_roja_activa !== false);
         ponerTexto("cin-compuerta-a", hem(olon, "E", "W", 1));
         ponerTexto("val-quiebre", kmVisible(kmQuie, avance.activo));
         ponerTexto(
@@ -1940,8 +1979,8 @@
 
       var estiloCompuerta = { color: "#ff2d2d", weight: 2.5, opacity: 0.95 };
       var estiloQuiebre = { color: "#7fd4ee", weight: 2.5, opacity: 0.95 };
-      var estiloEcmwf = { color: "#f5d90a", weight: 3.5, opacity: 0.95 };
-      var estiloGfs = { color: "#ff4d4d", weight: 3.5, opacity: 0.95 };
+      var estiloEcmwf = { color: "#f5d90a", weight: 4.5, opacity: 1, dashArray: null };
+      var estiloGfs = { color: "#ff4d4d", weight: 1.5, opacity: 0.22, dashArray: "2 14" };
       var btnLocucion = document.getElementById("btn-locucion");
       var textoLocucion = document.getElementById("btn-locucion-texto");
       var tandaLocucion = 0;
@@ -2016,7 +2055,7 @@
         compuerta.setStyle(estiloCompuerta);
         quiebre.setStyle(estiloQuiebre);
         lineaEcmwf.setStyle(estiloEcmwf);
-        lineaGfs.setStyle(estiloGfs);
+        lineaGfs.setStyle(estiloRutaRoja());
         lineaSegura.setStyle({ color: "#10b981", weight: 3, opacity: 1 });
         lineaCritica.setStyle({ color: "#ef4444", weight: 3, opacity: 1 });
         document.querySelectorAll(".seccion-kicker").forEach(function (nodo) {
@@ -2131,7 +2170,7 @@
           { escena: "seccion-01", texto: "Sección cero uno. Cabecera y control. Hora oficial de consulta: " + horaHablada + ". Monitoreo continuo y recálculo cinemático activo." },
           { escena: "seccion-02", texto: "Sección cero dos. Variables físicas y meteorológicas. Trudy mantiene vientos sostenidos de " + vViento + " kilómetros por hora, con rachas de " + vRachas + ". Su velocidad de avance es de " + vTraslacion + " kilómetros por hora con rumbo al " + vRumbo + ". Presión central de " + vPresion + " hectopascales, y temperatura del mar en " + vSST + " grados Celsius, con potencial de lluvia acumulada de " + vLluvia + " milímetros." },
           { escena: "seccion-03", texto: "Sección cero tres. Tarjetas cinemáticas. El recorrido acumulado alcanza " + numRecorrido + " kilómetros desde su génesis. La Compuerta Marina de los noventa y seis grados Oeste ha quedado completamente superada. En este momento restan únicamente " + numQuiebre + " kilómetros para alcanzar el Punto de Quiebre de los noventa y siete grados Oeste, con un tiempo estimado de arribo de " + tiempoQuiebreTexto + ". La distancia ortodrómica directa hacia la Bahía de Santa Lucía, en Acapulco, se sitúa en " + numAcapulco + " kilómetros." },
-          { escena: "seccion-04", texto: "Sección cero cuatro. Carta náutica y caja de decisión. Al continuar su trayectoria por debajo de la línea verde de los trece grados Norte dentro del corredor de decisión, la telemetría continúa confirmando la Ruta Amarilla del modelo europeo mar adentro, descartando el impacto directo del centro del meteoro en Acapulco durante las próximas horas." },
+          { escena: "seccion-04", texto: "Sección cero cuatro. Carta náutica y confirmación de trayectoria. Atención. La telemetría confirma oficialmente la Ruta Amarilla del modelo europeo. Al registrarse el cruce en latitudes meridionales seguras, la Ruta Roja queda descartada, confirmando que no habrá un impacto directo del ojo del ciclón en la Bahía de Santa Lucía ni en el litoral de Acapulco. Sin embargo, observe en el mapa la gama de colores del mosaico infrarrojo. Los núcleos en color morado y blanco señalan cimas de nubes extremadamente frías con convección profunda, donde se concentran lluvias torrenciales inmediatas. Los tonos rojos y anaranjados indican precipitaciones fuertes a moderadas, mientras que los verdes representan bandas externas. Por ello, aunque el vórtice continúa mar adentro, las bandas nubosas mantendrán temporal de lluvias significativas en Guerrero." },
           { escena: "seccion-recomendaciones", texto: "Sección cero cinco. Recomendaciones preventivas. Mantener desazolvados cauces y drenajes pluviales urbanos, vigilar la estabilidad de laderas por humedad acumulada, y atender las indicaciones de Protección Civil y Capitanía de Puerto." },
           { escena: "cierre", texto: marca + ". Proyectos ejecutivos, cimientos del futuro. Vigilancia en desarrollo." }
         ];
