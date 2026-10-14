@@ -350,7 +350,60 @@
     .readout {
       font-variant-numeric: tabular-nums;
     }
+    .btn-manual {
+      border: 1px solid rgba(127, 212, 238, 0.55);
+      background: rgba(8, 24, 34, 0.85);
+      color: #d7f6ff;
+    }
+    .btn-manual:hover { border-color: #e0b15a; color: #fff; }
+    .manual-fondo {
+      position: fixed;
+      inset: 0;
+      z-index: 1300;
+      display: flex;
+      justify-content: flex-end;
+      background: rgba(4, 12, 18, 0.58);
+      backdrop-filter: blur(8px);
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .manual-fondo.abierto {
+      visibility: visible;
+      pointer-events: auto;
+    }
+    .manual-panel {
+      display: flex;
+      flex-direction: column;
+      width: min(44rem, 100%);
+      height: 100%;
+      color: #d5e4ec;
+      background: linear-gradient(180deg, rgba(14, 32, 44, 0.94), rgba(7, 18, 26, 0.96));
+      border-left: 1px solid rgba(127, 212, 238, 0.4);
+      box-shadow: -28px 0 70px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(18px);
+      transform: translateX(104%);
+      transition: transform 0.28s ease;
+    }
+    .manual-fondo.abierto .manual-panel { transform: translateX(0); }
+    .manual-cuerpo {
+      overflow: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #7fd4ee rgba(224, 177, 90, 0.35);
+    }
+    .manual-cuerpo::-webkit-scrollbar { width: 8px; }
+    .manual-cuerpo::-webkit-scrollbar-track { background: rgba(7, 20, 28, 0.8); }
+    .manual-cuerpo::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #7fd4ee, #e0b15a);
+      border-radius: 99px;
+    }
+    .manual-lista { list-style: none; counter-reset: manual; }
+    .manual-lista > li { counter-increment: manual; }
+    .manual-lista > li > h3::before {
+      content: counter(manual) ". ";
+      color: #e0b15a;
+    }
     @media (prefers-reduced-motion: reduce) {
+      .manual-panel { transition: none; }
       .live-dot, .beacon i, .alerta-pulso, .alerta-ambar, .btn-locucion, .ondas i { animation: none; }
       .beacon i { opacity: 0.45; transform: scale(2.2); }
       .beacon i:nth-child(2) { transform: scale(3.1); }
@@ -381,6 +434,9 @@
         <button type="button" id="btn-locucion" class="btn-locucion inline-flex items-center gap-2 rounded px-3 py-2 text-left font-mono text-[10px] font-medium uppercase tracking-[0.12em]" aria-pressed="false">
           <span class="ondas" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           <span id="btn-locucion-texto">🔊 Escuchar reporte telemétrico oficial</span>
+        </button>
+        <button type="button" id="btn-manual" class="btn-manual inline-flex items-center rounded px-3 py-2 font-mono text-[10px] font-medium uppercase tracking-[0.12em]" aria-haspopup="dialog" aria-controls="manual-tecnico" aria-expanded="false">
+          📖 Manual y guía técnica
         </button>
         <div class="clock-well rounded px-3 py-1.5 text-right">
           <p class="font-mono text-[10px] uppercase tracking-[0.18em] text-brass/90">Hora oficial CST · México</p>
@@ -1871,6 +1927,148 @@
         mapa.invalidateSize();
       });
       setTimeout(function () { mapa.invalidateSize(); }, 250);
+    })();
+  </script>
+  <div id="manual-tecnico" class="manual-fondo" hidden>
+    <section class="manual-panel" role="dialog" aria-modal="true" aria-labelledby="manual-titulo">
+      <header class="flex items-center justify-between gap-3 border-b border-tide/30 px-4 py-3 sm:px-6">
+        <p class="font-mono text-[10px] uppercase tracking-[0.18em] text-tide">JSG ZENIT · terminal técnica</p>
+        <button type="button" id="btn-manual-cerrar" class="rounded border border-brass/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-brass hover:bg-brass/10">
+          ✕ Cerrar
+        </button>
+      </header>
+      <div class="manual-cuerpo px-4 py-5 sm:px-6 sm:py-6">
+        <h2 id="manual-titulo" class="font-display text-3xl font-semibold uppercase leading-none tracking-wide text-white">
+          Manual técnico de operación · Plataforma telemétrica JSG ZENIT
+        </h2>
+        <p class="mt-3 text-sm leading-relaxed text-brass">
+          Sistema Geodésico y Sinóptico de Vigilancia Ciclónica (Caso: Tormenta Tropical TRUDY)
+        </p>
+        <h3 class="mt-6 font-mono text-[11px] uppercase tracking-[0.18em] text-tide">Descripción general</h3>
+        <p class="mt-2 text-sm leading-relaxed text-mist">
+          Plataforma interactiva de monitoreo meteorológico y geodésico en tiempo real, diseñada por JSG ZENIT A.C. bajo estándares de ingeniería y geomática. Su propósito es evaluar el comportamiento físico, cinemático y sinóptico de ciclones tropicales mediante cálculos geodésicos automatizados (algoritmo ortodrómico de Haversine) desacoplados de feeds dinámicos (<code class="text-tide">telemetria.json</code>), con foco prioritario en la protección civil y el análisis hidrológico de la costa de Guerrero y la Bahía de Santa Lucía (Acapulco).
+        </p>
+        <h3 class="mt-6 font-mono text-[11px] uppercase tracking-[0.18em] text-tide">Desglose numerado de componentes del sistema</h3>
+        <ol class="manual-lista mt-4 space-y-5">
+          <li>
+            <h3 class="font-display text-xl uppercase tracking-wide text-white">Barra de comando operativo y sincronización CST</h3>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-mist">
+              <li>Indicador de estado del meteoro ('CICLÓN TROPICAL ACTIVO').</li>
+              <li>Reloj digital en vivo sincronizado en tiempo real con el huso horario oficial de México (CST).</li>
+              <li>Etiqueta de hora de corte telemétrico del último boletín procesado para validar la vigencia de la información.</li>
+            </ul>
+          </li>
+          <li>
+            <h3 class="font-display text-xl uppercase tracking-wide text-white">Módulo de síntesis de voz y locución oficial</h3>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-mist">
+              <li>Botón interactivo ('ESCUCHAR REPORTE TELEMÉTRICO OFICIAL') que activa el motor nativo Web Speech API en español.</li>
+              <li>Reproduce la narración técnica institucional y ejecuta sincronización visual automática sobre el mapa mientras avanza la locución.</li>
+            </ul>
+          </li>
+          <li>
+            <h3 class="font-display text-xl uppercase tracking-wide text-white">Matriz de variables termodinámicas y físicas</h3>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-mist">
+              <li>Velocidad de vientos sostenidos y rachas máximas registradas.</li>
+              <li>Velocidad de traslación cinemática (km/h) y rumbo barométrico (ej. ONO).</li>
+              <li>Rango de precipitación estimada acumulada en milímetros (mm).</li>
+              <li>Presión central mínima en hectopascales (hPa).</li>
+              <li>Temperatura Superficial del Mar (SST en °C) como indicador de energía disponible.</li>
+            </ul>
+          </li>
+          <li>
+            <h3 class="font-display text-xl uppercase tracking-wide text-white">Módulo geodésico de tarjetas cinemáticas (algoritmo de Haversine)</h3>
+            <ul class="mt-2 space-y-1 pl-1 text-sm leading-relaxed text-mist">
+              <li><span class="font-mono text-brass">4.1.</span> Recorrido Acumulado: Kilómetros geodésicos recorridos desde el punto de génesis en el Pacífico centroamericano.</li>
+              <li><span class="font-mono text-brass">4.2.</span> Faltante a Compuerta Marina (96.0°W): Contador de distancia restante y tiempo estimado de cruce (ETA) con cambio dinámico a alerta roja al estar en cruce inminente.</li>
+              <li><span class="font-mono text-brass">4.3.</span> Distancia al Punto de Quiebre (97.0°W): Umbral crítico de recurvatura donde se verifica la bifurcación entre modelos.</li>
+              <li><span class="font-mono text-brass">4.4.</span> Distancia Ortodrómica a la Bahía de Santa Lucía: Vector geodésico en línea recta hacia Acapulco para evaluar el riesgo de aproximación costera.</li>
+            </ul>
+          </li>
+          <li>
+            <h3 class="font-display text-xl uppercase tracking-wide text-white">Baliza cinemática interactiva TRUDY</h3>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-mist">
+              <li>Marcador dinámico en Leaflet posicionado exactamente en las coordenadas leídas del feed JSON.</li>
+              <li>Animación de radar pulsante concéntrico que señala el ojo o centro de circulación del ciclón.</li>
+            </ul>
+          </li>
+          <li>
+            <h3 class="font-display text-xl uppercase tracking-wide text-white">Umbrales metodológicos JSG ZENIT</h3>
+            <ul class="mt-2 space-y-1 pl-1 text-sm leading-relaxed text-mist">
+              <li><span class="font-mono text-brass">6.1.</span> Línea de Compuerta Marina (Meridiano 96.0°W): Línea de control técnico que marca el ingreso al corredor de decisión operativa para el Pacífico sur.</li>
+              <li><span class="font-mono text-brass">6.2.</span> Línea de Punto de Quiebre (Meridiano 97.0°W): Meridiano donde la latitud del centro define la desviación hacia tierra o la salida a mar abierto.</li>
+            </ul>
+          </li>
+          <li>
+            <h3 class="font-display text-xl uppercase tracking-wide text-white">Proyección comparativa de modelos numéricos</h3>
+            <ul class="mt-2 space-y-1 pl-1 text-sm leading-relaxed text-mist">
+              <li><span class="font-mono text-brass">7.1.</span> Ruta Amarilla (Modelo Europeo ECMWF): Trazo punteado que proyecta el escenario de flujo zonal paralelo mar adentro (manteniendo la dorsal de 588 dam).</li>
+              <li><span class="font-mono text-brass">7.2.</span> Ruta Roja (Modelo Estadounidense GFS): Trazo punteado hacia el Noroeste/Norte en dirección a la Bahía de Santa Lucía en caso de fractura de dorsal por vaguada.</li>
+            </ul>
+          </li>
+          <li>
+            <h3 class="font-display text-xl uppercase tracking-wide text-white">Mosaico satelital infrarrojo en vivo (NOAA nowCOAST / GOES-16)</h3>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-mist">
+              <li>Capa satelital de onda larga infrarroja georreferenciada con curva de realce térmico BD Curve (identificación de cimas frías &lt; −75°C asociadas a convección severa).</li>
+            </ul>
+          </li>
+          <li>
+            <h3 class="font-display text-xl uppercase tracking-wide text-white">Panel flotante de opacidad y conmutación satelital</h3>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-mist">
+              <li>Deslizador de rango (0% a 100%) para ajustar la transparencia de la nube convectiva sobre la orografía continental y las líneas costeras.</li>
+              <li>Interruptor rápido de encendido/apagado de la capa satelital.</li>
+            </ul>
+          </li>
+          <li>
+            <h3 class="font-display text-xl uppercase tracking-wide text-white">Análisis sinóptico de interacción frontal (niveles medios y superficie)</h3>
+            <ul class="mt-2 space-y-1 pl-1 text-sm leading-relaxed text-mist">
+              <li><span class="font-mono text-brass">10.1.</span> Vector de Frente Frío: Trazado meteorológico estándar con triángulos azules en el Golfo de México representando el empuje de aire polar.</li>
+              <li><span class="font-mono text-brass">10.2.</span> Eje de Vaguada Polar (500 hPa): Línea discontinua ámbar que representa el canal de baja presión y debilidad barométrica en niveles medios.</li>
+            </ul>
+          </li>
+          <li>
+            <h3 class="font-display text-xl uppercase tracking-wide text-white">Arquitectura desacoplada y dead reckoning</h3>
+            <ul class="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-mist">
+              <li>Consumo asíncrono de <code class="text-tide">telemetria.json</code> que permite modificar parámetros sin tocar el código fuente y cálculo inercial de avance en tiempo real entre boletines.</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </div>
+  <script>
+    (function () {
+      var fondo = document.getElementById("manual-tecnico");
+      var abrir = document.getElementById("btn-manual");
+      var cerrar = document.getElementById("btn-manual-cerrar");
+      var panel = fondo.querySelector(".manual-panel");
+      var ultimo = null;
+      function abrirManual() {
+        ultimo = document.activeElement;
+        fondo.hidden = false;
+        document.body.style.overflow = "hidden";
+        requestAnimationFrame(function () {
+          fondo.classList.add("abierto");
+          abrir.setAttribute("aria-expanded", "true");
+          cerrar.focus();
+        });
+      }
+      function cerrarManual() {
+        fondo.classList.remove("abierto");
+        abrir.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+        window.setTimeout(function () {
+          if (!fondo.classList.contains("abierto")) fondo.hidden = true;
+        }, 280);
+        if (ultimo && typeof ultimo.focus === "function") ultimo.focus();
+      }
+      abrir.addEventListener("click", abrirManual);
+      cerrar.addEventListener("click", cerrarManual);
+      fondo.addEventListener("click", function (evento) {
+        if (!panel.contains(evento.target)) cerrarManual();
+      });
+      document.addEventListener("keydown", function (evento) {
+        if (evento.key === "Escape" && fondo.classList.contains("abierto")) cerrarManual();
+      });
     })();
   </script>
 </body>
