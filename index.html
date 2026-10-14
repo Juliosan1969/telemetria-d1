@@ -521,23 +521,23 @@
             <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Viento sostenido y rachas</h3>
             <span class="text-lg leading-none" aria-hidden="true">🌬️</span>
           </div>
-          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="met-viento">—</span><span class="ml-1 text-base text-tide">km/h</span></p>
-          <p class="mt-2 text-sm text-mist">Rachas de <span id="met-rachas">—</span> km/h</p>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="val-viento">—</span><span class="ml-1 text-base text-tide">km/h</span></p>
+          <p class="mt-2 text-sm text-mist">Rachas de <span id="val-rachas">—</span> km/h</p>
         </article>
         <article class="plate rounded-md border-t-2 border-t-brass p-4">
           <div class="flex items-start justify-between gap-2">
             <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Velocidad de traslación</h3>
             <span class="text-lg leading-none" aria-hidden="true">🧭</span>
           </div>
-          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="met-traslacion">—</span><span class="ml-1 text-base text-brass">km/h</span></p>
-          <p class="mt-2 text-sm text-mist" id="met-rumbo">Rumbo —</p>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="val-traslacion">—</span><span class="ml-1 text-base text-brass">km/h</span></p>
+          <p class="mt-2 text-sm text-mist" id="met-rumbo"><span id="met-rumbo-prefijo">Rumbo </span><span id="val-rumbo">—</span></p>
         </article>
         <article class="plate rounded-md border-t-2 border-t-sky-400 p-4">
           <div class="flex items-start justify-between gap-2">
             <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Precipitación estimada</h3>
             <span class="text-lg leading-none" aria-hidden="true">🌧️</span>
           </div>
-          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="met-precip">—</span><span class="ml-1 text-base text-sky-300">mm</span></p>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="val-lluvia">—</span><span class="ml-1 text-base text-sky-300">mm</span></p>
           <p class="mt-2 text-sm text-mist">Convección activa</p>
         </article>
         <article class="plate rounded-md border-t-2 border-t-amber-200 p-4">
@@ -545,7 +545,7 @@
             <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Presión atmosférica central</h3>
             <span class="text-lg leading-none" aria-hidden="true">⏱️</span>
           </div>
-          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="met-presion">—</span><span class="ml-1 text-base text-amber-100">hPa</span></p>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="val-presion">—</span><span class="ml-1 text-base text-amber-100">hPa</span></p>
           <p class="mt-2 text-sm text-mist">En vigilancia continua</p>
         </article>
         <article class="plate rounded-md border-t-2 border-t-surge p-4 sm:col-span-2 xl:col-span-1">
@@ -553,7 +553,7 @@
             <h3 class="font-mono text-[10px] uppercase leading-snug tracking-[0.14em] text-mist/80">Temperatura superficial del mar (SST)</h3>
             <span class="text-lg leading-none" aria-hidden="true">🌊</span>
           </div>
-          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="met-sst">—</span><span class="ml-1 text-base text-surge">°C</span></p>
+          <p class="mt-3 font-mono text-4xl font-medium leading-none text-white readout"><span id="val-sst">—</span><span class="ml-1 text-base text-surge">°C</span></p>
           <p class="mt-2 text-sm text-mist">Alto potencial energético</p>
         </article>
       </div>
@@ -574,7 +574,7 @@
         <article class="plate relative overflow-hidden rounded-md p-5 text-brass">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-brass/90">Recorrido acumulado</h3>
           <p class="mt-2 font-display text-6xl font-semibold leading-none tracking-tight text-white sm:text-7xl">
-            <span id="cin-recorrido">—</span><span class="ml-2 text-3xl text-brass">KM</span>
+            <span id="val-recorrido">—</span><span class="ml-2 text-3xl text-brass">KM</span>
           </p>
           <p id="cin-recorrido-nota" class="mt-3 text-sm text-mist">Calculando ortodrómica desde el origen</p>
           <div class="ruler">
@@ -610,7 +610,7 @@
         <article class="plate relative overflow-hidden rounded-md p-5 text-tide">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-tide/90">Distancia al punto de quiebre 97.0°W</h3>
           <p class="mt-2 font-display text-6xl font-semibold leading-none tracking-tight text-white sm:text-7xl">
-            <span id="cin-quiebre">—</span><span class="ml-2 text-3xl text-tide">KM</span>
+            <span id="val-quiebre">—</span><span class="ml-2 text-3xl text-tide">KM</span>
           </p>
           <p id="cin-quiebre-nota" class="mt-3 text-sm text-mist">Calculando umbral de recurvatura</p>
           <div class="ruler">
@@ -628,7 +628,7 @@
         <article class="plate relative overflow-hidden rounded-md p-5 text-brass">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.18em] text-brass/90">Distancia a Bahía de Santa Lucía</h3>
           <p class="mt-2 font-display text-6xl font-semibold leading-none tracking-tight text-white sm:text-7xl">
-            <span id="cin-acapulco">—</span><span class="ml-2 text-3xl text-brass">KM</span>
+            <span id="val-acapulco">—</span><span class="ml-2 text-3xl text-brass">KM</span>
           </p>
           <p id="cin-acapulco-nota" class="mt-3 text-sm text-mist">Calculando ortodrómica a la bahía</p>
           <div class="ruler">
@@ -1819,14 +1819,15 @@
           textoBoletin.innerHTML = "Módulo técnico de la <strong class=\"font-medium text-white\">" + esc(categoria) + " " + esc(sistema) + "</strong>, ciclón tropical activo en el Pacífico oriental. Designación previa: " + esc(previa) + ".";
         }
         ponerTexto("fijacion-d1", par(latViva, lonViva) + (avance.activo ? " · estimada" : ""));
-        ponerTexto("met-viento", cifra(Number(met.viento_sostenido_kmh)));
-        ponerTexto("met-rachas", cifra(Number(met.rachas_kmh)));
-        ponerTexto("met-traslacion", cifra(vel));
-        ponerTexto("met-rumbo", (isFinite(nudos) ? cifra(nudos) + " nudos · rumbo " : "Rumbo ") + rumbo);
-        ponerTexto("met-precip", String(met.precipitacion_estimada_mm == null ? "—" : met.precipitacion_estimada_mm).replace(/\s*-\s*/g, "–"));
-        ponerTexto("met-presion", presion);
-        ponerTexto("met-sst", cifra(Number(met.sst_celsius)));
-        ponerTexto("cin-recorrido", kmVisible(kmRec, avance.activo));
+        ponerTexto("val-viento", cifra(Number(met.viento_sostenido_kmh)));
+        ponerTexto("val-rachas", cifra(Number(met.rachas_kmh)));
+        ponerTexto("val-traslacion", cifra(vel));
+        ponerTexto("met-rumbo-prefijo", isFinite(nudos) ? cifra(nudos) + " nudos · rumbo " : "Rumbo ");
+        ponerTexto("val-rumbo", rumbo || "—");
+        ponerTexto("val-lluvia", String(met.precipitacion_estimada_mm == null ? "—" : met.precipitacion_estimada_mm).replace(/\s*-\s*/g, "–"));
+        ponerTexto("val-presion", presion);
+        ponerTexto("val-sst", cifra(Number(met.sst_celsius)));
+        ponerTexto("val-recorrido", kmVisible(kmRec, avance.activo));
         ponerTexto("cin-recorrido-nota", avance.activo ? notaViva : "Parte " + (selloVisible || "publicado") + " · recorrido publicado");
         ponerTexto("cin-recorrido-a", hem(olon, "E", "W", 1));
         ponerTexto("cin-recorrido-b", hem(lonViva, "E", "W", 2));
@@ -1848,13 +1849,13 @@
         pintarCompuerta(kmComp <= 0 ? "SUPERADA_CRUZADA" : bComp.estado);
         ponerTexto("estado-ruta", data.estado_ruta ? String(data.estado_ruta) : "Confirmando lectura de la ruta amarilla");
         ponerTexto("cin-compuerta-a", hem(olon, "E", "W", 1));
-        ponerTexto("cin-quiebre", kmVisible(kmQuie, avance.activo));
+        ponerTexto("val-quiebre", kmVisible(kmQuie, avance.activo));
         ponerTexto(
           "cin-quiebre-nota",
           kmQuie <= 0 ? "Meridiano 97.0°W cruzado" : (avance.activo ? notaViva : hQuie + " · umbral de recurvatura")
         );
         ponerTexto("cin-quiebre-a", hem(olon, "E", "W", 1));
-        ponerTexto("cin-acapulco", kmTexto(kmAca));
+        ponerTexto("val-acapulco", kmTexto(kmAca));
         ponerTexto("cin-acapulco-nota", "Bahía al " + haciaBahia + " · " + hAca + " a " + cifra(vel) + " km/h");
 
         var pComp = avanceMeridiano(olon, lonViva, MERIDIANO_COMPUERTA) * 100;
@@ -1949,29 +1950,64 @@
       function elegirVoz() {
         if (!window.speechSynthesis) return null;
         var voces = speechSynthesis.getVoices();
-        var preferidas = ["paulina", "sabina", "dalia", "mia", "español de méxico", "espanol de mexico", "español de estados unidos", "espanol de estados unidos"];
+        var marcas = ["mexico", "méxico", "mexican", "paulina", "sabina", "dalia", "raul", "mia"];
+        function esMexicana(voz) {
+          if (voz.lang === "es-MX") return true;
+          var nombre = (voz.name || "").toLowerCase();
+          var i;
+          for (i = 0; i < marcas.length; i += 1) {
+            if (nombre.indexOf(marcas[i]) !== -1) return true;
+          }
+          return false;
+        }
+        var candidatas = voces.filter(esMexicana);
+        var orden = ["paulina", "sabina", "dalia", "mia", "raul"];
         var i;
         var j;
         var nombre;
-        for (i = 0; i < preferidas.length; i += 1) {
-          for (j = 0; j < voces.length; j += 1) {
-            nombre = (voces[j].name || "").toLowerCase();
-            if (nombre.indexOf(preferidas[i]) === -1) continue;
-            if (/^es/i.test(voces[j].lang) || /español|espanol|mexico|méxico|estados unidos/i.test(nombre)) return voces[j];
+        for (i = 0; i < orden.length; i += 1) {
+          for (j = 0; j < candidatas.length; j += 1) {
+            nombre = (candidatas[j].name || "").toLowerCase();
+            if (nombre.indexOf(orden[i]) !== -1) return candidatas[j];
           }
         }
-        var mexicana = voces.filter(function (voz) { return /^es-MX/i.test(voz.lang); })[0];
-        if (mexicana) return mexicana;
-        return voces.filter(function (voz) { return /^es([-_]|$)/i.test(voz.lang); })[0] || null;
+        var exacta = candidatas.filter(function (voz) { return voz.lang === "es-MX"; })[0];
+        return exacta || candidatas[0] || null;
       }
 
       function pausarLocucion(texto) {
         return String(texto)
+          .replace(/(\d)\.(\d)/g, "$1 punto $2")
           .replace(/\s*\.\.\.\s*/g, " § ")
           .replace(/\s*[.,]\s*/g, " § ")
           .replace(/(?:\s*§\s*)+/g, " ... ")
           .replace(/\s+/g, " ")
           .trim();
+      }
+
+      function textoVisible(id, respaldo) {
+        var nodo = document.getElementById(id);
+        if (!nodo) return respaldo;
+        var texto = String(nodo.innerText || "").replace(/\s+/g, " ").trim();
+        if (!texto || texto === "—" || texto === "-") return respaldo;
+        return texto;
+      }
+
+      function kmLocucion(id, respaldo) {
+        var n = parseFloat(String(textoVisible(id, "")).replace(",", "."));
+        if (!isFinite(n)) return respaldo;
+        return Math.round(n);
+      }
+
+      function rumboHablado(texto) {
+        var limpio = String(texto || "").trim();
+        var mapa = {
+          ONO: "Oeste-Noroeste", NNO: "Norte-Noroeste", OSO: "Oeste-Suroeste", SSO: "Sur-Suroeste",
+          NNE: "Norte-Noreste", ENE: "Este-Noreste", ESE: "Este-Sureste", SSE: "Sur-Sureste",
+          NO: "Noroeste", NE: "Noreste", SO: "Suroeste", SE: "Sureste",
+          N: "Norte", S: "Sur", E: "Este", O: "Oeste"
+        };
+        return mapa[limpio.toUpperCase()] || limpio || "Oeste-Noroeste";
       }
 
       function restaurarLocucion() {
@@ -2070,17 +2106,31 @@
         var ahora = new Date();
         var horas = ahora.getHours();
         var minutos = ahora.getMinutes();
-        var horas12 = horas % 12 || 12;
         var ampm = horas >= 12 ? "de la noche" : "de la mañana";
-        var textoHora = horas12 + " " + ampm + " con " + minutos + " minutos";
+        if (horas === 0) horas = 12;
+        var horaHablada = (horas % 12 || 12) + " " + ampm + " con " + minutos + " minutos";
+        var vViento = textoVisible("val-viento", "70");
+        var vRachas = textoVisible("val-rachas", "90");
+        var vTraslacion = textoVisible("val-traslacion", "16");
+        var vRumbo = rumboHablado(textoVisible("val-rumbo", "Oeste-Noroeste"));
+        var vLluvia = textoVisible("val-lluvia", "150 a 250").replace(/\s*[–—-]\s*/g, " a ");
+        var vPresion = textoVisible("val-presion", "1002");
+        var vSST = textoVisible("val-sst", "30.5");
+        var kmRecorrido = kmLocucion("val-recorrido", 1007);
+        var kmQuiebre = kmLocucion("val-quiebre", 52);
+        var kmAcapulco = kmLocucion("val-acapulco", 621);
+        var velLocucion = parseFloat(vTraslacion);
+        if (!isFinite(velLocucion) || velLocucion <= 0) velLocucion = 16;
+        var horasQuiebre = (kmQuiebre / velLocucion).toFixed(1);
+        var marca = "Jota Efe Ge Cénit";
         var guion = [
-          { escena: "seccion-01", texto: "Hola, soy Daniela. Transmisión telemétrica oficial de JSG ZENIT. Vigilancia geofísica en tiempo real para la Tormenta Tropical Trudy. Puede usted interactuar y desplazarse libremente por las secciones de esta pantalla mientras escucha este informe." },
-          { escena: "seccion-01", texto: "Sección cero uno. Cabecera y control. Hora oficial: " + textoHora + ". El sistema sincroniza datos en vivo y mantiene la vigilancia continua de los parámetros geodésicos." },
-          { escena: "seccion-02", texto: "Sección cero dos. Instrumentación física y meteorológica. Trudy registra vientos sostenidos de setenta kilómetros por hora, con rachas de noventa. Mantiene una velocidad de traslación constante de dieciséis kilómetros por hora, con rumbo al Oeste-Noroeste. La presión barométrica central marca mil dos hectopascales, y la temperatura superficial del mar se mantiene en unos cálidos treinta punto cinco grados Celsius." },
-          { escena: "seccion-03", texto: "Sección cero tres. Tarjetas cinemáticas y geodésicas. El recorrido acumulado supera ya los mil diez kilómetros desde su origen. La Compuerta Marina de los noventa y seis grados Oeste ha sido formalmente cruzada, marcando cero punto cero kilómetros restantes. En este instante, restan únicamente cuarenta y ocho kilómetros para alcanzar el meridiano de Quiebre de los noventa y siete grados Oeste, un hito previsto para las próximas tres horas. La distancia directa hacia la Bahía de Santa Lucía, en Acapulco, se sitúa en seiscientos quince kilómetros." },
-          { escena: "seccion-04", texto: "Sección cero cuatro. Carta náutica y caja de decisión. Mire la carta interactiva. El ojo de Trudy navega actualmente en los doce punto quince grados Norte. Al mantenerse netamente por debajo de la línea verde de los trece grados Norte dentro del rectángulo de decisión, la telemetría continúa confirmando la Ruta Amarilla del modelo europeo. Esto aleja el vórtice de la línea roja de captura sinóptica y descarta el impacto directo del ojo en Acapulco durante las próximas horas. No obstante, el radio de bandas convectivas continuará descargando precipitaciones torrenciales en el estado de Guerrero." },
-          { escena: "seccion-recomendaciones", texto: "Sección cero cinco. Recomendaciones y gestión de riesgo. Se recomienda a la población y autoridades mantener el desazolve preventivo de rejillas y cauces pluviales urbanos, vigilar zonas de ladera ante riesgo de deslizamiento por suelos saturados, y atender las restricciones marítimas de Capitanía de Puerto." },
-          { escena: "cierre", texto: "JSG ZENIT. Proyectos ejecutivos, cimientos del futuro. Monitoreo en desarrollo." }
+          { escena: "seccion-01", texto: "Hola, soy Daniela. Transmisión telemétrica oficial de " + marca + ". Vigilancia geofísica en tiempo real para la Tormenta Tropical Trudy. Puede usted desplazarse libremente entre las secciones de la pantalla mientras escucha este reporte." },
+          { escena: "seccion-01", texto: "Sección cero uno. Cabecera y control. Hora oficial de consulta: " + horaHablada + ". Monitoreo continuo y recálculo cinemático activo." },
+          { escena: "seccion-02", texto: "Sección cero dos. Variables físicas y meteorológicas. Trudy mantiene vientos sostenidos de " + vViento + " kilómetros por hora, con rachas de " + vRachas + ". Su velocidad de avance es de " + vTraslacion + " kilómetros por hora con rumbo al " + vRumbo + ". Presión central de " + vPresion + " hectopascales, y temperatura del mar en " + vSST + " grados Celsius, con potencial de lluvia acumulada de " + vLluvia + " milímetros." },
+          { escena: "seccion-03", texto: "Sección cero tres. Tarjetas cinemáticas. El recorrido acumulado es de " + kmRecorrido + " kilómetros. La Compuerta Marina de los noventa y seis grados Oeste ha quedado superada. Restan únicamente " + kmQuiebre + " kilómetros para alcanzar el Punto de Quiebre de los noventa y siete grados Oeste, arribo estimado en aproximadamente " + horasQuiebre + " horas. La distancia en línea recta hacia la Bahía de Santa Lucía en Acapulco es de " + kmAcapulco + " kilómetros." },
+          { escena: "seccion-04", texto: "Sección cero cuatro. Carta náutica y caja de decisión. Al continuar su trayectoria por debajo de la línea verde de los trece grados Norte dentro del corredor de decisión, la telemetría continúa confirmando la Ruta Amarilla del modelo europeo mar adentro, descartando el impacto directo del centro del meteoro en Acapulco durante las próximas horas." },
+          { escena: "seccion-recomendaciones", texto: "Sección cero cinco. Recomendaciones preventivas. Mantener desazolvados cauces y drenajes pluviales urbanos, vigilar la estabilidad de laderas por humedad acumulada, y atender las indicaciones de Protección Civil y Capitanía de Puerto." },
+          { escena: "cierre", texto: marca + ". Proyectos ejecutivos, cimientos del futuro. Vigilancia en desarrollo." }
         ];
         var paso = 0;
         var estaTanda = tandaLocucion;
@@ -2098,7 +2148,7 @@
           aplicarEscena(cue.escena);
           var frase = new SpeechSynthesisUtterance(pausarLocucion(cue.texto));
           frase.lang = "es-MX";
-          frase.rate = 0.88;
+          frase.rate = 0.86;
           frase.pitch = 1.0;
           if (vozLista) frase.voice = vozLista;
           frase.onend = function () {
