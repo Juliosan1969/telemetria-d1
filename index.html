@@ -7,7 +7,7 @@
   <meta name="description" content="Comando operativo de la Tormenta Tropical TRUDY, antes Invest EP93. Vigilancia telemétrica de JSG ZENIT A.C.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -360,6 +360,41 @@
     .readout {
       font-variant-numeric: tabular-nums;
     }
+    .seccion-kicker {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.85rem;
+      margin-bottom: 0.35rem;
+    }
+    .seccion-num {
+      font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3rem);
+      font-weight: 900;
+      line-height: 0.8;
+      letter-spacing: 0.06em;
+      color: #fbbf24;
+      text-shadow: 0 0 16px rgba(251, 191, 36, 0.55), 0 0 2px rgba(251, 191, 36, 0.9);
+    }
+    .seccion-kicker.cian .seccion-num {
+      color: #38bdf8;
+      text-shadow: 0 0 16px rgba(56, 189, 248, 0.55), 0 0 2px rgba(56, 189, 248, 0.9);
+    }
+    .seccion-nombre {
+      padding-bottom: 0.2rem;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #7fd4ee;
+    }
+    .seccion-habla .seccion-num {
+      text-shadow: 0 0 22px rgba(251, 191, 36, 0.95), 0 0 4px #fbbf24;
+    }
+    .seccion-kicker.cian.seccion-habla .seccion-num {
+      text-shadow: 0 0 22px rgba(56, 189, 248, 0.95), 0 0 4px #38bdf8;
+    }
+    #seccion-02, #seccion-03, #seccion-04, #seccion-05, #seccion-06 { scroll-margin-top: 6.5rem; }
     .btn-manual {
       border: 1px solid rgba(127, 212, 238, 0.55);
       background: rgba(8, 24, 34, 0.85);
@@ -422,11 +457,15 @@
   </style>
 </head>
 <body class="min-h-screen text-mist font-sans antialiased">
-  <header class="sticky top-0 z-[1100] border-b border-line/80 bg-ink/90 backdrop-blur-md">
+  <header id="seccion-01" class="sticky top-0 z-[1100] border-b border-line/80 bg-ink/90 backdrop-blur-md">
     <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3 md:px-6">
       <div class="flex min-w-0 items-center gap-3">
         <img src="logo-jsg-zenit.png" alt="Logotipo oficial JSG ZENIT A.C." class="h-12 w-auto shrink-0 rounded-md bg-white object-contain sm:h-14" width="1024" height="391">
         <div class="min-w-0">
+          <p class="seccion-kicker mb-1">
+            <span class="seccion-num">01</span>
+            <span class="seccion-nombre">· Cabecera y control</span>
+          </p>
           <h1 id="titulo-comando" class="font-display text-lg font-semibold uppercase leading-tight tracking-[0.06em] text-brass sm:text-[1.35rem]">
             Comando operativo · Tormenta Tropical TRUDY
           </h1>
@@ -461,10 +500,13 @@
   </header>
 
   <main class="mx-auto max-w-7xl space-y-6 px-4 py-6 md:px-6 md:py-8">
-    <section aria-labelledby="titulo-instrumentos">
+    <section id="seccion-02" aria-labelledby="titulo-instrumentos">
       <div class="mb-3 flex flex-wrap items-end justify-between gap-2">
         <div>
-          <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-brass">02 · Instrumentación</p>
+          <p class="seccion-kicker cian">
+            <span class="seccion-num">02</span>
+            <span class="seccion-nombre">· Variables físicas</span>
+          </p>
           <h2 id="titulo-instrumentos" class="font-display text-3xl font-semibold uppercase tracking-wide text-white">
             Física y meteorológica
           </h2>
@@ -517,9 +559,12 @@
       </div>
     </section>
 
-    <section aria-labelledby="titulo-cinematica">
+    <section id="seccion-03" aria-labelledby="titulo-cinematica">
       <div class="mb-3">
-        <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-brass">03 · Aproximación</p>
+        <p class="seccion-kicker">
+          <span class="seccion-num">03</span>
+          <span class="seccion-nombre">· Tarjetas cinemáticas</span>
+        </p>
         <h2 id="titulo-cinematica" class="font-display text-3xl font-semibold uppercase tracking-wide text-white">
           Tarjetas cinemáticas
         </h2>
@@ -600,10 +645,13 @@
       </div>
     </section>
 
-    <section aria-labelledby="titulo-carta">
+    <section id="seccion-04" aria-labelledby="titulo-carta">
       <div class="mb-3 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-brass">04 · Carta</p>
+          <p class="seccion-kicker cian">
+            <span class="seccion-num">04</span>
+            <span class="seccion-nombre">· Carta náutica y caja de decisión</span>
+          </p>
           <h2 id="titulo-carta" class="font-display text-3xl font-semibold uppercase tracking-wide text-white">
             Pacífico sur mexicano
           </h2>
@@ -615,6 +663,7 @@
         <article class="plate rounded-md border-t-2 border-t-[#f5d90a] p-4">
           <h3 class="font-mono text-[11px] uppercase tracking-[0.16em] text-[#f5d90a]">Ruta amarilla · modelo europeo (ECMWF / IFS)</h3>
           <p class="mt-2 font-display text-4xl font-semibold leading-none text-white">65<span class="ml-1 text-xl text-[#f5d90a]">%</span></p>
+          <p id="estado-ruta" class="mt-2 font-mono text-[11px] uppercase leading-relaxed tracking-wider text-[#f5d90a]">Confirmando lectura de la ruta amarilla</p>
           <p class="mt-2 text-sm leading-relaxed text-mist">Flujo zonal paralelo a la costa, con paso abierto mar adentro a unos 350 km al sur de Guerrero.</p>
           <p class="mt-2 text-xs leading-relaxed text-mist/80">Sustento físico: asimilación 4D-Var, resolución de 9 km y rigidez del domo anticiclónico de 588 dam en 500 hPa.</p>
         </article>
@@ -722,9 +771,12 @@
       </div>
     </section>
 
-    <section aria-labelledby="titulo-boletin">
+    <section id="seccion-05" aria-labelledby="titulo-boletin">
       <article class="plate rounded-md p-5 md:p-6">
-        <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-tide">05 · Boletín</p>
+        <p class="seccion-kicker">
+          <span class="seccion-num">05</span>
+          <span class="seccion-nombre">· Boletín</span>
+        </p>
         <h2 id="titulo-boletin" class="mt-1 font-display text-3xl font-semibold uppercase tracking-wide text-white">
           Boletín oficial NOAA / NHC
         </h2>
@@ -760,8 +812,11 @@
 
   <footer class="border-t border-line/80">
     <div class="mx-auto max-w-7xl px-4 py-6 md:px-6">
-      <aside class="plate rounded-md border-l-4 border-l-brass p-5 md:p-6">
-        <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-brass">06 · Aviso legal</p>
+      <aside id="seccion-06" class="plate rounded-md border-l-4 border-l-brass p-5 md:p-6">
+        <p class="seccion-kicker cian">
+          <span class="seccion-num">06</span>
+          <span class="seccion-nombre">· Aviso legal</span>
+        </p>
         <h2 class="mt-1 font-display text-2xl font-semibold uppercase tracking-wide text-white">
           Iniciativa ciudadana independiente
         </h2>
@@ -1596,12 +1651,13 @@
 
       function pintarCompuerta(estado) {
         var ambar = estado === "CRUCE_INMINENTE_ALERTA_AMBAR";
-        var color = ambar ? "#e0b15a" : "#ff2d2d";
-        var suave = ambar ? "#f3ddb0" : "#ffb4b4";
-        var pieColor = ambar ? "#f3ddb0" : "#ff8a8a";
+        var cruzada = estado === "SUPERADA_CRUZADA";
+        var color = cruzada ? "#10b981" : (ambar ? "#e0b15a" : "#ff2d2d");
+        var suave = cruzada ? "#a7f3d0" : (ambar ? "#f3ddb0" : "#ffb4b4");
+        var pieColor = cruzada ? "#a7f3d0" : (ambar ? "#f3ddb0" : "#ff8a8a");
         var placa = document.getElementById("placa-compuerta");
         if (placa) {
-          placa.classList.toggle("alerta-pulso", !ambar);
+          placa.classList.toggle("alerta-pulso", !ambar && !cruzada);
           placa.classList.toggle("alerta-ambar", ambar);
           placa.style.color = color;
         }
@@ -1614,9 +1670,11 @@
         var pie = document.getElementById("cin-compuerta-pie");
         if (pie) {
           pie.style.color = pieColor;
-          pie.textContent = ambar
-            ? "Cruce inminente · alerta ámbar · pulsar para situar en la carta"
-            : "Alerta máxima · pulsar para situar en la carta";
+          pie.textContent = cruzada
+            ? "Superada · cruzada · pulsar para situar en la carta"
+            : (ambar
+              ? "Cruce inminente · alerta ámbar · pulsar para situar en la carta"
+              : "Alerta máxima · pulsar para situar en la carta");
         }
         var fill = document.getElementById("cin-compuerta-fill");
         var mark = document.getElementById("cin-compuerta-mark");
@@ -1701,7 +1759,10 @@
         var bQuie = umbralBoletin(data.quiebre_97W, distanciaMeridiano(lat, lon, MERIDIANO_QUIEBRE), vel);
         var kmComp = Math.max(0, bComp.km - (avance.activo ? avance.km : 0));
         var kmQuie = Math.max(0, bQuie.km - (avance.activo ? avance.km : 0));
-        var kmAca = haversineKm(posViva, ACAPULCO);
+        var bahiaOficial = Number(data.bahia_km);
+        var kmAca = isFinite(bahiaOficial) && bahiaOficial >= 0 && !avance.activo
+          ? bahiaOficial
+          : haversineKm(posViva, ACAPULCO);
         var hComp = avance.activo ? textoHoras(kmComp, vel) : bComp.horas;
         var hQuie = avance.activo ? textoHoras(kmQuie, vel) : bQuie.horas;
         var hAca = textoHoras(kmAca, vel);
@@ -1729,14 +1790,14 @@
         ponerTexto("met-presion", presion);
         ponerTexto("met-sst", cifra(Number(met.sst_celsius)));
         ponerTexto("cin-recorrido", kmVisible(kmRec, avance.activo));
-        ponerTexto("cin-recorrido-nota", avance.activo ? notaViva : "Parte de las 18:30 CST · recorrido publicado");
+        ponerTexto("cin-recorrido-nota", avance.activo ? notaViva : "Parte " + (selloVisible || "publicado") + " · recorrido publicado");
         ponerTexto("cin-recorrido-a", hem(olon, "E", "W", 1));
         ponerTexto("cin-recorrido-b", hem(lonViva, "E", "W", 2));
-        ponerTexto("cin-compuerta", kmVisible(kmComp, avance.activo));
+        ponerTexto("cin-compuerta", kmComp <= 0 ? "0.00" : kmVisible(kmComp, avance.activo));
         ponerTexto(
           "cin-compuerta-nota",
           kmComp <= 0
-            ? "Meridiano 96.0°W cruzado"
+            ? "Superada · cruzada"
             : (avance.activo
               ? notaViva
               : (bComp.estado === "CRUCE_INMINENTE_ALERTA_AMBAR"
@@ -1747,7 +1808,8 @@
                     ? "Cruce inminente · " + hComp + " a " + cifra(vel) + " km/h"
                     : hComp + " a " + cifra(vel) + " km/h"))))
         );
-        pintarCompuerta(kmComp <= 0 ? "" : bComp.estado);
+        pintarCompuerta(kmComp <= 0 ? "SUPERADA_CRUZADA" : bComp.estado);
+        ponerTexto("estado-ruta", data.estado_ruta ? String(data.estado_ruta) : "Confirmando lectura de la ruta amarilla");
         ponerTexto("cin-compuerta-a", hem(olon, "E", "W", 1));
         ponerTexto("cin-quiebre", kmVisible(kmQuie, avance.activo));
         ponerTexto(
@@ -1862,9 +1924,25 @@
         quiebre.setStyle(estiloQuiebre);
         lineaEcmwf.setStyle(estiloEcmwf);
         lineaGfs.setStyle(estiloGfs);
+        lineaSegura.setStyle({ color: "#10b981", weight: 3, opacity: 1 });
+        lineaCritica.setStyle({ color: "#ef4444", weight: 3, opacity: 1 });
+        document.querySelectorAll(".seccion-kicker").forEach(function (nodo) {
+          nodo.classList.remove("seccion-habla");
+        });
         var iconoBahia = acapulco.getElement();
         if (iconoBahia) iconoBahia.classList.remove("bench-foco");
         mapaEl.dataset.locucion = "";
+      }
+
+      function marcarSeccion(id) {
+        document.querySelectorAll(".seccion-kicker").forEach(function (nodo) {
+          nodo.classList.remove("seccion-habla");
+        });
+        var ancla = document.getElementById(id);
+        if (!ancla) return;
+        var kicker = ancla.classList.contains("seccion-kicker") ? ancla : ancla.querySelector(".seccion-kicker");
+        if (kicker) kicker.classList.add("seccion-habla");
+        ancla.scrollIntoView({ behavior: reducido ? "auto" : "smooth", block: "start" });
       }
 
       function enfocar(destino) {
@@ -1881,14 +1959,21 @@
           caja.extend(ACAPULCO);
           mapa.fitBounds(caja, { padding: [36, 36], maxZoom: 6, animate: !reducido });
         } else if (destino === "cierre") {
-          encuadre();
+          return;
         }
       }
 
       function aplicarEscena(escena) {
         restaurarLocucion();
         mapaEl.dataset.locucion = escena;
-        if (escena === "compuerta") {
+        if (escena.indexOf("seccion-") === 0) marcarSeccion(escena);
+        if (escena === "seccion-04") {
+          if (!mapa.hasLayer(capaEcmwf)) mapa.addLayer(capaEcmwf);
+          lineaEcmwf.setStyle({ color: "#ffe14a", weight: 7, opacity: 1 });
+          lineaEcmwf.bringToFront();
+          lineaSegura.setStyle({ color: "#34d399", weight: 6, opacity: 1 });
+          lineaCritica.setStyle({ color: "#ef4444", weight: 5, opacity: 1 });
+        } else if (escena === "compuerta") {
           compuerta.setStyle({ color: "#ffe14a", weight: 6, opacity: 1 });
           compuerta.bringToFront();
         } else if (escena === "quiebre") {
@@ -1928,20 +2013,17 @@
         }
         detenerLocucion();
         var guion = [
-          { escena: "apertura", texto: "Vigilancia telemétrica en tiempo real. Reporte técnico de JSG ZENIT A.C. Nos encontramos monitoreando la evolución del Ciclón Tropical Trudy sobre aguas del Pacífico Sur Mexicano." },
-          { escena: "trudy", texto: "El sistema se localiza en los 12.1 grados Norte y 95.95 grados Oeste, acumulando un recorrido geodésico de 945 kilómetros desde su zona de génesis. Trudy sostiene una velocidad de traslación de dieciséis kilómetros por hora con rumbo Oeste-Noroeste." },
-          { escena: "compuerta", texto: "En este momento, el vórtice se sitúa a tan solo 5 kilómetros de cruzar la Compuerta Marina de los 96 grados Oeste. El cruce es inminente y está en proceso." },
-          { escena: "quiebre", texto: "Posteriormente, restan 115 kilómetros para alcanzar el meridiano crítico de los 97 grados Oeste, el umbral de quiebre geofísico donde se definirá su interacción con la costa." },
-          { escena: "infrarrojo", texto: "La signatura infrarroja del satélite GOES en tiempo real confirma topes nubosos con temperaturas inferiores a los menos setenta y cinco grados Celsius, reflejo de una intensa convección profunda." },
-          { escena: "ecmwf", texto: "En la proyección matemática, el modelo europeo ECMWF sostiene un sesgo del 65% por la Ruta Amarilla, manteniendo al sistema paralelo a la costa mar adentro." },
-          { escena: "gfs", texto: "Por su parte, el modelo estadounidense GFS proyecta la Ruta Roja, anticipando una posible deflexión hacia el cuadrante costero de Guerrero y la Bahía de Santa Lucía por debilitamiento del domo anticiclónico." },
-          { escena: "cierre", texto: "La compuerta marina de JSG ZENIT actúa como árbitro geofísico en el terreno, midiendo datos duros para anticipar escenarios de riesgo hidrológico y resiliencia civil. Recordamos a la ciudadanía que este ejercicio técnico independiente procesa datos abiertos de la NOAA y no sustituye los alertamientos oficiales de Protección Civil y el Servicio Meteorológico Nacional. JSG ZENIT: Proyectos ejecutivos, cimientos del futuro." }
+          { escena: "seccion-01", texto: "Atención. Transmisión telemétrica oficial de JSG ZENIT A.C. Vigilancia geofísica en tiempo real para el Ciclón Tropical Trudy. Puede usted interactuar y desplazarse libremente por las secciones de esta pantalla mientras escucha este informe." },
+          { escena: "seccion-01", texto: "SECCIÓN CERO UNO. COMANDO OPERATIVO Y SINCRONIZACIÓN. Hora de consulta oficial: diez de la noche con treinta y dos minutos. El sistema procesa datos en vivo y sincroniza el tiempo real de México con el corte telemétrico continuo." },
+          { escena: "seccion-02", texto: "SECCIÓN CERO DOS. INSTRUMENTACIÓN FÍSICA Y METEOROLÓGICA. Trudy sostiene vientos de setenta kilómetros por hora con rachas de noventa. Mantiene una velocidad de traslación constante de dieciséis kilómetros por hora rumbo al Oeste-Noroeste. La presión barométrica central marca mil dos hectopascales y la temperatura superficial del mar se mantiene en unos cálidos treinta punto cinco grados Celsius, motor de convección profunda." },
+          { escena: "seccion-03", texto: "SECCIÓN CERO TRES. TARJETAS CINEMÁTICAS Y GEODÉSICAS. Observe los cálculos actualizados en pantalla. El recorrido acumulado supera ya los mil diez kilómetros desde su origen. La Compuerta Marina de los noventa y seis grados Oeste ha sido formalmente cruzada, marcando cero punto cero kilómetros faltantes. En este instante, restan únicamente cuarenta y ocho kilómetros para alcanzar el meridiano de Quiebre de los noventa y siete grados Oeste, un hito previsto para las próximas tres horas. La distancia directa hacia la Bahía de Santa Lucía, en Acapulco, se sitúa en seiscientos quince kilómetros." },
+          { escena: "seccion-04", texto: "SECCIÓN CERO CUATRO. CARTA NÁUTICA Y CAJA DE DECISIÓN. Mire la carta interactiva. El ojo de Trudy navega actualmente en los doce punto quince grados Norte. Al encontrarse netamente por debajo de la línea verde de los trece grados Norte dentro del rectángulo de decisión, la telemetría confirma y consolida minuto a minuto la Ruta Amarilla del modelo europeo. Esto aleja el vórtice de la línea roja de captura sinóptica y descarta el impacto directo del ojo en Acapulco durante las próximas horas. Sin embargo, recuerde que el radio de bandas convectivas continuará descargando precipitaciones torrenciales de ciento cincuenta a doscientos cincuenta milímetros en Guerrero." },
+          { escena: "cierre", texto: "JSG ZENIT: Proyectos ejecutivos, cimientos del futuro. Monitoreo en desarrollo." }
         ];
         var paso = 0;
         var estaTanda = tandaLocucion;
         vozLista = elegirVoz();
         estadoLocucion(true);
-        document.getElementById("titulo-carta").scrollIntoView({ behavior: reducido ? "auto" : "smooth", block: "start" });
 
         function decir() {
           if (estaTanda !== tandaLocucion) return;
