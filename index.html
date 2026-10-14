@@ -1993,8 +1993,10 @@
         return texto;
       }
 
-      function kmLocucion(id, respaldo) {
-        var n = parseFloat(String(textoVisible(id, "")).replace(",", "."));
+      function kmTarjeta(selector, respaldo) {
+        var nodo = document.querySelector(selector);
+        var crudo = nodo ? String(nodo.innerText || "") : "";
+        var n = parseFloat(crudo.replace(/[^\d.]/g, ""));
         if (!isFinite(n)) return respaldo;
         return Math.round(n);
       }
@@ -2116,18 +2118,19 @@
         var vLluvia = textoVisible("val-lluvia", "150 a 250").replace(/\s*[–—-]\s*/g, " a ");
         var vPresion = textoVisible("val-presion", "1002");
         var vSST = textoVisible("val-sst", "30.5");
-        var kmRecorrido = kmLocucion("val-recorrido", 1007);
-        var kmQuiebre = kmLocucion("val-quiebre", 52);
-        var kmAcapulco = kmLocucion("val-acapulco", 621);
-        var velLocucion = parseFloat(vTraslacion);
-        if (!isFinite(velLocucion) || velLocucion <= 0) velLocucion = 16;
-        var horasQuiebre = (kmQuiebre / velLocucion).toFixed(1);
+        var numRecorrido = kmTarjeta('#val-recorrido, [data-card="recorrido"] .text-3xl, .tarjeta-recorrido', 1038);
+        var numQuiebre = kmTarjeta('#val-quiebre, [data-card="quiebre"] .text-3xl, .tarjeta-quiebre', 20);
+        var numAcapulco = kmTarjeta('#val-acapulco, [data-card="acapulco"] .text-3xl, .tarjeta-acapulco', 609);
+        var horasAlQuiebre = (numQuiebre / 16).toFixed(1);
+        var tiempoQuiebreTexto = numQuiebre <= 10
+          ? "cruce prácticamente inminente en los próximos minutos"
+          : "aproximadamente " + horasAlQuiebre + " horas";
         var marca = "Jota Efe Ge Cénit";
         var guion = [
           { escena: "seccion-01", texto: "Hola, soy Daniela. Transmisión telemétrica oficial de " + marca + ". Vigilancia geofísica en tiempo real para la Tormenta Tropical Trudy. Puede usted desplazarse libremente entre las secciones de la pantalla mientras escucha este reporte." },
           { escena: "seccion-01", texto: "Sección cero uno. Cabecera y control. Hora oficial de consulta: " + horaHablada + ". Monitoreo continuo y recálculo cinemático activo." },
           { escena: "seccion-02", texto: "Sección cero dos. Variables físicas y meteorológicas. Trudy mantiene vientos sostenidos de " + vViento + " kilómetros por hora, con rachas de " + vRachas + ". Su velocidad de avance es de " + vTraslacion + " kilómetros por hora con rumbo al " + vRumbo + ". Presión central de " + vPresion + " hectopascales, y temperatura del mar en " + vSST + " grados Celsius, con potencial de lluvia acumulada de " + vLluvia + " milímetros." },
-          { escena: "seccion-03", texto: "Sección cero tres. Tarjetas cinemáticas. El recorrido acumulado es de " + kmRecorrido + " kilómetros. La Compuerta Marina de los noventa y seis grados Oeste ha quedado superada. Restan únicamente " + kmQuiebre + " kilómetros para alcanzar el Punto de Quiebre de los noventa y siete grados Oeste, arribo estimado en aproximadamente " + horasQuiebre + " horas. La distancia en línea recta hacia la Bahía de Santa Lucía en Acapulco es de " + kmAcapulco + " kilómetros." },
+          { escena: "seccion-03", texto: "Sección cero tres. Tarjetas cinemáticas. El recorrido acumulado alcanza " + numRecorrido + " kilómetros desde su génesis. La Compuerta Marina de los noventa y seis grados Oeste ha quedado completamente superada. En este momento restan únicamente " + numQuiebre + " kilómetros para alcanzar el Punto de Quiebre de los noventa y siete grados Oeste, con un tiempo estimado de arribo de " + tiempoQuiebreTexto + ". La distancia ortodrómica directa hacia la Bahía de Santa Lucía, en Acapulco, se sitúa en " + numAcapulco + " kilómetros." },
           { escena: "seccion-04", texto: "Sección cero cuatro. Carta náutica y caja de decisión. Al continuar su trayectoria por debajo de la línea verde de los trece grados Norte dentro del corredor de decisión, la telemetría continúa confirmando la Ruta Amarilla del modelo europeo mar adentro, descartando el impacto directo del centro del meteoro en Acapulco durante las próximas horas." },
           { escena: "seccion-recomendaciones", texto: "Sección cero cinco. Recomendaciones preventivas. Mantener desazolvados cauces y drenajes pluviales urbanos, vigilar la estabilidad de laderas por humedad acumulada, y atender las indicaciones de Protección Civil y Capitanía de Puerto." },
           { escena: "cierre", texto: marca + ". Proyectos ejecutivos, cimientos del futuro. Vigilancia en desarrollo." }
